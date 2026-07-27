@@ -1,0 +1,26 @@
+{
+  "name": "portfolio-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:schema": "node scripts/apply-schema.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "next": "latest",
+    "pg": "^8.16.3",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/pg": "^8.15.5",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "5.9.3"
+  }
+}

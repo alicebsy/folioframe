@@ -1,0 +1,14 @@
+node_modules
+.pnpm-store
+.next
+.open-next
+.wrangler
+.dev.vars
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+.SPEC.md.swp
+.vercel
+.openai

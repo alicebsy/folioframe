@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type {
+  CareerEntry,
   DashboardData,
   Portfolio,
   Project,
@@ -23,6 +24,13 @@ const emptyProject: ProjectDraft = {
   problem: "",
   troubleshooting: "",
   result: "",
+  targetAudience: "",
+  goal: "",
+  constraints: "",
+  keyDecision: "",
+  collaboration: "",
+  learnings: "",
+  nextTime: "",
   evidence: "",
   periodStart: "",
   periodEnd: "",
@@ -226,6 +234,13 @@ export default function DashboardClient({
           problem: projectDraft.problem,
           troubleshooting: projectDraft.troubleshooting,
           result: projectDraft.result,
+          targetAudience: projectDraft.targetAudience,
+          goal: projectDraft.goal,
+          constraints: projectDraft.constraints,
+          keyDecision: projectDraft.keyDecision,
+          collaboration: projectDraft.collaboration,
+          learnings: projectDraft.learnings,
+          nextTime: projectDraft.nextTime,
           evidence: projectDraft.evidence,
           periodStart: projectDraft.periodStart,
           periodEnd: projectDraft.periodEnd,
@@ -387,6 +402,25 @@ export default function DashboardClient({
     });
   };
 
+  const addCareer = () => {
+    setProfileDraft({
+      ...profileDraft,
+      careers: [
+        ...profileDraft.careers,
+        { id: `career-${Date.now()}`, organization: "", role: "", period: "", description: "" },
+      ],
+    });
+  };
+
+  const updateCareer = (id: string, field: keyof CareerEntry, value: string) => {
+    setProfileDraft({
+      ...profileDraft,
+      careers: profileDraft.careers.map((entry) =>
+        entry.id === id ? { ...entry, [field]: value } : entry,
+      ),
+    });
+  };
+
   return (
     <main className="dashboard-shell">
       <header className="topbar">
@@ -503,6 +537,45 @@ export default function DashboardClient({
                   placeholder="나를 설명하는 한 문장을 입력하세요."
                 />
               </label>
+              <details className="editor-disclosure profile-disclosure">
+                <summary><span>지원자 한눈에 보기</span><small>경험 수준 · 관심 분야 · 핵심 역량</small></summary>
+                <div className="disclosure-content">
+                  <div className="form-row two">
+                    <label>경험 수준<input value={profileDraft.experienceLevel} onChange={(event) => setProfileDraft({ ...profileDraft, experienceLevel: event.target.value })} placeholder="예: 신입 · 프로젝트 경험 중심" /></label>
+                    <label>관심 분야<input value={profileDraft.interests} onChange={(event) => setProfileDraft({ ...profileDraft, interests: event.target.value })} placeholder="예: B2C · 생산성 제품" /></label>
+                  </div>
+                  <label>핵심 역량 3개<input value={profileDraft.strengths.join(", ")} onChange={(event) => setProfileDraft({ ...profileDraft, strengths: event.target.value.split(",").map((item) => item.trim()).slice(0, 3) })} placeholder="문제 정의, 데이터 분석, 협업" /></label>
+                </div>
+              </details>
+              <details className="editor-disclosure profile-disclosure">
+                <summary><span>경력과 활동</span><small>{profileDraft.careers.length}개 등록</small></summary>
+                <div className="disclosure-content career-editor-list">
+                  {profileDraft.careers.map((entry) => (
+                    <div className="career-editor-row" key={entry.id}>
+                      <div className="form-row three">
+                        <label>조직·활동<input value={entry.organization} onChange={(event) => updateCareer(entry.id, "organization", event.target.value)} placeholder="회사, 동아리, 개인 프로젝트" /></label>
+                        <label>역할<input value={entry.role} onChange={(event) => updateCareer(entry.id, "role", event.target.value)} placeholder="프로덕트 매니저" /></label>
+                        <label>기간<input value={entry.period} onChange={(event) => updateCareer(entry.id, "period", event.target.value)} placeholder="2025.03 – 현재" /></label>
+                      </div>
+                      <label>주요 경험<textarea value={entry.description} onChange={(event) => updateCareer(entry.id, "description", event.target.value)} placeholder="무엇을 맡았고 어떤 변화를 만들었는지 적어 주세요." /></label>
+                      <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, careers: profileDraft.careers.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
+                    </div>
+                  ))}
+                  <button type="button" className="button secondary career-add" onClick={addCareer}><Icon name="plus" />경력 추가</button>
+                </div>
+              </details>
+              <details className="editor-disclosure profile-disclosure">
+                <summary><span>연락처와 외부 링크</span><small>이력서 · GitHub · LinkedIn · 블로그</small></summary>
+                <div className="disclosure-content">
+                  <div className="form-row two">
+                    <label>공개 이메일<input type="email" value={profileDraft.contactEmail} onChange={(event) => setProfileDraft({ ...profileDraft, contactEmail: event.target.value })} placeholder="hello@example.com" /></label>
+                    <label>이력서 URL<input type="url" value={profileDraft.resumeUrl} onChange={(event) => setProfileDraft({ ...profileDraft, resumeUrl: event.target.value })} placeholder="https://.../resume.pdf" /></label>
+                    <label>GitHub<input type="url" value={profileDraft.githubUrl} onChange={(event) => setProfileDraft({ ...profileDraft, githubUrl: event.target.value })} placeholder="https://github.com/..." /></label>
+                    <label>LinkedIn<input type="url" value={profileDraft.linkedinUrl} onChange={(event) => setProfileDraft({ ...profileDraft, linkedinUrl: event.target.value })} placeholder="https://linkedin.com/in/..." /></label>
+                    <label>블로그·웹사이트<input type="url" value={profileDraft.blogUrl} onChange={(event) => setProfileDraft({ ...profileDraft, blogUrl: event.target.value })} placeholder="https://..." /></label>
+                  </div>
+                </div>
+              </details>
             </div>
           ) : (
             <div className="profile-copy">
@@ -511,6 +584,13 @@ export default function DashboardClient({
                 <span>{data.portfolio.jobTitle || "희망 직무 미입력"}</span>
               </div>
               <p>{data.portfolio.bio || "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
+              {(data.portfolio.experienceLevel || data.portfolio.strengths.length > 0) && (
+                <div className="profile-summary-chips">
+                  {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}
+                  {data.portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
+                  {!!data.portfolio.careers.length && <span>경력·활동 {data.portfolio.careers.length}</span>}
+                </div>
+              )}
               <div className="mini-links">
                 <span><Icon name="link" />/p/{data.portfolio.slug}</span>
                 <span>{data.user.email}</span>
@@ -804,10 +884,29 @@ export default function DashboardClient({
                   </label>
                 ))}
               </div>
+              <details className="editor-disclosure project-disclosure">
+                <summary><span>프로젝트 맥락과 핵심 판단</span><small>대상 · 목표 · 제약 · 의사결정 · 협업</small></summary>
+                <div className="disclosure-content">
+                  <div className="form-row two">
+                    <label>대상 사용자<textarea value={projectDraft.targetAudience} onChange={(event) => setProjectDraft({ ...projectDraft, targetAudience: event.target.value })} placeholder="누구의 어떤 상황을 위한 프로젝트였나요?" /></label>
+                    <label>프로젝트 목표<textarea value={projectDraft.goal} onChange={(event) => setProjectDraft({ ...projectDraft, goal: event.target.value })} placeholder="달성하려던 사용자·사업 목표는 무엇이었나요?" /></label>
+                  </div>
+                  <label>제약 조건<textarea value={projectDraft.constraints} onChange={(event) => setProjectDraft({ ...projectDraft, constraints: event.target.value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." /></label>
+                  <label>가장 중요한 결정<textarea value={projectDraft.keyDecision} onChange={(event) => setProjectDraft({ ...projectDraft, keyDecision: event.target.value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" /></label>
+                  <label>협업 방식<textarea value={projectDraft.collaboration} onChange={(event) => setProjectDraft({ ...projectDraft, collaboration: event.target.value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" /></label>
+                </div>
+              </details>
               <label>
                 성과 근거
                 <textarea maxLength={500} value={projectDraft.evidence} onChange={(event) => setProjectDraft({ ...projectDraft, evidence: event.target.value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." />
               </label>
+              <details className="editor-disclosure project-disclosure">
+                <summary><span>회고와 다음 단계</span><small>배운 점 · 다시 한다면 바꿀 점</small></summary>
+                <div className="disclosure-content form-row two">
+                  <label>배운 점<textarea value={projectDraft.learnings} onChange={(event) => setProjectDraft({ ...projectDraft, learnings: event.target.value })} placeholder="이 경험을 통해 무엇을 새롭게 알게 되었나요?" /></label>
+                  <label>다시 한다면<textarea value={projectDraft.nextTime} onChange={(event) => setProjectDraft({ ...projectDraft, nextTime: event.target.value })} placeholder="다음에는 무엇을 다르게 시도하고 싶나요?" /></label>
+                </div>
+              </details>
               <div className="quality-checklist">
                 {qualityChecks.map((item) => (
                   <span className={item.complete ? "done" : ""} key={item.label}>

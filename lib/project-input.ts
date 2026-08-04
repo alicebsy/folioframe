@@ -7,6 +7,13 @@ export type ProjectInput = {
   problem: string;
   troubleshooting: string;
   result: string;
+  targetAudience: string;
+  goal: string;
+  constraints: string;
+  keyDecision: string;
+  collaboration: string;
+  learnings: string;
+  nextTime: string;
   evidence: string;
   periodStart: string;
   periodEnd: string;
@@ -26,6 +33,13 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     problem: String(body.problem ?? "").trim().slice(0, 500),
     troubleshooting: String(body.troubleshooting ?? "").trim().slice(0, 1000),
     result: String(body.result ?? "").trim().slice(0, 500),
+    targetAudience: String(body.targetAudience ?? "").trim().slice(0, 300),
+    goal: String(body.goal ?? "").trim().slice(0, 300),
+    constraints: String(body.constraints ?? "").trim().slice(0, 500),
+    keyDecision: String(body.keyDecision ?? "").trim().slice(0, 700),
+    collaboration: String(body.collaboration ?? "").trim().slice(0, 500),
+    learnings: String(body.learnings ?? "").trim().slice(0, 500),
+    nextTime: String(body.nextTime ?? "").trim().slice(0, 500),
     evidence: String(body.evidence ?? "").trim().slice(0, 500),
     periodStart: normalizeMonth(body.periodStart),
     periodEnd: normalizeMonth(body.periodEnd),

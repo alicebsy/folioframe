@@ -37,6 +37,11 @@ export default function PublicPortfolio({
           <div>
             <h1>안녕하세요,<br /><span>{portfolio.name}</span>입니다.</h1>
             <p>{portfolio.bio}</p>
+            <div className="candidate-summary">
+              {portfolio.experienceLevel && <span>{portfolio.experienceLevel}</span>}
+              {portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
+            </div>
+            {portfolio.interests && <p className="candidate-interests"><strong>관심 분야</strong>{portfolio.interests}</p>}
           </div>
           <div className="hero-side">
             <div className="large-avatar">{portfolio.name.slice(0, 1)}</div>
@@ -44,9 +49,29 @@ export default function PublicPortfolio({
             {portfolio.contactEmail && (
               <a href={`mailto:${portfolio.contactEmail}`}>{portfolio.contactEmail}</a>
             )}
+            <div className="hero-links">
+              {portfolio.resumeUrl && <a href={portfolio.resumeUrl} target="_blank" rel="noreferrer">이력서 ↗</a>}
+              {portfolio.githubUrl && <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>}
+              {portfolio.linkedinUrl && <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>}
+              {portfolio.blogUrl && <a href={portfolio.blogUrl} target="_blank" rel="noreferrer">Blog ↗</a>}
+            </div>
           </div>
         </div>
       </header>
+
+      {!!portfolio.careers.length && (
+        <section className="career-section">
+          <div className="career-section-title"><span>EXPERIENCE</span><h2>경력과 활동</h2></div>
+          <div className="career-timeline">
+            {portfolio.careers.map((entry) => (
+              <article key={entry.id}>
+                <span>{entry.period || "기간 미입력"}</span>
+                <div><h3>{entry.organization}</h3><strong>{entry.role}</strong><p>{entry.description}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="portfolio-projects">
         <div className="portfolio-section-title">
@@ -111,13 +136,21 @@ export default function PublicPortfolio({
               </div>
               <div className="case-detail-heading"><span>HOW I WORKED</span><h4>문제에서 해결까지</h4></div>
               <div className="case-story focused-case-story">
-                <section><span>01 · PROBLEM</span><h4>해결해야 했던 문제</h4><p>{project.problem}</p></section>
-                <section><span>02 · DECISION &amp; PROCESS</span><h4>판단과 실행 과정</h4><p>{project.troubleshooting}</p></section>
+                <section><span>01 · CONTEXT</span><h4>대상과 목표</h4><p>{project.targetAudience || project.summary}</p>{project.goal && <small>{project.goal}</small>}</section>
+                <section><span>02 · CHALLENGE</span><h4>문제와 제약</h4><p>{project.problem}</p>{project.constraints && <small>{project.constraints}</small>}</section>
+                <section><span>03 · DECISION</span><h4>판단과 실행</h4><p>{project.keyDecision || project.troubleshooting}</p>{project.keyDecision && <small>{project.troubleshooting}</small>}</section>
+                <section><span>04 · COLLABORATION</span><h4>협업 방식</h4><p>{project.collaboration || "개인 기여와 협업 방식을 확인할 수 있는 내용을 준비 중입니다."}</p></section>
               </div>
               {project.evidence && (
                 <div className="case-evidence">
                   <span>03 · EVIDENCE</span>
                   <div><h4>성과 근거</h4><p>{project.evidence}</p></div>
+                </div>
+              )}
+              {(project.learnings || project.nextTime) && (
+                <div className="case-reflection">
+                  <span>RETROSPECTIVE</span>
+                  <div>{project.learnings && <section><h4>배운 점</h4><p>{project.learnings}</p></section>}{project.nextTime && <section><h4>다시 한다면</h4><p>{project.nextTime}</p></section>}</div>
                 </div>
               )}
               {!!project.links.length && (

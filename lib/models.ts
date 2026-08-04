@@ -4,6 +4,14 @@ export type ProjectLink = {
   url: string;
 };
 
+export type CareerEntry = {
+  id: string;
+  organization: string;
+  role: string;
+  period: string;
+  description: string;
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -12,6 +20,13 @@ export type Project = {
   problem: string;
   troubleshooting: string;
   result: string;
+  targetAudience: string;
+  goal: string;
+  constraints: string;
+  keyDecision: string;
+  collaboration: string;
+  learnings: string;
+  nextTime: string;
   evidence: string;
   periodStart: string;
   periodEnd: string;
@@ -38,6 +53,14 @@ export type Portfolio = {
   slug: string;
   isPublished: boolean;
   publishedAt: string | null;
+  experienceLevel: string;
+  interests: string;
+  strengths: string[];
+  resumeUrl: string;
+  githubUrl: string;
+  linkedinUrl: string;
+  blogUrl: string;
+  careers: CareerEntry[];
 };
 
 export type DashboardData = {

@@ -1,6 +1,6 @@
 import "server-only";
 import { query } from "./db";
-import type { DashboardData, Portfolio, Project, ProjectLink } from "./models";
+import type { CareerEntry, DashboardData, Portfolio, Project, ProjectLink } from "./models";
 
 type PortfolioRow = {
   id: string;
@@ -11,6 +11,14 @@ type PortfolioRow = {
   slug: string;
   is_published: boolean;
   published_at: Date | null;
+  experience_level: string;
+  interests: string;
+  strengths: string[] | null;
+  resume_url: string;
+  github_url: string;
+  linkedin_url: string;
+  blog_url: string;
+  careers: CareerEntry[] | null;
 };
 
 type ProjectRow = {
@@ -21,6 +29,13 @@ type ProjectRow = {
   problem: string;
   troubleshooting: string;
   result: string;
+  target_audience: string;
+  goal: string;
+  constraints: string;
+  key_decision: string;
+  collaboration: string;
+  learnings: string;
+  next_time: string;
   evidence: string;
   period_start: string;
   period_end: string;
@@ -43,6 +58,14 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     slug: row.slug,
     isPublished: row.is_published,
     publishedAt: row.published_at?.toISOString() ?? null,
+    experienceLevel: row.experience_level,
+    interests: row.interests,
+    strengths: row.strengths ?? [],
+    resumeUrl: row.resume_url,
+    githubUrl: row.github_url,
+    linkedinUrl: row.linkedin_url,
+    blogUrl: row.blog_url,
+    careers: row.careers ?? [],
   };
 }
 
@@ -55,6 +78,13 @@ function mapProject(row: ProjectRow): Project {
     problem: row.problem,
     troubleshooting: row.troubleshooting,
     result: row.result,
+    targetAudience: row.target_audience,
+    goal: row.goal,
+    constraints: row.constraints,
+    keyDecision: row.key_decision,
+    collaboration: row.collaboration,
+    learnings: row.learnings,
+    nextTime: row.next_time,
     evidence: row.evidence,
     periodStart: row.period_start,
     periodEnd: row.period_end,
@@ -70,7 +100,9 @@ function mapProject(row: ProjectRow): Project {
 
 const projectSelect = `
   SELECT p.id, p.title, p.summary, p.role, p.problem,
-         p.troubleshooting, p.result, p.evidence, p.period_start, p.period_end,
+         p.troubleshooting, p.result, p.target_audience, p.goal, p.constraints,
+         p.key_decision, p.collaboration, p.learnings, p.next_time,
+         p.evidence, p.period_start, p.period_end,
          p.team_size, p.contribution, p.tech_stacks, p.cover_image_url,
          p.is_public, p.display_order,
          COALESCE(
@@ -89,7 +121,8 @@ export async function getDashboardData(
 ): Promise<DashboardData> {
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, job_title, bio, contact_email, slug,
-            is_published, published_at
+            is_published, published_at, experience_level, interests, strengths,
+            resume_url, github_url, linkedin_url, blog_url, careers
        FROM portfolios
       WHERE owner_id = $1
       LIMIT 1`,
@@ -119,7 +152,9 @@ export async function getDashboardData(
 export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.job_title, p.bio, p.contact_email, p.slug,
-            p.is_published, p.published_at, u.email
+            p.is_published, p.published_at, p.experience_level, p.interests,
+            p.strengths, p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
+            p.careers, u.email
        FROM portfolios p
        JOIN users u ON u.id = p.owner_id
       WHERE p.slug = $1 AND p.is_published = TRUE

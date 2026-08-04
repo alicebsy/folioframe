@@ -29,6 +29,11 @@ export default function PublicPortfolio({
           <div>
             <h1>안녕하세요,<br /><span>{portfolio.name}</span>입니다.</h1>
             <p>{portfolio.bio}</p>
+            <div className="hero-proof">
+              <span>ROLE</span><i />
+              <span>DECISION</span><i />
+              <span>EVIDENCE</span>
+            </div>
           </div>
           <div className="hero-side">
             <div className="large-avatar">{portfolio.name.slice(0, 1)}</div>

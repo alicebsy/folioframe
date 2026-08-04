@@ -437,6 +437,11 @@ export default function DashboardClient({
             <span className="eyebrow">MY PORTFOLIO</span>
             <h1>경험이 증거가 되는 포트폴리오</h1>
             <p>역할과 문제 해결 과정을 정리하면 설득력 있는 이야기가 됩니다.</p>
+            <div className="impact-tags" aria-label="포트폴리오 작성 기준">
+              <span>ROLE</span><i />
+              <span>DECISION</span><i />
+              <span>EVIDENCE</span>
+            </div>
           </div>
           <div className="publish-summary">
             <div className={`status-dot ${data.portfolio.isPublished ? "live" : ""}`} />
@@ -702,6 +707,7 @@ export default function DashboardClient({
               <div>
                 <span className="eyebrow">PROJECT STORY</span>
                 <h2>{projectDraft.id ? "프로젝트 수정" : "프로젝트 작성"}</h2>
+                <p>결과보다 판단을, 주장보다 근거를 남기세요.</p>
               </div>
               <button className="icon-button" onClick={() => setProjectModal(false)} aria-label="프로젝트 작성 닫기">
                 <Icon name="close" />

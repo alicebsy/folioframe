@@ -78,7 +78,7 @@ const themeChoices: Array<{
   available: boolean;
 }> = [
   { id: "editorial", name: "에디토리얼", description: "글의 흐름과 판단 과정을 차분하게 보여줍니다.", available: true },
-  { id: "minimal", name: "미니멀", description: "정보를 빠르게 훑는 흰색 기반 구성입니다.", available: false },
+  { id: "minimal", name: "미니멀", description: "정보를 빠르게 훑는 흰색 기반 구성입니다.", available: true },
   { id: "bold", name: "볼드 그리드", description: "큰 제목과 이미지로 시선을 잡는 구성입니다.", available: false },
   { id: "soft", name: "소프트 스토리", description: "자기소개와 성장 과정을 부드럽게 연결합니다.", available: false },
 ];
@@ -229,7 +229,8 @@ export default function DashboardClient({
     setData((current) => ({ ...current, portfolio: nextPortfolio }));
     setProfileDraft((current) => ({ ...current, theme }));
     if (previewMode) {
-      notify("에디토리얼 테마를 적용했습니다.");
+      const themeName = themeChoices.find((item) => item.id === theme)?.name ?? "선택한";
+      notify(`${themeName} 테마를 적용했습니다.`);
       return;
     }
     setLoading(true);
@@ -657,7 +658,7 @@ export default function DashboardClient({
         <section className="theme-panel panel" aria-labelledby="theme-panel-title">
           <div className="theme-panel-heading">
             <div>
-              <span className="eyebrow">PORTFOLIO THEME · 01 / 04</span>
+              <span className="eyebrow">PORTFOLIO THEME · 02 / 04</span>
               <h2 id="theme-panel-title">보여주는 방식도 나답게</h2>
               <p>내용은 그대로 유지하고 발행 화면의 인상만 바꿉니다.</p>
             </div>

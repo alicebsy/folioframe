@@ -7,6 +7,13 @@ export type ProjectInput = {
   problem: string;
   troubleshooting: string;
   result: string;
+  evidence: string;
+  periodStart: string;
+  periodEnd: string;
+  teamSize: string;
+  contribution: string;
+  techStacks: string[];
+  coverImageUrl: string;
   isPublic: boolean;
   links: ProjectLink[];
 };
@@ -19,9 +26,39 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     problem: String(body.problem ?? "").trim().slice(0, 500),
     troubleshooting: String(body.troubleshooting ?? "").trim().slice(0, 1000),
     result: String(body.result ?? "").trim().slice(0, 500),
+    evidence: String(body.evidence ?? "").trim().slice(0, 500),
+    periodStart: normalizeMonth(body.periodStart),
+    periodEnd: normalizeMonth(body.periodEnd),
+    teamSize: String(body.teamSize ?? "").trim().slice(0, 40),
+    contribution: String(body.contribution ?? "").trim().slice(0, 80),
+    techStacks: normalizeTechStacks(body.techStacks),
+    coverImageUrl: normalizeUrl(body.coverImageUrl),
     isPublic: Boolean(body.isPublic),
     links: normalizeLinks(body.links),
   };
+}
+
+function normalizeMonth(value: unknown) {
+  const month = String(value ?? "").trim();
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(month) ? month : "";
+}
+
+function normalizeUrl(value: unknown) {
+  const url = String(value ?? "").trim().slice(0, 500);
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? url : "";
+  } catch {
+    return "";
+  }
+}
+
+function normalizeTechStacks(value: unknown) {
+  const items = Array.isArray(value) ? value : String(value ?? "").split(",");
+  return Array.from(
+    new Set(items.map((item) => String(item).trim().slice(0, 30)).filter(Boolean)),
+  ).slice(0, 10);
 }
 
 function normalizeLinks(value: unknown): ProjectLink[] {

@@ -8,7 +8,7 @@ import type {
   Project,
   ProjectLink,
 } from "@/lib/models";
-import { projectIsComplete } from "@/lib/models";
+import { projectIsComplete, projectQualityChecks } from "@/lib/models";
 
 type ProjectDraft = Omit<Project, "id" | "displayOrder"> & { id?: string };
 type PublishResult =
@@ -23,9 +23,50 @@ const emptyProject: ProjectDraft = {
   problem: "",
   troubleshooting: "",
   result: "",
+  evidence: "",
+  periodStart: "",
+  periodEnd: "",
+  teamSize: "",
+  contribution: "",
+  techStacks: [],
+  coverImageUrl: "",
   isPublic: false,
   links: [],
 };
+
+const writingGuides = [
+  {
+    test: /개발|엔지니어|프론트|백엔드|software|developer/i,
+    title: "개발 직무 작성 가이드",
+    tips: ["선택한 기술과 대안을 함께 적기", "장애·성능 문제의 원인을 구체화하기", "변화는 측정 방법이나 로그로 뒷받침하기"],
+  },
+  {
+    test: /디자인|designer|ux|ui/i,
+    title: "디자인 직무 작성 가이드",
+    tips: ["사용자 맥락과 제약을 먼저 밝히기", "시안보다 판단 근거와 검증 과정을 적기", "전후 화면이나 리서치 링크를 연결하기"],
+  },
+  {
+    test: /데이터|분석|data|analyst/i,
+    title: "데이터 직무 작성 가이드",
+    tips: ["가설과 지표 정의를 명확히 적기", "분석 방법과 데이터 한계를 함께 밝히기", "의사결정에 미친 변화를 근거로 남기기"],
+  },
+  {
+    test: /마케팅|그로스|marketing|growth/i,
+    title: "마케팅 직무 작성 가이드",
+    tips: ["목표 고객과 채널 선택 이유를 적기", "실행 전후의 같은 지표를 비교하기", "성과 수치의 기간과 출처를 연결하기"],
+  },
+  {
+    test: /.*/,
+    title: "기획·PM 직무 작성 가이드",
+    tips: ["문제의 사용자와 사업 맥락을 함께 적기", "우선순위와 의사결정 근거를 드러내기", "본인의 기여와 팀 성과를 구분하기"],
+  },
+];
+
+function formatPeriod(start: string, end: string) {
+  const format = (value: string) => value.replace("-", ".");
+  if (!start && !end) return "";
+  return `${start ? format(start) : "시작일 미입력"} – ${end ? format(end) : "진행 중"}`;
+}
 
 function Icon({
   name,
@@ -107,7 +148,10 @@ export default function DashboardClient({
   const profileComplete = Boolean(
     data.portfolio.name && data.portfolio.jobTitle && data.portfolio.bio,
   );
-  const canPublish = profileComplete && publicCount > 0 && !incompleteProject;
+  const incompletePublicProject = data.projects.find(
+    (project) => project.isPublic && !projectIsComplete(project),
+  );
+  const canPublish = profileComplete && publicCount > 0 && !incompletePublicProject;
   const missingByProject = incompleteProject
     ? [
         ["summary", "개요"],
@@ -119,6 +163,11 @@ export default function DashboardClient({
         .filter(([key]) => !String(incompleteProject[key as keyof Project]).trim())
         .map(([, label]) => label)
     : [];
+  const qualityChecks = projectQualityChecks(projectDraft);
+  const qualityCount = qualityChecks.filter((item) => item.complete).length;
+  const writingGuide = writingGuides.find((guide) =>
+    guide.test.test(data.portfolio.jobTitle),
+  )!;
 
   const notify = (message: string) => {
     setToast(message);
@@ -177,6 +226,13 @@ export default function DashboardClient({
           problem: projectDraft.problem,
           troubleshooting: projectDraft.troubleshooting,
           result: projectDraft.result,
+          evidence: projectDraft.evidence,
+          periodStart: projectDraft.periodStart,
+          periodEnd: projectDraft.periodEnd,
+          teamSize: projectDraft.teamSize,
+          contribution: projectDraft.contribution,
+          techStacks: projectDraft.techStacks,
+          coverImageUrl: projectDraft.coverImageUrl,
           isPublic: projectDraft.isPublic,
           links: projectDraft.links,
         };
@@ -293,7 +349,7 @@ export default function DashboardClient({
   };
 
   const handlePrimaryAction = () => {
-    if (data.portfolio.isPublished || canPublish) {
+    if (canPublish) {
       publish();
       return;
     }
@@ -360,17 +416,15 @@ export default function DashboardClient({
               공개 페이지
             </a>
           )}
-          <button
-            className="button primary"
-            disabled={loading}
-            onClick={handlePrimaryAction}
-          >
-            {data.portfolio.isPublished
-              ? "변경사항 발행"
-              : canPublish
-                ? "발행하기"
-                : "포트폴리오 완성하기"}
-          </button>
+          {!data.portfolio.isPublished && (
+            <button
+              className="button primary"
+              disabled={loading}
+              onClick={handlePrimaryAction}
+            >
+              {canPublish ? "발행하기" : "포트폴리오 완성하기"}
+            </button>
+          )}
           <button className="icon-button" onClick={logout} title="로그아웃">
             <Icon name="logout" />
           </button>
@@ -392,7 +446,7 @@ export default function DashboardClient({
               </strong>
               <span>
                 {data.portfolio.isPublished
-                  ? `/p/${data.portfolio.slug}`
+                  ? "저장한 변경사항이 공개 페이지에 즉시 반영됩니다."
                   : "공개 프로젝트를 선택하고 발행해 보세요."}
               </span>
             </div>
@@ -494,6 +548,11 @@ export default function DashboardClient({
                   <strong>보여줄 프로젝트를 공개로 전환하세요.</strong>
                   <small>작성 완료 프로젝트의 공개 스위치를 켜면 발행할 수 있어요.</small>
                 </>
+              ) : data.portfolio.isPublished ? (
+                <>
+                  <strong>현재 포트폴리오가 공개되어 있습니다.</strong>
+                  <small>프로필과 공개 프로젝트를 저장하면 공개 페이지에 즉시 반영됩니다.</small>
+                </>
               ) : (
                 <>
                   <strong>발행할 준비가 끝났습니다.</strong>
@@ -509,6 +568,7 @@ export default function DashboardClient({
                 onClick={() => {
                   if (!profileComplete) setProfileEditing(true);
                   else if (incompleteProject) openProject(incompleteProject);
+                  else if (data.portfolio.isPublished) window.open(`/p/${data.portfolio.slug}`, "_blank");
                   else if (publicCount) publish();
                   else notify("작성 완료 프로젝트의 공개 스위치를 켜 주세요.");
                 }}
@@ -517,8 +577,10 @@ export default function DashboardClient({
                   ? "프로필 완성"
                   : incompleteProject
                     ? "계속 작성"
-                    : publicCount
-                      ? "발행하기"
+                    : data.portfolio.isPublished
+                      ? "공개 페이지 보기"
+                      : publicCount
+                        ? "발행하기"
                       : "프로젝트 확인"}
                 <span>→</span>
               </button>
@@ -554,6 +616,14 @@ export default function DashboardClient({
                         </span>
                       </div>
                       <p>{project.summary || "프로젝트 개요를 입력해 주세요."}</p>
+                      {(project.periodStart || project.teamSize || project.contribution || project.techStacks.length > 0) && (
+                        <div className="evidence-meta">
+                          {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                          {project.teamSize && <span>{project.teamSize}</span>}
+                          {project.contribution && <span>기여 {project.contribution}</span>}
+                          {project.techStacks.filter(Boolean).map((tech) => <b key={tech}>{tech}</b>)}
+                        </div>
+                      )}
                       <div className="story-preview story-grid-preview">
                         {[
                           ["01", "역할", project.role],
@@ -596,7 +666,7 @@ export default function DashboardClient({
                         <span className={project.isPublic ? "public-text" : "private-text"}>
                           {project.isPublic ? "공개" : "비공개"}
                         </span>
-                        <button className="icon-button" onClick={() => openProject(project)}>
+                        <button className="icon-button" onClick={() => openProject(project)} aria-label={`${project.title} 수정`}>
                           <Icon name="edit" />
                         </button>
                       </div>
@@ -633,11 +703,21 @@ export default function DashboardClient({
                 <span className="eyebrow">PROJECT STORY</span>
                 <h2>{projectDraft.id ? "프로젝트 수정" : "프로젝트 작성"}</h2>
               </div>
-              <button className="icon-button" onClick={() => setProjectModal(false)}>
+              <button className="icon-button" onClick={() => setProjectModal(false)} aria-label="프로젝트 작성 닫기">
                 <Icon name="close" />
               </button>
             </div>
             <div className="modal-body">
+              <div className="writing-guide">
+                <div>
+                  <span>{writingGuide.title}</span>
+                  <ul>{writingGuide.tips.map((tip) => <li key={tip}>{tip}</li>)}</ul>
+                </div>
+                <div className="quality-score">
+                  <strong>{qualityCount}/{qualityChecks.length}</strong>
+                  <span>콘텐츠 품질</span>
+                </div>
+              </div>
               <label>
                 프로젝트명 <em>필수</em>
                 <input
@@ -659,6 +739,20 @@ export default function DashboardClient({
                   }
                   placeholder="프로젝트의 목적과 배경을 설명해 주세요."
                 />
+              </label>
+              <div className="project-facts">
+                <label>시작 월<input type="month" value={projectDraft.periodStart} onChange={(event) => setProjectDraft({ ...projectDraft, periodStart: event.target.value })} /></label>
+                <label>종료 월<input type="month" value={projectDraft.periodEnd} onChange={(event) => setProjectDraft({ ...projectDraft, periodEnd: event.target.value })} /></label>
+                <label>참여 인원<input maxLength={40} value={projectDraft.teamSize} onChange={(event) => setProjectDraft({ ...projectDraft, teamSize: event.target.value })} placeholder="예: 4명" /></label>
+                <label>기여 범위<input maxLength={80} value={projectDraft.contribution} onChange={(event) => setProjectDraft({ ...projectDraft, contribution: event.target.value })} placeholder="예: 기획·개발 전담" /></label>
+              </div>
+              <label>
+                사용 기술·도구
+                <input value={projectDraft.techStacks.join(", ")} onChange={(event) => setProjectDraft({ ...projectDraft, techStacks: event.target.value.split(",").map((item) => item.trim()).slice(0, 10) })} placeholder="React, Figma, SQL처럼 쉼표로 구분" />
+              </label>
+              <label>
+                대표 이미지 URL
+                <input type="url" value={projectDraft.coverImageUrl} onChange={(event) => setProjectDraft({ ...projectDraft, coverImageUrl: event.target.value })} placeholder="https://..." />
               </label>
               <div className="story-fields">
                 {[
@@ -684,6 +778,17 @@ export default function DashboardClient({
                       />
                     </span>
                   </label>
+                ))}
+              </div>
+              <label>
+                성과 근거
+                <textarea maxLength={500} value={projectDraft.evidence} onChange={(event) => setProjectDraft({ ...projectDraft, evidence: event.target.value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." />
+              </label>
+              <div className="quality-checklist">
+                {qualityChecks.map((item) => (
+                  <span className={item.complete ? "done" : ""} key={item.label}>
+                    {item.complete ? "✓" : "○"} {item.label}
+                  </span>
                 ))}
               </div>
               <div className="links-editor">
@@ -714,6 +819,7 @@ export default function DashboardClient({
                           links: projectDraft.links.filter((_, linkIndex) => linkIndex !== index),
                         })
                       }
+                      aria-label={`${link.label || "링크"} 삭제`}
                     ><Icon name="close" /></button>
                   </div>
                 ))}
@@ -735,7 +841,7 @@ export default function DashboardClient({
       {publishResult && (
         <div className="modal-backdrop">
           <section className="modal publish-modal">
-            <button className="icon-button publish-close" onClick={() => setPublishResult(null)}>
+            <button className="icon-button publish-close" onClick={() => setPublishResult(null)} aria-label="발행 결과 닫기">
               <Icon name="close" />
             </button>
             {publishResult.type === "success" ? (
@@ -789,7 +895,7 @@ export default function DashboardClient({
                 <span className="status-dot live" />
                 공개 포트폴리오에서 이렇게 보여요
               </div>
-              <button className="icon-button" onClick={() => setPreviewProject(null)}>
+              <button className="icon-button" onClick={() => setPreviewProject(null)} aria-label="공개 화면 미리보기 닫기">
                 <Icon name="close" />
               </button>
             </div>
@@ -797,6 +903,12 @@ export default function DashboardClient({
               <span className="portfolio-kicker">CASE STUDY · PREVIEW</span>
               <h2>{previewProject.title}</h2>
               <p>{previewProject.summary || "프로젝트 개요가 여기에 표시됩니다."}</p>
+              <div className="evidence-meta preview-evidence-meta">
+                {formatPeriod(previewProject.periodStart, previewProject.periodEnd) && <span>{formatPeriod(previewProject.periodStart, previewProject.periodEnd)}</span>}
+                {previewProject.teamSize && <span>{previewProject.teamSize}</span>}
+                {previewProject.contribution && <span>기여 {previewProject.contribution}</span>}
+                {previewProject.techStacks.filter(Boolean).map((tech) => <b key={tech}>{tech}</b>)}
+              </div>
               <div className="mini-story-grid">
                 {[
                   ["01 · ROLE", "담당 역할", previewProject.role],

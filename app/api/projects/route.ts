@@ -44,8 +44,9 @@ export async function POST(request: Request) {
       const result = await client.query<{ id: string }>(
         `INSERT INTO projects (
            portfolio_id, title, summary, role, problem, troubleshooting,
-           result, is_public, display_order
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+           result, evidence, period_start, period_end, team_size, contribution,
+           tech_stacks, cover_image_url, is_public, display_order
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
          RETURNING id`,
         [
           portfolioId,
@@ -55,6 +56,13 @@ export async function POST(request: Request) {
           input.problem,
           input.troubleshooting,
           input.result,
+          input.evidence,
+          input.periodStart,
+          input.periodEnd,
+          input.teamSize,
+          input.contribution,
+          input.techStacks,
+          input.coverImageUrl,
           input.isPublic,
           orderResult.rows[0].next_order,
         ],

@@ -21,6 +21,13 @@ type ProjectRow = {
   problem: string;
   troubleshooting: string;
   result: string;
+  evidence: string;
+  period_start: string;
+  period_end: string;
+  team_size: string;
+  contribution: string;
+  tech_stacks: string[] | null;
+  cover_image_url: string;
   is_public: boolean;
   display_order: number;
   links: ProjectLink[] | null;
@@ -48,6 +55,13 @@ function mapProject(row: ProjectRow): Project {
     problem: row.problem,
     troubleshooting: row.troubleshooting,
     result: row.result,
+    evidence: row.evidence,
+    periodStart: row.period_start,
+    periodEnd: row.period_end,
+    teamSize: row.team_size,
+    contribution: row.contribution,
+    techStacks: row.tech_stacks ?? [],
+    coverImageUrl: row.cover_image_url,
     isPublic: row.is_public,
     displayOrder: row.display_order,
     links: row.links ?? [],
@@ -56,7 +70,9 @@ function mapProject(row: ProjectRow): Project {
 
 const projectSelect = `
   SELECT p.id, p.title, p.summary, p.role, p.problem,
-         p.troubleshooting, p.result, p.is_public, p.display_order,
+         p.troubleshooting, p.result, p.evidence, p.period_start, p.period_end,
+         p.team_size, p.contribution, p.tech_stacks, p.cover_image_url,
+         p.is_public, p.display_order,
          COALESCE(
            json_agg(
              json_build_object('id', l.id, 'label', l.label, 'url', l.url)

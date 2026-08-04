@@ -1,5 +1,11 @@
 import type { Portfolio, Project } from "@/lib/models";
 
+function formatPeriod(start: string, end: string) {
+  const format = (value: string) => value.replace("-", ".");
+  if (!start && !end) return "";
+  return `${start ? format(start) : "시작일 미입력"} – ${end ? format(end) : "진행 중"}`;
+}
+
 export default function PublicPortfolio({
   data,
 }: {
@@ -47,12 +53,30 @@ export default function PublicPortfolio({
               <span>{String(index + 1).padStart(2, "0")}</span><i />
             </div>
             <div className="case-content">
+              {project.coverImageUrl && (
+                <div
+                  className="case-cover"
+                  role="img"
+                  aria-label={`${project.title} 대표 이미지`}
+                  style={{ backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` }}
+                />
+              )}
               <div className="case-heading">
                 <div>
                   <span className="case-source">CASE STUDY</span>
                   <h3>{project.title}</h3>
                   <p>{project.summary}</p>
+                  <div className="case-facts">
+                    {formatPeriod(project.periodStart, project.periodEnd) && <span><b>기간</b>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                    {project.teamSize && <span><b>인원</b>{project.teamSize}</span>}
+                    {project.contribution && <span><b>기여</b>{project.contribution}</span>}
+                  </div>
                 </div>
+                {!!project.techStacks.length && (
+                  <div className="case-tags">
+                    {project.techStacks.filter(Boolean).map((tech) => <span key={tech}>{tech}</span>)}
+                  </div>
+                )}
               </div>
               <div className="case-story">
                 <section><span>01 · ROLE</span><h4>담당 역할</h4><p>{project.role}</p></section>
@@ -60,6 +84,12 @@ export default function PublicPortfolio({
                 <section><span>03 · PROCESS</span><h4>해결 과정</h4><p>{project.troubleshooting}</p></section>
                 <section className="result-block"><span>04 · RESULT</span><h4>구체적 성과</h4><p>{project.result}</p></section>
               </div>
+              {project.evidence && (
+                <div className="case-evidence">
+                  <span>05 · EVIDENCE</span>
+                  <div><h4>성과 근거</h4><p>{project.evidence}</p></div>
+                </div>
+              )}
               {!!project.links.length && (
                 <div className="case-resources">
                   {project.links.map((link) => (

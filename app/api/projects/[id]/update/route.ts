@@ -22,9 +22,11 @@ export async function POST(
       const result = await client.query(
         `UPDATE projects p
             SET title=$1, summary=$2, role=$3, problem=$4,
-                troubleshooting=$5, result=$6, is_public=$7, updated_at=NOW()
+                troubleshooting=$5, result=$6, evidence=$7, period_start=$8,
+                period_end=$9, team_size=$10, contribution=$11, tech_stacks=$12,
+                cover_image_url=$13, is_public=$14, updated_at=NOW()
            FROM portfolios f
-          WHERE p.id=$8 AND p.portfolio_id=f.id AND f.owner_id=$9
+          WHERE p.id=$15 AND p.portfolio_id=f.id AND f.owner_id=$16
           RETURNING p.id`,
         [
           input.title,
@@ -33,6 +35,13 @@ export async function POST(
           input.problem,
           input.troubleshooting,
           input.result,
+          input.evidence,
+          input.periodStart,
+          input.periodEnd,
+          input.teamSize,
+          input.contribution,
+          input.techStacks,
+          input.coverImageUrl,
           input.isPublic,
           id,
           user.id,

@@ -25,6 +25,13 @@ const projects: Project[] = [
       "취업 준비생과 채용 담당자를 인터뷰하고 역할·문제·해결·성과 순서의 작성 프레임을 설계했습니다.",
     result:
       "프로젝트당 평균 작성 시간을 42분에서 25분으로 줄이고 기여도 이해 점수를 38% 높였습니다.",
+    evidence: "사용성 테스트 기록과 작성 시간 측정표에서 확인했습니다.",
+    periodStart: "2026-01",
+    periodEnd: "2026-03",
+    teamSize: "3명",
+    contribution: "제품 기획 전담",
+    techStacks: ["Figma", "Notion", "SQL"],
+    coverImageUrl: "",
     isPublic: true,
     displayOrder: 0,
     links: [

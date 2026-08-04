@@ -6,6 +6,7 @@ import type {
   CareerEntry,
   DashboardData,
   Portfolio,
+  PortfolioTheme,
   Project,
   ProjectLink,
 } from "@/lib/models";
@@ -68,6 +69,18 @@ const writingGuides = [
     title: "기획·PM 직무 작성 가이드",
     tips: ["문제의 사용자와 사업 맥락을 함께 적기", "우선순위와 의사결정 근거를 드러내기", "본인의 기여와 팀 성과를 구분하기"],
   },
+];
+
+const themeChoices: Array<{
+  id: PortfolioTheme;
+  name: string;
+  description: string;
+  available: boolean;
+}> = [
+  { id: "editorial", name: "에디토리얼", description: "글의 흐름과 판단 과정을 차분하게 보여줍니다.", available: true },
+  { id: "minimal", name: "미니멀", description: "정보를 빠르게 훑는 흰색 기반 구성입니다.", available: false },
+  { id: "bold", name: "볼드 그리드", description: "큰 제목과 이미지로 시선을 잡는 구성입니다.", available: false },
+  { id: "soft", name: "소프트 스토리", description: "자기소개와 성장 과정을 부드럽게 연결합니다.", available: false },
 ];
 
 function formatPeriod(start: string, end: string) {
@@ -176,6 +189,7 @@ export default function DashboardClient({
   const writingGuide = writingGuides.find((guide) =>
     guide.test.test(data.portfolio.jobTitle),
   )!;
+  const selectedTheme = themeChoices.find((theme) => theme.id === data.portfolio.theme) ?? themeChoices[0];
 
   const notify = (message: string) => {
     setToast(message);
@@ -205,6 +219,27 @@ export default function DashboardClient({
       notify("프로필을 저장했습니다.");
     } catch (error) {
       notify((error as { message?: string }).message ?? "저장하지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const selectTheme = async (theme: PortfolioTheme) => {
+    const nextPortfolio = { ...data.portfolio, theme };
+    setData((current) => ({ ...current, portfolio: nextPortfolio }));
+    setProfileDraft((current) => ({ ...current, theme }));
+    if (previewMode) {
+      notify("에디토리얼 테마를 적용했습니다.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await api("/api/portfolio/theme", { theme });
+      notify("포트폴리오 테마를 저장했습니다.");
+    } catch (error) {
+      setData((current) => ({ ...current, portfolio: { ...current.portfolio, theme: data.portfolio.theme } }));
+      setProfileDraft((current) => ({ ...current, theme: data.portfolio.theme }));
+      notify((error as { message?: string }).message ?? "테마를 저장하지 못했습니다.");
     } finally {
       setLoading(false);
     }
@@ -617,6 +652,33 @@ export default function DashboardClient({
             <Icon name={profileEditing ? "check" : "edit"} />
             {profileEditing ? "저장" : "프로필 편집"}
           </button>
+        </section>
+
+        <section className="theme-panel panel" aria-labelledby="theme-panel-title">
+          <div className="theme-panel-heading">
+            <div>
+              <span className="eyebrow">PORTFOLIO THEME · 01 / 04</span>
+              <h2 id="theme-panel-title">보여주는 방식도 나답게</h2>
+              <p>내용은 그대로 유지하고 발행 화면의 인상만 바꿉니다.</p>
+            </div>
+            <span className="theme-current">현재 · {selectedTheme.name}</span>
+          </div>
+          <div className="theme-picker">
+            {themeChoices.map((theme) => (
+              <button
+                type="button"
+                key={theme.id}
+                className={`theme-option theme-option-${theme.id} ${data.portfolio.theme === theme.id ? "selected" : ""}`}
+                disabled={!theme.available || loading}
+                aria-pressed={data.portfolio.theme === theme.id}
+                onClick={() => selectTheme(theme.id)}
+              >
+                <span className="theme-swatch" aria-hidden="true"><i /><i /><i /></span>
+                <span className="theme-option-copy"><strong>{theme.name}</strong><small>{theme.description}</small></span>
+                <b>{theme.available ? (data.portfolio.theme === theme.id ? "선택됨" : "선택") : "다음 단계"}</b>
+              </button>
+            ))}
+          </div>
         </section>
 
         <section className="stats-grid refined-stats">

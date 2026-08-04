@@ -22,7 +22,7 @@ export default function PublicPortfolio({
   const { portfolio, projects } = data;
 
   return (
-    <main className="public-shell">
+    <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
       <nav className="public-nav">
         <span className="brand">
           <span className="brand-mark">✦</span>

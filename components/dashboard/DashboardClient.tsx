@@ -80,7 +80,7 @@ const themeChoices: Array<{
   { id: "editorial", name: "에디토리얼", description: "글의 흐름과 판단 과정을 차분하게 보여줍니다.", available: true },
   { id: "minimal", name: "미니멀", description: "정보를 빠르게 훑는 흰색 기반 구성입니다.", available: true },
   { id: "bold", name: "볼드 그리드", description: "큰 제목과 이미지로 시선을 잡는 구성입니다.", available: true },
-  { id: "soft", name: "소프트 스토리", description: "자기소개와 성장 과정을 부드럽게 연결합니다.", available: false },
+  { id: "noir", name: "누아르 쇼케이스", description: "큰 이미지와 절제된 빛으로 결과물을 강조합니다.", available: true },
 ];
 
 function formatPeriod(start: string, end: string) {
@@ -658,7 +658,7 @@ export default function DashboardClient({
         <section className="theme-panel panel" aria-labelledby="theme-panel-title">
           <div className="theme-panel-heading">
             <div>
-              <span className="eyebrow">PORTFOLIO THEME · 03 / 04</span>
+              <span className="eyebrow">PORTFOLIO THEME · 04 / 04</span>
               <h2 id="theme-panel-title">보여주는 방식도 나답게</h2>
               <p>내용은 그대로 유지하고 발행 화면의 인상만 바꿉니다.</p>
             </div>

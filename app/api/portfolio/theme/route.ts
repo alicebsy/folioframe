@@ -3,7 +3,7 @@ import { query } from "@/lib/db";
 import { apiUser, badRequest, serverError } from "@/lib/http";
 import type { PortfolioTheme } from "@/lib/models";
 
-const themes = new Set<PortfolioTheme>(["editorial", "minimal", "bold", "soft"]);
+const themes = new Set<PortfolioTheme>(["editorial", "minimal", "bold", "noir"]);
 
 export async function POST(request: Request) {
   try {

@@ -10,7 +10,7 @@ const portfolio: Portfolio = {
   slug: "kim-codex",
   isPublished: true,
   publishedAt: "2026-07-27T00:00:00.000Z",
-  theme: "bold",
+  theme: "noir",
   experienceLevel: "신입 · 프로젝트 경험 중심",
   interests: "사용자의 복잡한 작업을 단순하게 만드는 B2C·생산성 제품",
   strengths: ["문제 정의", "우선순위 설계", "끝까지 실행"],

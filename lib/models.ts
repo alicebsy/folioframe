@@ -12,7 +12,7 @@ export type CareerEntry = {
   description: string;
 };
 
-export type PortfolioTheme = "editorial" | "minimal" | "bold" | "soft";
+export type PortfolioTheme = "editorial" | "minimal" | "bold" | "noir";
 
 export type Project = {
   id: string;

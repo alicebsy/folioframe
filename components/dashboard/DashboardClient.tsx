@@ -605,8 +605,18 @@ export default function DashboardClient({
                     className={`project-card ${complete ? "complete-card" : "needs-work"}`}
                     key={project.id}
                   >
-                    <div className={`project-number tone-${(index % 3) + 1}`}>
-                      {String(index + 1).padStart(2, "0")}
+                    <div className="project-visual-column">
+                      <div className={`project-number tone-${(index % 3) + 1}`}>
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                      <div
+                        className={`project-thumb ${project.coverImageUrl ? "has-image" : ""}`}
+                        role="img"
+                        aria-label={`${project.title} 대표 이미지${project.coverImageUrl ? "" : " 미등록"}`}
+                        style={project.coverImageUrl ? { backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}
+                      >
+                        {!project.coverImageUrl && <span>{project.title.slice(0, 1)}</span>}
+                      </div>
                     </div>
                     <div className="project-main">
                       <div className="project-title-row">
@@ -624,12 +634,20 @@ export default function DashboardClient({
                           {project.techStacks.filter(Boolean).map((tech) => <b key={tech}>{tech}</b>)}
                         </div>
                       )}
-                      <div className="story-preview story-grid-preview">
+                      <div className="project-scan">
+                        <section>
+                          <span>MY CONTRIBUTION</span>
+                          <strong>{project.contribution || project.role || "기여 범위를 작성해 주세요."}</strong>
+                        </section>
+                        <section className={project.result ? "result" : "empty"}>
+                          <span>KEY RESULT</span>
+                          <strong>{project.result || "대표 성과를 작성해 주세요."}</strong>
+                        </section>
+                      </div>
+                      <div className="story-preview story-grid-preview compact-story-preview">
                         {[
-                          ["01", "역할", project.role],
-                          ["02", "문제", project.problem],
-                          ["03", "해결 과정", project.troubleshooting],
-                          ["04", "성과", project.result],
+                          ["01", "해결한 문제", project.problem],
+                          ["02", "선택과 실행", project.troubleshooting],
                         ].map(([number, label, value]) => (
                           <span className={value ? "" : "story-missing"} key={label}>
                             <i>{number}</i>
@@ -647,11 +665,11 @@ export default function DashboardClient({
                         </div>
                       )}
                       {!!project.links.length && (
-                        <div className="project-meta">
+                        <div className="project-meta project-resource-links">
                           {project.links.map((link) => (
-                            <span key={`${project.id}-${link.url}`}>
-                              <Icon name="link" />{link.label}
-                            </span>
+                            <a key={`${project.id}-${link.url}`} href={link.url} target="_blank" rel="noreferrer">
+                              <Icon name="link" />{link.label}<b>↗</b>
+                            </a>
                           ))}
                         </div>
                       )}
@@ -750,10 +768,16 @@ export default function DashboardClient({
                 사용 기술·도구
                 <input value={projectDraft.techStacks.join(", ")} onChange={(event) => setProjectDraft({ ...projectDraft, techStacks: event.target.value.split(",").map((item) => item.trim()).slice(0, 10) })} placeholder="React, Figma, SQL처럼 쉼표로 구분" />
               </label>
-              <label>
-                대표 이미지 URL
-                <input type="url" value={projectDraft.coverImageUrl} onChange={(event) => setProjectDraft({ ...projectDraft, coverImageUrl: event.target.value })} placeholder="https://..." />
-              </label>
+              <div className="media-editor">
+                <div className={`media-preview ${projectDraft.coverImageUrl ? "has-image" : ""}`} style={projectDraft.coverImageUrl ? { backgroundImage: `url("${projectDraft.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}>
+                  {!projectDraft.coverImageUrl && <><span>IMAGE</span><b>프로젝트를 대표하는 화면을 추가하세요.</b></>}
+                </div>
+                <label>
+                  대표 이미지 URL <em>권장</em>
+                  <input type="url" value={projectDraft.coverImageUrl} onChange={(event) => setProjectDraft({ ...projectDraft, coverImageUrl: event.target.value })} placeholder="https://.../project-cover.jpg" />
+                  <small>노션·피그마·블로그 등에 공개된 이미지 주소를 넣어 주세요. 16:9 비율을 권장합니다.</small>
+                </label>
+              </div>
               <div className="story-fields">
                 {[
                   ["role", "01", "담당 역할", "본인이 책임지고 직접 수행한 일은 무엇인가요?"],
@@ -793,7 +817,7 @@ export default function DashboardClient({
               </div>
               <div className="links-editor">
                 <div className="links-heading">
-                  <div><b>텍스트 링크</b><span>서비스, 문서, 저장소 주소를 최대 5개까지 등록할 수 있어요.</span></div>
+                  <div><b>프로젝트 자료와 링크</b><span>실제 서비스, Figma, GitHub, 발표 자료 등 확인 가능한 주소를 최대 5개까지 등록하세요.</span></div>
                   <button className="button secondary" onClick={addLink} type="button">
                     <Icon name="plus" />링크 추가
                   </button>

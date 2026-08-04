@@ -35,13 +35,17 @@ const previewData: DashboardData = {
       teamSize: "3명",
       contribution: "제품 기획 전담",
       techStacks: ["Figma", "Notion", "SQL"],
-      coverImageUrl: "",
+      coverImageUrl: "/og.png",
       isPublic: true,
       displayOrder: 0,
       links: [
         {
-          label: "프로젝트 문서",
-          url: "https://example.com/portfolio-case",
+          label: "실제 서비스",
+          url: "https://folioframe-lake.vercel.app",
+        },
+        {
+          label: "GitHub 저장소",
+          url: "https://github.com/alicebsy/folioframe",
         },
       ],
     },

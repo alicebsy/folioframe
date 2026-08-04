@@ -6,6 +6,14 @@ function formatPeriod(start: string, end: string) {
   return `${start ? format(start) : "시작일 미입력"} – ${end ? format(end) : "진행 중"}`;
 }
 
+function linkHost(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
 export default function PublicPortfolio({
   data,
 }: {
@@ -47,20 +55,30 @@ export default function PublicPortfolio({
           <p>{String(projects.length).padStart(2, "0")} PROJECTS</p>
         </div>
 
+        <nav className="project-jump-list" aria-label="프로젝트 바로가기">
+          {projects.map((project, index) => (
+            <a href={`#project-${project.id}`} key={project.id}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{project.title}</strong>
+              <b>↓</b>
+            </a>
+          ))}
+        </nav>
+
         {projects.map((project, index) => (
-          <article className="case-study" key={project.id}>
+          <article className="case-study" id={`project-${project.id}`} key={project.id}>
             <div className="case-index">
               <span>{String(index + 1).padStart(2, "0")}</span><i />
             </div>
             <div className="case-content">
-              {project.coverImageUrl && (
-                <div
-                  className="case-cover"
-                  role="img"
-                  aria-label={`${project.title} 대표 이미지`}
-                  style={{ backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` }}
-                />
-              )}
+              <div
+                className={`case-cover ${project.coverImageUrl ? "has-image" : "empty"}`}
+                role="img"
+                aria-label={`${project.title} 대표 이미지${project.coverImageUrl ? "" : " 미등록"}`}
+                style={project.coverImageUrl ? { backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}
+              >
+                {!project.coverImageUrl && <><span>PROJECT VISUAL</span><strong>{project.title.slice(0, 1)}</strong></>}
+              </div>
               <div className="case-heading">
                 <div>
                   <span className="case-source">CASE STUDY</span>
@@ -78,25 +96,40 @@ export default function PublicPortfolio({
                   </div>
                 )}
               </div>
-              <div className="case-story">
-                <section><span>01 · ROLE</span><h4>담당 역할</h4><p>{project.role}</p></section>
-                <section><span>02 · PROBLEM</span><h4>문제 상황</h4><p>{project.problem}</p></section>
-                <section><span>03 · PROCESS</span><h4>해결 과정</h4><p>{project.troubleshooting}</p></section>
-                <section className="result-block"><span>04 · RESULT</span><h4>구체적 성과</h4><p>{project.result}</p></section>
+              <div className="case-scan-grid">
+                <section>
+                  <span>MY CONTRIBUTION</span>
+                  <h4>내가 맡은 일</h4>
+                  <strong>{project.contribution || project.role}</strong>
+                  {project.contribution && <p>{project.role}</p>}
+                </section>
+                <section className="impact-card">
+                  <span>KEY RESULT</span>
+                  <h4>대표 성과</h4>
+                  <strong>{project.result}</strong>
+                </section>
+              </div>
+              <div className="case-detail-heading"><span>HOW I WORKED</span><h4>문제에서 해결까지</h4></div>
+              <div className="case-story focused-case-story">
+                <section><span>01 · PROBLEM</span><h4>해결해야 했던 문제</h4><p>{project.problem}</p></section>
+                <section><span>02 · DECISION &amp; PROCESS</span><h4>판단과 실행 과정</h4><p>{project.troubleshooting}</p></section>
               </div>
               {project.evidence && (
                 <div className="case-evidence">
-                  <span>05 · EVIDENCE</span>
+                  <span>03 · EVIDENCE</span>
                   <div><h4>성과 근거</h4><p>{project.evidence}</p></div>
                 </div>
               )}
               {!!project.links.length && (
-                <div className="case-resources">
-                  {project.links.map((link) => (
-                    <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
-                      ↗ {link.label}
-                    </a>
-                  ))}
+                <div className="case-resources-wrap">
+                  <div><span>PROJECT RESOURCES</span><h4>직접 확인할 수 있는 자료</h4></div>
+                  <div className="case-resources">
+                    {project.links.map((link) => (
+                      <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                        <span><strong>{link.label}</strong><small>{linkHost(link.url)}</small></span><b>↗</b>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

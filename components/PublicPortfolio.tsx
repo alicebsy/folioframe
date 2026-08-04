@@ -59,6 +59,23 @@ export default function PublicPortfolio({
         </div>
       </header>
 
+      {(portfolio.aboutMe || portfolio.workStyle || portfolio.values || portfolio.lookingFor) && (
+        <section className="identity-section">
+          <div className="identity-heading">
+            <span>ABOUT ME</span>
+            <h2>프로젝트 너머의<br />저를 소개합니다.</h2>
+          </div>
+          <div className="identity-content">
+            {portfolio.aboutMe && <p className="identity-lead">{portfolio.aboutMe}</p>}
+            <div className="identity-grid">
+              {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p>{portfolio.workStyle}</p></article>}
+              {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p>{portfolio.values}</p></article>}
+              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p>{portfolio.lookingFor}</p></article>}
+            </div>
+          </div>
+        </section>
+      )}
+
       {!!portfolio.careers.length && (
         <section className="career-section">
           <div className="career-section-title"><span>EXPERIENCE</span><h2>경력과 활동</h2></div>

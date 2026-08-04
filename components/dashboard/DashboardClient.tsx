@@ -537,6 +537,17 @@ export default function DashboardClient({
                   placeholder="나를 설명하는 한 문장을 입력하세요."
                 />
               </label>
+              <details className="editor-disclosure profile-disclosure" open>
+                <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향</small></summary>
+                <div className="disclosure-content identity-editor">
+                  <label>나에 대한 소개<textarea value={profileDraft.aboutMe} onChange={(event) => setProfileDraft({ ...profileDraft, aboutMe: event.target.value })} placeholder="어떤 경험을 통해 지금의 내가 되었고, 어떤 문제를 풀 때 가장 몰입하는지 이야기해 주세요." /></label>
+                  <div className="form-row two">
+                    <label>일하는 방식<textarea value={profileDraft.workStyle} onChange={(event) => setProfileDraft({ ...profileDraft, workStyle: event.target.value })} placeholder="협업하고 판단하며 일을 끝내는 나만의 방식을 적어 주세요." /></label>
+                    <label>중요하게 생각하는 가치<textarea value={profileDraft.values} onChange={(event) => setProfileDraft({ ...profileDraft, values: event.target.value })} placeholder="좋은 제품과 좋은 동료 관계에서 중요하게 보는 기준을 적어 주세요." /></label>
+                  </div>
+                  <label>앞으로의 방향<textarea value={profileDraft.lookingFor} onChange={(event) => setProfileDraft({ ...profileDraft, lookingFor: event.target.value })} placeholder="앞으로 맡고 싶은 역할과 함께 성장하고 싶은 환경을 적어 주세요." /></label>
+                </div>
+              </details>
               <details className="editor-disclosure profile-disclosure">
                 <summary><span>지원자 한눈에 보기</span><small>경험 수준 · 관심 분야 · 핵심 역량</small></summary>
                 <div className="disclosure-content">
@@ -584,6 +595,7 @@ export default function DashboardClient({
                 <span>{data.portfolio.jobTitle || "희망 직무 미입력"}</span>
               </div>
               <p>{data.portfolio.bio || "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
+              {data.portfolio.aboutMe && <p className="profile-about-preview">{data.portfolio.aboutMe}</p>}
               {(data.portfolio.experienceLevel || data.portfolio.strengths.length > 0) && (
                 <div className="profile-summary-chips">
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}

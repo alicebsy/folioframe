@@ -14,6 +14,10 @@ type PortfolioRow = {
   experience_level: string;
   interests: string;
   strengths: string[] | null;
+  about_me: string;
+  work_style: string;
+  personal_values: string;
+  looking_for: string;
   resume_url: string;
   github_url: string;
   linkedin_url: string;
@@ -61,6 +65,10 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     experienceLevel: row.experience_level,
     interests: row.interests,
     strengths: row.strengths ?? [],
+    aboutMe: row.about_me,
+    workStyle: row.work_style,
+    values: row.personal_values,
+    lookingFor: row.looking_for,
     resumeUrl: row.resume_url,
     githubUrl: row.github_url,
     linkedinUrl: row.linkedin_url,
@@ -122,6 +130,7 @@ export async function getDashboardData(
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, job_title, bio, contact_email, slug,
             is_published, published_at, experience_level, interests, strengths,
+            about_me, work_style, personal_values, looking_for,
             resume_url, github_url, linkedin_url, blog_url, careers
        FROM portfolios
       WHERE owner_id = $1
@@ -153,7 +162,8 @@ export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.experience_level, p.interests,
-            p.strengths, p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
+            p.strengths, p.about_me, p.work_style, p.personal_values, p.looking_for,
+            p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
             p.careers, u.email
        FROM portfolios p
        JOIN users u ON u.id = p.owner_id

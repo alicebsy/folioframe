@@ -53,6 +53,10 @@ export async function POST(request: Request) {
       .map((item: unknown) => String(item).trim().slice(0, 40))
       .filter(Boolean)
       .slice(0, 3);
+    const aboutMe = String(body.aboutMe ?? "").trim().slice(0, 700);
+    const workStyle = String(body.workStyle ?? "").trim().slice(0, 400);
+    const values = String(body.values ?? "").trim().slice(0, 300);
+    const lookingFor = String(body.lookingFor ?? "").trim().slice(0, 300);
     const resumeUrl = normalizeUrl(body.resumeUrl);
     const githubUrl = normalizeUrl(body.githubUrl);
     const linkedinUrl = normalizeUrl(body.linkedinUrl);
@@ -70,12 +74,13 @@ export async function POST(request: Request) {
       `UPDATE portfolios
           SET name = $1, job_title = $2, bio = $3, contact_email = $4,
               slug = $5, experience_level = $6, interests = $7, strengths = $8,
-              resume_url = $9, github_url = $10, linkedin_url = $11,
-              blog_url = $12, careers = $13::jsonb, updated_at = NOW()
-        WHERE owner_id = $14`,
+              about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
+              resume_url = $13, github_url = $14, linkedin_url = $15,
+              blog_url = $16, careers = $17::jsonb, updated_at = NOW()
+        WHERE owner_id = $18`,
       [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
-        interests, strengths, resumeUrl, githubUrl, linkedinUrl, blogUrl,
-        JSON.stringify(careers), user.id],
+        interests, strengths, aboutMe, workStyle, values, lookingFor,
+        resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), user.id],
     );
 
     return NextResponse.json({ ok: true });

@@ -56,6 +56,10 @@ export type Portfolio = {
   experienceLevel: string;
   interests: string;
   strengths: string[];
+  aboutMe: string;
+  workStyle: string;
+  values: string;
+  lookingFor: string;
   resumeUrl: string;
   githubUrl: string;
   linkedinUrl: string;

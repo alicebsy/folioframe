@@ -364,7 +364,7 @@ export default function DashboardClient({
         }));
         setPublishResult({
           type: "success",
-          url: `${window.location.origin}/portfolio-preview`,
+          url: `${window.location.origin}/portfolio-preview?theme=${data.portfolio.theme}`,
         });
       }
       return;
@@ -469,7 +469,7 @@ export default function DashboardClient({
           {previewMode && (
             <a
               className="button secondary"
-              href="/portfolio-preview"
+              href={`/portfolio-preview?theme=${data.portfolio.theme}`}
               target="_blank"
             >
               <Icon name="eye" />

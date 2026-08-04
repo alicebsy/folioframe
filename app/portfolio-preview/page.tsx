@@ -1,5 +1,5 @@
 import PublicPortfolio from "@/components/PublicPortfolio";
-import type { Portfolio, Project } from "@/lib/models";
+import type { Portfolio, PortfolioTheme, Project } from "@/lib/models";
 
 const portfolio: Portfolio = {
   id: "preview-portfolio",
@@ -99,6 +99,17 @@ const projects: Project[] = [
   },
 ];
 
-export default function PortfolioPreviewPage() {
-  return <PublicPortfolio data={{ portfolio, projects }} />;
+const previewThemes = new Set<PortfolioTheme>(["editorial", "minimal", "bold", "noir"]);
+
+export default async function PortfolioPreviewPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ theme?: string }>;
+}) {
+  const requestedTheme = (await searchParams).theme as PortfolioTheme | undefined;
+  const theme = requestedTheme && previewThemes.has(requestedTheme)
+    ? requestedTheme
+    : portfolio.theme;
+
+  return <PublicPortfolio data={{ portfolio: { ...portfolio, theme }, projects }} />;
 }

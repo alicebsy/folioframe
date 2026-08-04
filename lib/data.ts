@@ -1,6 +1,6 @@
 import "server-only";
 import { query } from "./db";
-import type { CareerEntry, DashboardData, Portfolio, Project, ProjectLink } from "./models";
+import type { CareerEntry, DashboardData, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
 
 type PortfolioRow = {
   id: string;
@@ -11,6 +11,7 @@ type PortfolioRow = {
   slug: string;
   is_published: boolean;
   published_at: Date | null;
+  theme: PortfolioTheme;
   experience_level: string;
   interests: string;
   strengths: string[] | null;
@@ -62,6 +63,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     slug: row.slug,
     isPublished: row.is_published,
     publishedAt: row.published_at?.toISOString() ?? null,
+    theme: row.theme || "editorial",
     experienceLevel: row.experience_level,
     interests: row.interests,
     strengths: row.strengths ?? [],
@@ -129,7 +131,7 @@ export async function getDashboardData(
 ): Promise<DashboardData> {
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, job_title, bio, contact_email, slug,
-            is_published, published_at, experience_level, interests, strengths,
+            is_published, published_at, theme, experience_level, interests, strengths,
             about_me, work_style, personal_values, looking_for,
             resume_url, github_url, linkedin_url, blog_url, careers
        FROM portfolios
@@ -161,7 +163,7 @@ export async function getDashboardData(
 export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.job_title, p.bio, p.contact_email, p.slug,
-            p.is_published, p.published_at, p.experience_level, p.interests,
+            p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
             p.strengths, p.about_me, p.work_style, p.personal_values, p.looking_for,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
             p.careers, u.email

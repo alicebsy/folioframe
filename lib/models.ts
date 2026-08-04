@@ -12,6 +12,8 @@ export type CareerEntry = {
   description: string;
 };
 
+export type PortfolioTheme = "editorial" | "minimal" | "bold" | "soft";
+
 export type Project = {
   id: string;
   title: string;
@@ -53,6 +55,7 @@ export type Portfolio = {
   slug: string;
   isPublished: boolean;
   publishedAt: string | null;
+  theme: PortfolioTheme;
   experienceLevel: string;
   interests: string;
   strengths: string[];

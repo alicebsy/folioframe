@@ -12,5 +12,5 @@ export default async function PortfolioPage({
   const { slug } = await params;
   const data = await getPublicPortfolio(slug);
   if (!data) notFound();
-  return <PublicPortfolio data={data} />;
+  return <PublicPortfolio data={data} projectBasePath={`/p/${slug}/projects`} />;
 }

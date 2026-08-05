@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { apiUser, badRequest, serverError } from "@/lib/http";
-import type { CareerEntry } from "@/lib/models";
+import type { CareerEntry, EducationEntry } from "@/lib/models";
 
 function slugify(value: string) {
   return value
@@ -34,6 +34,17 @@ function normalizeCareers(value: unknown): CareerEntry[] {
   })).filter((entry) => entry.organization || entry.role);
 }
 
+function normalizeEducations(value: unknown): EducationEntry[] {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 5).map((entry, index) => ({
+    id: String(entry?.id ?? `education-${index}`).slice(0, 80),
+    school: String(entry?.school ?? "").trim().slice(0, 100),
+    major: String(entry?.major ?? "").trim().slice(0, 100),
+    period: String(entry?.period ?? "").trim().slice(0, 50),
+    description: String(entry?.description ?? "").trim().slice(0, 500),
+  })).filter((entry) => entry.school || entry.major);
+}
+
 export async function POST(request: Request) {
   try {
     const user = await apiUser();
@@ -53,6 +64,10 @@ export async function POST(request: Request) {
       .map((item: unknown) => String(item).trim().slice(0, 40))
       .filter(Boolean)
       .slice(0, 3);
+    const coreSkills = (Array.isArray(body.coreSkills) ? body.coreSkills : String(body.coreSkills ?? "").split(","))
+      .map((item: unknown) => String(item).trim().slice(0, 40))
+      .filter(Boolean)
+      .slice(0, 12);
     const aboutMe = String(body.aboutMe ?? "").trim().slice(0, 700);
     const workStyle = String(body.workStyle ?? "").trim().slice(0, 400);
     const values = String(body.values ?? "").trim().slice(0, 300);
@@ -62,6 +77,7 @@ export async function POST(request: Request) {
     const linkedinUrl = normalizeUrl(body.linkedinUrl);
     const blogUrl = normalizeUrl(body.blogUrl);
     const careers = normalizeCareers(body.careers);
+    const educations = normalizeEducations(body.educations);
 
     if (!name || !jobTitle || !bio) {
       return badRequest("이름, 희망 직무, 한 줄 소개를 입력해 주세요.");
@@ -76,11 +92,13 @@ export async function POST(request: Request) {
               slug = $5, experience_level = $6, interests = $7, strengths = $8,
               about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
               resume_url = $13, github_url = $14, linkedin_url = $15,
-              blog_url = $16, careers = $17::jsonb, updated_at = NOW()
-        WHERE owner_id = $18`,
+              blog_url = $16, careers = $17::jsonb, core_skills = $18,
+              educations = $19::jsonb, updated_at = NOW()
+        WHERE owner_id = $20`,
       [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
         interests, strengths, aboutMe, workStyle, values, lookingFor,
-        resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), user.id],
+        resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), coreSkills,
+        JSON.stringify(educations), user.id],
     );
 
     return NextResponse.json({ ok: true });

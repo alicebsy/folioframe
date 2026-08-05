@@ -12,6 +12,14 @@ export type CareerEntry = {
   description: string;
 };
 
+export type EducationEntry = {
+  id: string;
+  school: string;
+  major: string;
+  period: string;
+  description: string;
+};
+
 export type PortfolioTheme = "editorial" | "minimal" | "bold" | "noir";
 
 export type Project = {
@@ -35,7 +43,11 @@ export type Project = {
   teamSize: string;
   contribution: string;
   techStacks: string[];
+  architecture: string;
+  qualityAssurance: string;
+  deployment: string;
   coverImageUrl: string;
+  videoUrl: string;
   isPublic: boolean;
   displayOrder: number;
   links: ProjectLink[];
@@ -59,6 +71,7 @@ export type Portfolio = {
   experienceLevel: string;
   interests: string;
   strengths: string[];
+  coreSkills: string[];
   aboutMe: string;
   workStyle: string;
   values: string;
@@ -68,6 +81,7 @@ export type Portfolio = {
   linkedinUrl: string;
   blogUrl: string;
   careers: CareerEntry[];
+  educations: EducationEntry[];
 };
 
 export type DashboardData = {
@@ -110,6 +124,14 @@ export const projectQualityChecks = (
       project.periodStart.trim() &&
         project.teamSize.trim() &&
         project.techStacks.some((tech) => tech.trim()),
+    ),
+  },
+  {
+    label: "개발 과정",
+    complete: Boolean(
+      project.architecture.trim() ||
+        project.qualityAssurance.trim() ||
+        project.deployment.trim(),
     ),
   },
 ];

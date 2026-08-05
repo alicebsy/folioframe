@@ -1,6 +1,6 @@
 import "server-only";
 import { query } from "./db";
-import type { CareerEntry, DashboardData, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
+import type { CareerEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
 
 type PortfolioRow = {
   id: string;
@@ -15,6 +15,7 @@ type PortfolioRow = {
   experience_level: string;
   interests: string;
   strengths: string[] | null;
+  core_skills: string[] | null;
   about_me: string;
   work_style: string;
   personal_values: string;
@@ -24,6 +25,7 @@ type PortfolioRow = {
   linkedin_url: string;
   blog_url: string;
   careers: CareerEntry[] | null;
+  educations: EducationEntry[] | null;
 };
 
 type ProjectRow = {
@@ -47,7 +49,11 @@ type ProjectRow = {
   team_size: string;
   contribution: string;
   tech_stacks: string[] | null;
+  architecture: string;
+  quality_assurance: string;
+  deployment: string;
   cover_image_url: string;
+  video_url: string;
   is_public: boolean;
   display_order: number;
   links: ProjectLink[] | null;
@@ -67,6 +73,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     experienceLevel: row.experience_level,
     interests: row.interests,
     strengths: row.strengths ?? [],
+    coreSkills: row.core_skills ?? [],
     aboutMe: row.about_me,
     workStyle: row.work_style,
     values: row.personal_values,
@@ -76,6 +83,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     linkedinUrl: row.linkedin_url,
     blogUrl: row.blog_url,
     careers: row.careers ?? [],
+    educations: row.educations ?? [],
   };
 }
 
@@ -101,7 +109,11 @@ function mapProject(row: ProjectRow): Project {
     teamSize: row.team_size,
     contribution: row.contribution,
     techStacks: row.tech_stacks ?? [],
+    architecture: row.architecture,
+    qualityAssurance: row.quality_assurance,
+    deployment: row.deployment,
     coverImageUrl: row.cover_image_url,
+    videoUrl: row.video_url,
     isPublic: row.is_public,
     displayOrder: row.display_order,
     links: row.links ?? [],
@@ -113,7 +125,8 @@ const projectSelect = `
          p.troubleshooting, p.result, p.target_audience, p.goal, p.constraints,
          p.key_decision, p.collaboration, p.learnings, p.next_time,
          p.evidence, p.period_start, p.period_end,
-         p.team_size, p.contribution, p.tech_stacks, p.cover_image_url,
+         p.team_size, p.contribution, p.tech_stacks, p.architecture,
+         p.quality_assurance, p.deployment, p.cover_image_url, p.video_url,
          p.is_public, p.display_order,
          COALESCE(
            json_agg(
@@ -131,9 +144,9 @@ export async function getDashboardData(
 ): Promise<DashboardData> {
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, job_title, bio, contact_email, slug,
-            is_published, published_at, theme, experience_level, interests, strengths,
+            is_published, published_at, theme, experience_level, interests, strengths, core_skills,
             about_me, work_style, personal_values, looking_for,
-            resume_url, github_url, linkedin_url, blog_url, careers
+            resume_url, github_url, linkedin_url, blog_url, careers, educations
        FROM portfolios
       WHERE owner_id = $1
       LIMIT 1`,
@@ -164,9 +177,9 @@ export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
-            p.strengths, p.about_me, p.work_style, p.personal_values, p.looking_for,
+            p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
-            p.careers, u.email
+            p.careers, p.educations, u.email
        FROM portfolios p
        JOIN users u ON u.id = p.owner_id
       WHERE p.slug = $1 AND p.is_published = TRUE

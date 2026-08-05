@@ -43,40 +43,40 @@ export default function LoginForm() {
           <span>Folioframe</span>
         </a>
         <div>
-          <span className="eyebrow">YOUR WORK, CLEARLY TOLD</span>
+          <span className="eyebrow">BUILD. EXPLAIN. SHIP.</span>
           <h1>
-            경험을 나열하지 말고,
+            기술을 나열하지 말고,
             <br />
             <em>해결한 이야기</em>로
             <br />
             보여주세요.
           </h1>
           <p>
-            역할, 문제, 해결 과정, 성과를 하나의 흐름으로 정리해
-            채용 담당자가 이해하기 쉬운 포트폴리오를 만듭니다.
+            기술 선택, 구현, 테스트, 배포 과정을 하나의 흐름으로 정리해
+            면접관이 개발자의 판단과 기여를 이해할 수 있게 만듭니다.
           </p>
         </div>
         <div className="login-story-card">
           <span>01</span>
           <div>
-            <strong>담당 역할</strong>
-            <small>내가 직접 책임진 범위를 분명하게</small>
+            <strong>기술 선택</strong>
+            <small>왜 이 구조와 도구를 선택했는지</small>
           </div>
           <i />
           <span>02</span>
           <div>
-            <strong>문제와 해결</strong>
-            <small>판단과 행동의 과정을 구체적으로</small>
+            <strong>구현과 검증</strong>
+            <small>문제를 어떻게 재현하고 해결했는지</small>
           </div>
           <i />
           <span>03</span>
           <div>
-            <strong>구체적 성과</strong>
-            <small>결과를 수치와 변화로 설득력 있게</small>
+            <strong>배포와 운영</strong>
+            <small>실제로 어떻게 출시하고 지켜봤는지</small>
           </div>
         </div>
         <small className="login-caption">
-          프로젝트 경험이 곧 당신의 경쟁력이 되도록.
+          코드 뒤의 판단이 개발자의 경쟁력이 되도록.
         </small>
       </section>
 

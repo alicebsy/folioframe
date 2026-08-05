@@ -46,8 +46,9 @@ export async function POST(request: Request) {
            portfolio_id, title, summary, role, problem, troubleshooting,
            result, target_audience, goal, constraints, key_decision, collaboration,
            learnings, next_time, evidence, period_start, period_end, team_size,
-           contribution, tech_stacks, cover_image_url, is_public, display_order
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
+           contribution, tech_stacks, architecture, quality_assurance, deployment,
+           cover_image_url, video_url, is_public, display_order
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27)
          RETURNING id`,
         [
           portfolioId,
@@ -70,7 +71,11 @@ export async function POST(request: Request) {
           input.teamSize,
           input.contribution,
           input.techStacks,
+          input.architecture,
+          input.qualityAssurance,
+          input.deployment,
           input.coverImageUrl,
+          input.videoUrl,
           input.isPublic,
           orderResult.rows[0].next_order,
         ],

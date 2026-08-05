@@ -26,9 +26,10 @@ export async function POST(
                 constraints=$9, key_decision=$10, collaboration=$11,
                 learnings=$12, next_time=$13, evidence=$14, period_start=$15,
                 period_end=$16, team_size=$17, contribution=$18, tech_stacks=$19,
-                cover_image_url=$20, is_public=$21, updated_at=NOW()
+                architecture=$20, quality_assurance=$21, deployment=$22,
+                cover_image_url=$23, video_url=$24, is_public=$25, updated_at=NOW()
            FROM portfolios f
-          WHERE p.id=$22 AND p.portfolio_id=f.id AND f.owner_id=$23
+          WHERE p.id=$26 AND p.portfolio_id=f.id AND f.owner_id=$27
           RETURNING p.id`,
         [
           input.title,
@@ -50,7 +51,11 @@ export async function POST(
           input.teamSize,
           input.contribution,
           input.techStacks,
+          input.architecture,
+          input.qualityAssurance,
+          input.deployment,
           input.coverImageUrl,
+          input.videoUrl,
           input.isPublic,
           id,
           user.id,

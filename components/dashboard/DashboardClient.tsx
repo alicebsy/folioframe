@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type {
   CareerEntry,
   DashboardData,
+  EducationEntry,
   Portfolio,
   PortfolioTheme,
   Project,
@@ -38,7 +39,11 @@ const emptyProject: ProjectDraft = {
   teamSize: "",
   contribution: "",
   techStacks: [],
+  architecture: "",
+  qualityAssurance: "",
+  deployment: "",
   coverImageUrl: "",
+  videoUrl: "",
   isPublic: false,
   links: [],
 };
@@ -47,7 +52,7 @@ const writingGuides = [
   {
     test: /개발|엔지니어|프론트|백엔드|software|developer/i,
     title: "개발 직무 작성 가이드",
-    tips: ["선택한 기술과 대안을 함께 적기", "장애·성능 문제의 원인을 구체화하기", "변화는 측정 방법이나 로그로 뒷받침하기"],
+    tips: ["기술 선택과 대안을 함께 적기", "구조·성능·장애 문제의 원인을 구체화하기", "테스트·배포·운영 방식을 근거와 함께 남기기"],
   },
   {
     test: /디자인|designer|ux|ui/i,
@@ -283,7 +288,11 @@ export default function DashboardClient({
           teamSize: projectDraft.teamSize,
           contribution: projectDraft.contribution,
           techStacks: projectDraft.techStacks,
+          architecture: projectDraft.architecture,
+          qualityAssurance: projectDraft.qualityAssurance,
+          deployment: projectDraft.deployment,
           coverImageUrl: projectDraft.coverImageUrl,
+          videoUrl: projectDraft.videoUrl,
           isPublic: projectDraft.isPublic,
           links: projectDraft.links,
         };
@@ -457,6 +466,25 @@ export default function DashboardClient({
     });
   };
 
+  const addEducation = () => {
+    setProfileDraft({
+      ...profileDraft,
+      educations: [
+        ...profileDraft.educations,
+        { id: `education-${Date.now()}`, school: "", major: "", period: "", description: "" },
+      ],
+    });
+  };
+
+  const updateEducation = (id: string, field: keyof EducationEntry, value: string) => {
+    setProfileDraft({
+      ...profileDraft,
+      educations: profileDraft.educations.map((entry) =>
+        entry.id === id ? { ...entry, [field]: value } : entry,
+      ),
+    });
+  };
+
   return (
     <main className="dashboard-shell">
       <header className="topbar">
@@ -505,8 +533,8 @@ export default function DashboardClient({
         <div className="page-intro">
           <div>
             <span className="eyebrow">MY PORTFOLIO</span>
-            <h1>경험이 증거가 되는 포트폴리오</h1>
-            <p>역할과 문제 해결 과정을 정리하면 설득력 있는 이야기가 됩니다.</p>
+            <h1>개발 과정이 증거가 되는 포트폴리오</h1>
+            <p>기술 선택부터 구현, 테스트, 배포까지 정리하면 개발자의 판단이 선명해집니다.</p>
           </div>
           <div className="publish-summary">
             <div className={`status-dot ${data.portfolio.isPublished ? "live" : ""}`} />
@@ -585,13 +613,14 @@ export default function DashboardClient({
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
-                <summary><span>지원자 한눈에 보기</span><small>경험 수준 · 관심 분야 · 핵심 역량</small></summary>
+                <summary><span>개발자 프로필 한눈에 보기</span><small>경험 수준 · 개발 분야 · 핵심 역량 · 주력 기술</small></summary>
                 <div className="disclosure-content">
                   <div className="form-row two">
-                    <label>경험 수준<input value={profileDraft.experienceLevel} onChange={(event) => setProfileDraft({ ...profileDraft, experienceLevel: event.target.value })} placeholder="예: 신입 · 프로젝트 경험 중심" /></label>
-                    <label>관심 분야<input value={profileDraft.interests} onChange={(event) => setProfileDraft({ ...profileDraft, interests: event.target.value })} placeholder="예: B2C · 생산성 제품" /></label>
+                    <label>경험 수준<input value={profileDraft.experienceLevel} onChange={(event) => setProfileDraft({ ...profileDraft, experienceLevel: event.target.value })} placeholder="예: 신입 · 풀스택 프로젝트 경험" /></label>
+                    <label>개발 관심 분야<input value={profileDraft.interests} onChange={(event) => setProfileDraft({ ...profileDraft, interests: event.target.value })} placeholder="예: 프론트엔드 · 웹 성능 · 개발자 도구" /></label>
                   </div>
-                  <label>핵심 역량 3개<input value={profileDraft.strengths.join(", ")} onChange={(event) => setProfileDraft({ ...profileDraft, strengths: event.target.value.split(",").map((item) => item.trim()).slice(0, 3) })} placeholder="문제 정의, 데이터 분석, 협업" /></label>
+                  <label>개발 강점 3개<input value={profileDraft.strengths.join(", ")} onChange={(event) => setProfileDraft({ ...profileDraft, strengths: event.target.value.split(",").map((item) => item.trim()).slice(0, 3) })} placeholder="성능 최적화, 설계, 협업" /></label>
+                  <label>주력 기술 스택<input value={profileDraft.coreSkills.join(", ")} onChange={(event) => setProfileDraft({ ...profileDraft, coreSkills: event.target.value.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 12) })} placeholder="TypeScript, React, Next.js, Node.js, PostgreSQL" /></label>
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
@@ -609,6 +638,23 @@ export default function DashboardClient({
                     </div>
                   ))}
                   <button type="button" className="button secondary career-add" onClick={addCareer}><Icon name="plus" />경력 추가</button>
+                </div>
+              </details>
+              <details className="editor-disclosure profile-disclosure">
+                <summary><span>학력</span><small>{profileDraft.educations.length}개 등록</small></summary>
+                <div className="disclosure-content career-editor-list">
+                  {profileDraft.educations.map((entry) => (
+                    <div className="career-editor-row" key={entry.id}>
+                      <div className="form-row three">
+                        <label>학교<input value={entry.school} onChange={(event) => updateEducation(entry.id, "school", event.target.value)} placeholder="학교명" /></label>
+                        <label>전공·과정<input value={entry.major} onChange={(event) => updateEducation(entry.id, "major", event.target.value)} placeholder="컴퓨터공학과" /></label>
+                        <label>기간<input value={entry.period} onChange={(event) => updateEducation(entry.id, "period", event.target.value)} placeholder="2022.03 – 2026.02" /></label>
+                      </div>
+                      <label>배운 내용·활동<textarea value={entry.description} onChange={(event) => updateEducation(entry.id, "description", event.target.value)} placeholder="개발과 관련해 배운 내용, 동아리, 연구, 수상 등을 적어 주세요." /></label>
+                      <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, educations: profileDraft.educations.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
+                    </div>
+                  ))}
+                  <button type="button" className="button secondary career-add" onClick={addEducation}><Icon name="plus" />학력 추가</button>
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
@@ -637,6 +683,7 @@ export default function DashboardClient({
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}
                   {data.portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
                   {!!data.portfolio.careers.length && <span>경력·활동 {data.portfolio.careers.length}</span>}
+                  {!!data.portfolio.educations.length && <span>학력 {data.portfolio.educations.length}</span>}
                 </div>
               )}
               <div className="mini-links">
@@ -745,7 +792,7 @@ export default function DashboardClient({
 
         <section className="projects-section">
           <div className="section-heading">
-            <div><h2>내 프로젝트</h2><p>본인이 맡은 역할과 해결 과정을 중심으로 작성하세요.</p></div>
+            <div><h2>내 개발 프로젝트</h2><p>기술 선택, 구현, 테스트, 배포 과정과 본인의 기여를 중심으로 작성하세요.</p></div>
             <button className="button dark" onClick={() => openProject()}>
               <Icon name="plus" />프로젝트 작성
             </button>
@@ -845,7 +892,12 @@ export default function DashboardClient({
                       </div>
                       <button
                         className="project-preview-button"
-                        onClick={() => setPreviewProject(project)}
+                        onClick={() => window.open(
+                          previewMode
+                            ? `/portfolio-preview/project/${project.id}?theme=${data.portfolio.theme}`
+                            : `/p/${data.portfolio.slug}/projects/${project.id}`,
+                          "_blank",
+                        )}
                       >
                         <Icon name="eye" />
                         공개 화면에서 보기
@@ -859,7 +911,7 @@ export default function DashboardClient({
             <div className="empty-projects">
               <span>01</span>
               <h3>첫 프로젝트 이야기를 작성해 보세요.</h3>
-              <p>결과물보다 본인의 역할과 문제 해결 과정이 먼저 보이게 구성합니다.</p>
+              <p>결과 화면보다 본인의 기술 선택과 구현·검증 과정이 먼저 보이게 구성합니다.</p>
               <button className="button primary" onClick={() => openProject()}>
                 <Icon name="plus" />첫 프로젝트 작성
               </button>
@@ -920,17 +972,22 @@ export default function DashboardClient({
                 <label>기여 범위<input maxLength={80} value={projectDraft.contribution} onChange={(event) => setProjectDraft({ ...projectDraft, contribution: event.target.value })} placeholder="예: 기획·개발 전담" /></label>
               </div>
               <label>
-                사용 기술·도구
-                <input value={projectDraft.techStacks.join(", ")} onChange={(event) => setProjectDraft({ ...projectDraft, techStacks: event.target.value.split(",").map((item) => item.trim()).slice(0, 10) })} placeholder="React, Figma, SQL처럼 쉼표로 구분" />
+                프로젝트 기술 스택
+                <input value={projectDraft.techStacks.join(", ")} onChange={(event) => setProjectDraft({ ...projectDraft, techStacks: event.target.value.split(",").map((item) => item.trim()).slice(0, 15) })} placeholder="TypeScript, React, Next.js, PostgreSQL처럼 쉼표로 구분" />
               </label>
               <div className="media-editor">
-                <div className={`media-preview ${projectDraft.coverImageUrl ? "has-image" : ""}`} style={projectDraft.coverImageUrl ? { backgroundImage: `url("${projectDraft.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}>
-                  {!projectDraft.coverImageUrl && <><span>IMAGE</span><b>프로젝트를 대표하는 화면을 추가하세요.</b></>}
+                <div className={`media-preview ${projectDraft.coverImageUrl || projectDraft.videoUrl ? "has-image" : ""}`} style={!projectDraft.videoUrl && projectDraft.coverImageUrl ? { backgroundImage: `url("${projectDraft.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}>
+                  {projectDraft.videoUrl ? <video src={projectDraft.videoUrl} poster={projectDraft.coverImageUrl || undefined} muted loop autoPlay playsInline /> : !projectDraft.coverImageUrl && <><span>MEDIA</span><b>프로젝트를 대표하는 이미지나 영상을 추가하세요.</b></>}
                 </div>
                 <label>
                   대표 이미지 URL <em>권장</em>
                   <input type="url" value={projectDraft.coverImageUrl} onChange={(event) => setProjectDraft({ ...projectDraft, coverImageUrl: event.target.value })} placeholder="https://.../project-cover.jpg" />
                   <small>노션·피그마·블로그 등에 공개된 이미지 주소를 넣어 주세요. 16:9 비율을 권장합니다.</small>
+                </label>
+                <label>
+                  대표 영상 URL <em>선택</em>
+                  <input type="url" value={projectDraft.videoUrl} onChange={(event) => setProjectDraft({ ...projectDraft, videoUrl: event.target.value })} placeholder="https://.../project-demo.mp4" />
+                  <small>브라우저에서 직접 재생할 수 있는 MP4·WebM 주소를 넣으면 메인 카드에서 자동 재생됩니다.</small>
                 </label>
               </div>
               <div className="story-fields">
@@ -969,6 +1026,16 @@ export default function DashboardClient({
                   <label>제약 조건<textarea value={projectDraft.constraints} onChange={(event) => setProjectDraft({ ...projectDraft, constraints: event.target.value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." /></label>
                   <label>가장 중요한 결정<textarea value={projectDraft.keyDecision} onChange={(event) => setProjectDraft({ ...projectDraft, keyDecision: event.target.value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" /></label>
                   <label>협업 방식<textarea value={projectDraft.collaboration} onChange={(event) => setProjectDraft({ ...projectDraft, collaboration: event.target.value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" /></label>
+                </div>
+              </details>
+              <details className="editor-disclosure project-disclosure" open>
+                <summary><span>개발 구현과 운영</span><small>아키텍처 · 테스트와 품질 · 배포와 운영</small></summary>
+                <div className="disclosure-content">
+                  <label>아키텍처와 기술 선택<textarea maxLength={700} value={projectDraft.architecture} onChange={(event) => setProjectDraft({ ...projectDraft, architecture: event.target.value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" /></label>
+                  <div className="form-row two">
+                    <label>테스트와 품질<textarea maxLength={700} value={projectDraft.qualityAssurance} onChange={(event) => setProjectDraft({ ...projectDraft, qualityAssurance: event.target.value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" /></label>
+                    <label>배포와 운영<textarea maxLength={700} value={projectDraft.deployment} onChange={(event) => setProjectDraft({ ...projectDraft, deployment: event.target.value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." /></label>
+                  </div>
                 </div>
               </details>
               <label>

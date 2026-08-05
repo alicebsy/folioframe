@@ -20,7 +20,11 @@ export type ProjectInput = {
   teamSize: string;
   contribution: string;
   techStacks: string[];
+  architecture: string;
+  qualityAssurance: string;
+  deployment: string;
   coverImageUrl: string;
+  videoUrl: string;
   isPublic: boolean;
   links: ProjectLink[];
 };
@@ -46,7 +50,11 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     teamSize: String(body.teamSize ?? "").trim().slice(0, 40),
     contribution: String(body.contribution ?? "").trim().slice(0, 80),
     techStacks: normalizeTechStacks(body.techStacks),
+    architecture: String(body.architecture ?? "").trim().slice(0, 700),
+    qualityAssurance: String(body.qualityAssurance ?? "").trim().slice(0, 700),
+    deployment: String(body.deployment ?? "").trim().slice(0, 700),
     coverImageUrl: normalizeUrl(body.coverImageUrl),
+    videoUrl: normalizeUrl(body.videoUrl),
     isPublic: Boolean(body.isPublic),
     links: normalizeLinks(body.links),
   };
@@ -72,7 +80,7 @@ function normalizeTechStacks(value: unknown) {
   const items = Array.isArray(value) ? value : String(value ?? "").split(",");
   return Array.from(
     new Set(items.map((item) => String(item).trim().slice(0, 30)).filter(Boolean)),
-  ).slice(0, 10);
+  ).slice(0, 15);
 }
 
 function normalizeLinks(value: unknown): ProjectLink[] {

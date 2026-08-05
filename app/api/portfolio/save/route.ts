@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { apiUser, badRequest, serverError } from "@/lib/http";
-import type { CareerEntry, EducationEntry } from "@/lib/models";
+import type { CareerEntry, CertificateEntry, EducationEntry } from "@/lib/models";
 
 function slugify(value: string) {
   return value
@@ -45,6 +45,17 @@ function normalizeEducations(value: unknown): EducationEntry[] {
   })).filter((entry) => entry.school || entry.major);
 }
 
+function normalizeCertificates(value: unknown): CertificateEntry[] {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 10).map((entry, index) => ({
+    id: String(entry?.id ?? `certificate-${index}`).slice(0, 80),
+    name: String(entry?.name ?? "").trim().slice(0, 120),
+    issuer: String(entry?.issuer ?? "").trim().slice(0, 100),
+    issuedAt: String(entry?.issuedAt ?? "").trim().slice(0, 30),
+    credentialUrl: normalizeUrl(entry?.credentialUrl),
+  })).filter((entry) => entry.name || entry.issuer);
+}
+
 export async function POST(request: Request) {
   try {
     const user = await apiUser();
@@ -78,6 +89,7 @@ export async function POST(request: Request) {
     const blogUrl = normalizeUrl(body.blogUrl);
     const careers = normalizeCareers(body.careers);
     const educations = normalizeEducations(body.educations);
+    const certificates = normalizeCertificates(body.certificates);
 
     if (!name || !jobTitle || !bio) {
       return badRequest("이름, 희망 직무, 한 줄 소개를 입력해 주세요.");
@@ -93,12 +105,12 @@ export async function POST(request: Request) {
               about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
               resume_url = $13, github_url = $14, linkedin_url = $15,
               blog_url = $16, careers = $17::jsonb, core_skills = $18,
-              educations = $19::jsonb, updated_at = NOW()
-        WHERE owner_id = $20`,
+              educations = $19::jsonb, certificates = $20::jsonb, updated_at = NOW()
+        WHERE owner_id = $21`,
       [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
         interests, strengths, aboutMe, workStyle, values, lookingFor,
         resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), coreSkills,
-        JSON.stringify(educations), user.id],
+        JSON.stringify(educations), JSON.stringify(certificates), user.id],
     );
 
     return NextResponse.json({ ok: true });

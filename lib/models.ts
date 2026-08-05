@@ -20,6 +20,14 @@ export type EducationEntry = {
   description: string;
 };
 
+export type CertificateEntry = {
+  id: string;
+  name: string;
+  issuer: string;
+  issuedAt: string;
+  credentialUrl: string;
+};
+
 export type PortfolioTheme = "editorial" | "minimal" | "bold" | "noir";
 
 export type Project = {
@@ -82,6 +90,7 @@ export type Portfolio = {
   blogUrl: string;
   careers: CareerEntry[];
   educations: EducationEntry[];
+  certificates: CertificateEntry[];
 };
 
 export type DashboardData = {

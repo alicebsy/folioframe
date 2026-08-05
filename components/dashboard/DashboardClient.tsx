@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type {
   CareerEntry,
+  CertificateEntry,
   DashboardData,
   EducationEntry,
   Portfolio,
@@ -485,6 +486,25 @@ export default function DashboardClient({
     });
   };
 
+  const addCertificate = () => {
+    setProfileDraft({
+      ...profileDraft,
+      certificates: [
+        ...profileDraft.certificates,
+        { id: `certificate-${Date.now()}`, name: "", issuer: "", issuedAt: "", credentialUrl: "" },
+      ],
+    });
+  };
+
+  const updateCertificate = (id: string, field: keyof CertificateEntry, value: string) => {
+    setProfileDraft({
+      ...profileDraft,
+      certificates: profileDraft.certificates.map((entry) =>
+        entry.id === id ? { ...entry, [field]: value } : entry,
+      ),
+    });
+  };
+
   return (
     <main className="dashboard-shell">
       <header className="topbar">
@@ -658,6 +678,23 @@ export default function DashboardClient({
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
+                <summary><span>자격증</span><small>{profileDraft.certificates.length}개 등록</small></summary>
+                <div className="disclosure-content career-editor-list">
+                  {profileDraft.certificates.map((entry) => (
+                    <div className="career-editor-row" key={entry.id}>
+                      <div className="form-row three">
+                        <label>자격증명<input value={entry.name} onChange={(event) => updateCertificate(entry.id, "name", event.target.value)} placeholder="정보처리기사" /></label>
+                        <label>발급기관<input value={entry.issuer} onChange={(event) => updateCertificate(entry.id, "issuer", event.target.value)} placeholder="한국산업인력공단" /></label>
+                        <label>취득일<input value={entry.issuedAt} onChange={(event) => updateCertificate(entry.id, "issuedAt", event.target.value)} placeholder="2025.06" /></label>
+                      </div>
+                      <label>검증 링크<input type="url" value={entry.credentialUrl} onChange={(event) => updateCertificate(entry.id, "credentialUrl", event.target.value)} placeholder="https://..." /></label>
+                      <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, certificates: profileDraft.certificates.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
+                    </div>
+                  ))}
+                  <button type="button" className="button secondary career-add" onClick={addCertificate}><Icon name="plus" />자격증 추가</button>
+                </div>
+              </details>
+              <details className="editor-disclosure profile-disclosure">
                 <summary><span>연락처와 외부 링크</span><small>이력서 · GitHub · LinkedIn · 블로그</small></summary>
                 <div className="disclosure-content">
                   <div className="form-row two">
@@ -684,6 +721,7 @@ export default function DashboardClient({
                   {data.portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
                   {!!data.portfolio.careers.length && <span>경력·활동 {data.portfolio.careers.length}</span>}
                   {!!data.portfolio.educations.length && <span>학력 {data.portfolio.educations.length}</span>}
+                  {!!data.portfolio.certificates.length && <span>자격증 {data.portfolio.certificates.length}</span>}
                 </div>
               )}
               <div className="mini-links">

@@ -30,6 +30,10 @@ export const portfolio: Portfolio = {
   educations: [
     { id: "education-preview-1", school: "한국대학교", major: "컴퓨터공학과", period: "2022.03 – 2026.02", description: "자료구조, 데이터베이스, 운영체제, 웹 프로그래밍을 학습하고 개발 동아리에서 팀 프로젝트와 코드 리뷰를 경험했습니다." },
   ],
+  certificates: [
+    { id: "certificate-preview-1", name: "정보처리기사", issuer: "한국산업인력공단", issuedAt: "2025.06", credentialUrl: "https://www.q-net.or.kr/" },
+    { id: "certificate-preview-2", name: "SQL 개발자 (SQLD)", issuer: "한국데이터산업진흥원", issuedAt: "2024.09", credentialUrl: "https://www.dataq.or.kr/" },
+  ],
 };
 
 export const projects: Project[] = [

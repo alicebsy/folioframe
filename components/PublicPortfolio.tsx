@@ -59,6 +59,13 @@ export default function PublicPortfolio({
         </div>
       </header>
 
+      <div className="portfolio-motion-band" aria-hidden="true">
+        <div>
+          <span>BUILD WITH INTENT</span><i>✦</i><span>SHIP WITH CONFIDENCE</span><i>✦</i><span>LEARN IN PUBLIC</span><i>✦</i>
+          <span>BUILD WITH INTENT</span><i>✦</i><span>SHIP WITH CONFIDENCE</span><i>✦</i><span>LEARN IN PUBLIC</span><i>✦</i>
+        </div>
+      </div>
+
       {(portfolio.aboutMe || portfolio.workStyle || portfolio.values || portfolio.lookingFor) && (
         <section className="identity-section">
           <div className="identity-heading">
@@ -100,6 +107,27 @@ export default function PublicPortfolio({
                 <div><h3>{entry.school}</h3><strong>{entry.major}</strong><p>{entry.description}</p></div>
               </article>
             ))}
+          </div>
+        </section>
+      )}
+
+      {!!portfolio.certificates.length && (
+        <section className="certificate-section">
+          <div className="career-section-title"><span>CERTIFICATIONS</span><h2>자격과 인증</h2></div>
+          <div className="certificate-grid">
+            {portfolio.certificates.map((entry, index) => {
+              const content = (
+                <>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div><h3>{entry.name}</h3><p>{entry.issuer}</p></div>
+                  <time>{entry.issuedAt || "취득일 미입력"}</time>
+                  {entry.credentialUrl && <b>검증 ↗</b>}
+                </>
+              );
+              return entry.credentialUrl ? (
+                <a key={entry.id} href={entry.credentialUrl} target="_blank" rel="noreferrer">{content}</a>
+              ) : <article key={entry.id}>{content}</article>;
+            })}
           </div>
         </section>
       )}

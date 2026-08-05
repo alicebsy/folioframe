@@ -1,6 +1,6 @@
 import "server-only";
 import { query } from "./db";
-import type { CareerEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
+import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
 
 type PortfolioRow = {
   id: string;
@@ -26,6 +26,7 @@ type PortfolioRow = {
   blog_url: string;
   careers: CareerEntry[] | null;
   educations: EducationEntry[] | null;
+  certificates: CertificateEntry[] | null;
 };
 
 type ProjectRow = {
@@ -84,6 +85,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     blogUrl: row.blog_url,
     careers: row.careers ?? [],
     educations: row.educations ?? [],
+    certificates: row.certificates ?? [],
   };
 }
 
@@ -146,7 +148,7 @@ export async function getDashboardData(
     `SELECT id, name, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
             about_me, work_style, personal_values, looking_for,
-            resume_url, github_url, linkedin_url, blog_url, careers, educations
+            resume_url, github_url, linkedin_url, blog_url, careers, educations, certificates
        FROM portfolios
       WHERE owner_id = $1
       LIMIT 1`,
@@ -179,7 +181,7 @@ export async function getPublicPortfolio(slug: string) {
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
             p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
-            p.careers, p.educations, u.email
+            p.careers, p.educations, p.certificates, u.email
        FROM portfolios p
        JOIN users u ON u.id = p.owner_id
       WHERE p.slug = $1 AND p.is_published = TRUE

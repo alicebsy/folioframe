@@ -25,7 +25,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          src="https://analytics.earnlearning.com/api/script.js"
+          data-site-id="d3c62d4d64b1"
+          defer
+        />
+      </body>
     </html>
   );
 }

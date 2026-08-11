@@ -4821,11 +4821,14 @@ label em {
 }
 
 .interactive-project-card .project-card-hint {
-  max-width: 170px;
+  width: 172px;
+  min-width: 172px;
+  max-width: none;
   color: #81857a;
   font-size: 10px;
   line-height: 1.45;
   text-align: right;
+  word-break: keep-all;
 }
 
 .interactive-project-card .project-preview-button {
@@ -4838,6 +4841,8 @@ label em {
 
 @media (max-width: 900px) {
   .interactive-project-card .project-card-hint {
+    width: auto;
+    min-width: 0;
     max-width: none;
     text-align: left;
   }
@@ -4846,6 +4851,7 @@ label em {
 @media (max-width: 620px) {
   .interactive-project-card .project-card-hint {
     width: 100%;
+    min-width: 0;
     text-align: left;
   }
 }

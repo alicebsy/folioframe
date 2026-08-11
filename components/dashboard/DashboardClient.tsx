@@ -153,7 +153,7 @@ function compressImageFile(file: File): Promise<string> {
       const image = new Image();
       image.onerror = () => reject(new Error("이미지를 불러오지 못했습니다."));
       image.onload = () => {
-        const maxSize = 1400;
+        const maxSize = 1000;
         const scale = Math.min(1, maxSize / image.width, maxSize / image.height);
         const canvas = document.createElement("canvas");
         canvas.width = Math.max(1, Math.round(image.width * scale));
@@ -164,7 +164,7 @@ function compressImageFile(file: File): Promise<string> {
           return;
         }
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/webp", 0.82));
+        resolve(canvas.toDataURL("image/webp", 0.7));
       };
       image.src = String(reader.result);
     };

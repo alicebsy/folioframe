@@ -54,7 +54,7 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     architecture: String(body.architecture ?? "").trim().slice(0, 700),
     qualityAssurance: String(body.qualityAssurance ?? "").trim().slice(0, 700),
     deployment: String(body.deployment ?? "").trim().slice(0, 700),
-    coverImageUrl: normalizeUrl(body.coverImageUrl),
+    coverImageUrl: normalizeImageUrl(body.coverImageUrl),
     videoUrl: normalizeUrl(body.videoUrl),
     media: normalizeMedia(body.media),
     isPublic: Boolean(body.isPublic),
@@ -78,6 +78,13 @@ function normalizeUrl(value: unknown) {
   }
 }
 
+function normalizeImageUrl(value: unknown) {
+  const url = String(value ?? "").trim();
+  if (!url) return "";
+  if (url.length <= 900_000 && /^data:image\/(jpeg|jpg|png|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(url)) return url;
+  return normalizeUrl(url);
+}
+
 function normalizeMedia(value: unknown): ProjectMedia[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -85,7 +92,8 @@ function normalizeMedia(value: unknown): ProjectMedia[] {
     .map((rawItem, index) => {
       const item = rawItem && typeof rawItem === "object" ? rawItem as Record<string, unknown> : {};
       const type = item.type === "video" ? "video" : "image";
-      const url = String(item.url ?? "").trim().slice(0, 1_200_000);
+      const url = String(item.url ?? "").trim();
+      if (url.length > 900_000) return null;
       const validDataImage = type === "image" && /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(url);
       if (!validDataImage) {
         try {

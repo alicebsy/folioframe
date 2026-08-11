@@ -266,6 +266,7 @@ export default function DashboardClient({
     : [];
   const qualityChecks = projectQualityChecks(projectDraft);
   const qualityCount = qualityChecks.filter((item) => item.complete).length;
+  const selectedContributions = projectDraft.contribution.split(",").map((item) => item.trim()).filter(Boolean);
   const writingGuide = writingGuides.find((guide) =>
     guide.test.test(data.portfolio.jobTitle),
   )!;
@@ -341,6 +342,18 @@ export default function DashboardClient({
           ? [...current.techStacks, tech]
           : current.techStacks,
     }));
+  };
+
+  const toggleContribution = (contribution: string) => {
+    setProjectDraft((current) => {
+      const selected = current.contribution.split(",").map((item) => item.trim()).filter(Boolean);
+      const knownSelections = selected.filter((item) => contributionChoices.some((choice) => choice.label === item));
+      const baseSelections = selected.length === knownSelections.length ? knownSelections : [];
+      const next = baseSelections.includes(contribution)
+        ? baseSelections.filter((item) => item !== contribution)
+        : [...baseSelections, contribution];
+      return { ...current, contribution: next.join(", ") };
+    });
   };
 
   const handleCoverImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -996,7 +1009,7 @@ export default function DashboardClient({
                         {project.summary || "프로젝트의 목적과 배경을 한두 문장으로 정리해 보세요."}
                       </p>
                       <div className="project-keywords" aria-label="프로젝트 핵심 키워드">
-                        {project.contribution && <b>{project.contribution}</b>}
+                        {project.contribution.split(",").map((item) => item.trim()).filter(Boolean).map((contribution) => <b key={contribution}>{contribution}</b>)}
                         {project.role && <b>{project.role}</b>}
                         {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => <b key={tech}>{tech}</b>)}
                       </div>
@@ -1095,20 +1108,25 @@ export default function DashboardClient({
                     onClick={() => setOpenPicker((current) => current === "contribution" ? null : "contribution")}
                     aria-expanded={openPicker === "contribution"}
                   >
-                    <span>{projectDraft.contribution || "내가 맡은 역할을 선택해 주세요"}</span><b>⌄</b>
+                    <span>{selectedContributions.length ? `${selectedContributions.length}개 기여 범위 선택됨` : "내가 맡은 역할을 선택해 주세요"}</span><b>⌄</b>
                   </button>
+                  {selectedContributions.length > 0 && (
+                    <div className="selected-chip-list contribution-chip-list">
+                      {selectedContributions.map((contribution) => {
+                        const choice = contributionChoices.find((item) => item.label === contribution);
+                        return <span className={`selected-chip ${choice?.kind ?? "general"}`} key={contribution}>{contribution}<button type="button" onClick={() => toggleContribution(contribution)} aria-label={`${contribution} 선택 해제`}>×</button></span>;
+                      })}
+                    </div>
+                  )}
                   {openPicker === "contribution" && (
                     <div className="picker-menu contribution-menu">
                       {contributionChoices.map((choice) => (
                         <button
                           type="button"
-                          className={`picker-option ${choice.kind} ${projectDraft.contribution === choice.label ? "selected" : ""}`}
+                          className={`picker-option ${choice.kind} ${selectedContributions.includes(choice.label) ? "selected" : ""}`}
                           key={choice.label}
-                          onClick={() => {
-                            setProjectDraft((current) => ({ ...current, contribution: choice.label }));
-                            setOpenPicker(null);
-                          }}
-                        ><span>{choice.label}</span>{projectDraft.contribution === choice.label && <b>✓</b>}</button>
+                          onClick={() => toggleContribution(choice.label)}
+                        ><span>{choice.label}</span>{selectedContributions.includes(choice.label) && <b>✓</b>}</button>
                       ))}
                     </div>
                   )}

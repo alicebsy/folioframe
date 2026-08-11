@@ -125,7 +125,7 @@ function mapProject(row: ProjectRow): Project {
     ...(row.cover_image_url ? [{ id: "legacy-cover", type: "image" as const, url: row.cover_image_url }] : []),
     ...(row.video_url ? [{ id: "legacy-video", type: "video" as const, url: row.video_url }] : []),
   ];
-  const media = [...(row.media ?? []), ...legacyMedia].filter(
+  const media = [...(Array.isArray(row.media) ? row.media : []), ...legacyMedia].filter(
     (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
   );
   return {

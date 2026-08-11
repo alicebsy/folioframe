@@ -8795,3 +8795,345 @@ label em {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Public project case study: calmer type scale and a clearer reading hierarchy */
+.public-shell.project-detail-shell {
+  --detail-body: #4f554b;
+  --detail-muted: #7a8075;
+  --detail-line: #dfe2d7;
+}
+
+.project-detail-shell .project-detail-page {
+  padding-top: clamp(72px, 8vw, 112px);
+}
+
+.project-detail-shell .project-detail-intro {
+  max-width: 900px;
+}
+
+.project-detail-shell .project-detail-intro > span,
+.project-detail-shell .case-scan-grid section > span,
+.project-detail-shell .case-detail-heading > span,
+.project-detail-shell .engineering-notes-heading > span,
+.project-detail-shell .case-evidence > span,
+.project-detail-shell .case-reflection > span,
+.project-detail-shell .case-resources-wrap > div:first-child > span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.project-detail-shell .project-detail-intro h1 {
+  max-width: 800px;
+  margin: 20px 0 19px;
+  font-size: clamp(36px, 4.2vw, 56px);
+  line-height: 1.18;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.project-detail-shell .project-detail-intro > p {
+  max-width: 720px;
+  color: var(--detail-body);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.85;
+  word-break: keep-all;
+}
+
+.project-detail-shell .case-facts {
+  margin-top: 25px;
+  gap: 18px 28px;
+}
+
+.project-detail-shell .case-facts span {
+  color: var(--detail-body);
+  font-size: 12px;
+}
+
+.project-detail-shell .case-facts b {
+  margin-right: 8px;
+  color: var(--detail-muted);
+  font-size: 10px;
+}
+
+.project-detail-shell .detail-tech-tags {
+  margin-top: 22px;
+  gap: 7px;
+}
+
+.project-detail-shell .detail-tech-tags span {
+  padding: 6px 10px;
+  font-size: 10px;
+}
+
+.project-detail-shell .project-detail-media {
+  margin: 56px 0 26px;
+  border-radius: 12px;
+}
+
+.project-detail-shell .project-detail-content {
+  max-width: 940px;
+  margin-left: auto;
+}
+
+.project-detail-shell .case-scan-grid {
+  margin-top: 28px;
+  gap: 14px;
+}
+
+.project-detail-shell .case-scan-grid section,
+.project-detail-shell .case-scan-grid section.impact-card {
+  min-height: 178px;
+  padding: 24px 26px;
+  border: 1px solid var(--detail-line);
+  border-radius: 14px;
+}
+
+.project-detail-shell .case-scan-grid h4 {
+  margin: 10px 0 12px;
+  color: var(--detail-muted);
+  font-size: 13px;
+}
+
+.project-detail-shell .case-scan-grid strong {
+  color: #252a23;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.65;
+  letter-spacing: -0.035em;
+  word-break: keep-all;
+}
+
+.project-detail-shell .case-scan-grid p {
+  margin-top: 10px;
+  color: var(--detail-muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.project-detail-shell .case-detail-heading {
+  margin: 64px 0 18px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--detail-line);
+}
+
+.project-detail-shell .case-detail-heading h4,
+.project-detail-shell .case-resources-wrap > div:first-child h4 {
+  font-size: 22px;
+  line-height: 1.35;
+  letter-spacing: -0.045em;
+}
+
+.project-detail-shell .focused-case-story {
+  margin-top: 0;
+  border-color: var(--detail-line);
+  border-radius: 14px;
+}
+
+.project-detail-shell .focused-case-story section {
+  min-height: 190px;
+  padding: 24px 26px;
+}
+
+.project-detail-shell .focused-case-story section > span {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.project-detail-shell .focused-case-story h4 {
+  margin: 11px 0 9px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.project-detail-shell .focused-case-story p,
+.project-detail-shell .focused-case-story section small {
+  color: var(--detail-body);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  line-height: 1.85;
+  word-break: keep-all;
+}
+
+.project-detail-shell .focused-case-story section small {
+  margin-top: 12px;
+  padding-top: 11px;
+  color: var(--detail-muted);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.project-detail-shell .engineering-notes {
+  margin-top: 64px;
+}
+
+.project-detail-shell .engineering-notes-heading {
+  padding: 24px 0 19px;
+}
+
+.project-detail-shell .engineering-notes-heading h4 {
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.project-detail-shell .engineering-notes-grid article {
+  padding: 27px 25px 32px 0;
+}
+
+.project-detail-shell .engineering-notes-grid article + article {
+  padding-right: 20px;
+  padding-left: 25px;
+}
+
+.project-detail-shell .engineering-notes-grid h5 {
+  margin: 13px 0 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.project-detail-shell .engineering-notes-grid p {
+  color: var(--detail-body);
+  font-size: 13px;
+  line-height: 1.85;
+  word-break: keep-all;
+}
+
+.project-detail-shell .case-evidence,
+.project-detail-shell .case-reflection {
+  margin-top: 20px;
+  border-radius: 14px;
+}
+
+.project-detail-shell .case-evidence {
+  padding: 24px 26px;
+  grid-template-columns: 130px 1fr;
+}
+
+.project-detail-shell .case-evidence h4,
+.project-detail-shell .case-reflection h4 {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.project-detail-shell .case-evidence p,
+.project-detail-shell .case-reflection p {
+  font-size: 13px;
+  line-height: 1.85;
+  word-break: keep-all;
+}
+
+.project-detail-shell .case-reflection {
+  padding: 24px 26px;
+}
+
+.project-detail-shell .case-resources-wrap {
+  margin-top: 30px;
+  padding: 24px 26px;
+  grid-template-columns: 230px 1fr;
+  border-radius: 14px;
+}
+
+.project-detail-shell .case-resources-wrap > div:first-child h4 {
+  margin-top: 7px;
+}
+
+.project-detail-shell .case-resources a {
+  padding: 13px 14px;
+}
+
+.project-detail-shell .case-resources a strong {
+  font-size: 12px;
+}
+
+.project-detail-shell .case-resources a small {
+  font-size: 10px;
+}
+
+.theme-noir.project-detail-shell {
+  --detail-body: #c2c7bc;
+  --detail-muted: #92998d;
+  --detail-line: #343a30;
+}
+
+.theme-noir.project-detail-shell .case-scan-grid strong,
+.theme-noir.project-detail-shell .focused-case-story h4,
+.theme-noir.project-detail-shell .engineering-notes-heading h4 {
+  color: var(--noir-text);
+}
+
+@media (max-width: 620px) {
+  .project-detail-shell .project-detail-page {
+    padding-top: 64px;
+  }
+
+  .project-detail-shell .project-detail-intro h1 {
+    max-width: 100%;
+    margin-top: 16px;
+    font-size: clamp(32px, 10vw, 42px);
+    line-height: 1.22;
+  }
+
+  .project-detail-shell .project-detail-intro > p {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .project-detail-shell .project-detail-media {
+    margin-top: 40px;
+  }
+
+  .project-detail-shell .case-scan-grid section,
+  .project-detail-shell .case-scan-grid section.impact-card,
+  .project-detail-shell .focused-case-story section {
+    min-height: 0;
+    padding: 21px 20px;
+  }
+
+  .project-detail-shell .case-detail-heading {
+    margin-top: 50px;
+  }
+
+  .project-detail-shell .case-detail-heading h4,
+  .project-detail-shell .case-resources-wrap > div:first-child h4,
+  .project-detail-shell .engineering-notes-heading h4 {
+    font-size: 20px;
+  }
+
+  .project-detail-shell .focused-case-story p,
+  .project-detail-shell .engineering-notes-grid p,
+  .project-detail-shell .case-evidence p,
+  .project-detail-shell .case-reflection p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .project-detail-shell .engineering-notes {
+    margin-top: 50px;
+  }
+
+  .project-detail-shell .engineering-notes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail-shell .engineering-notes-grid article,
+  .project-detail-shell .engineering-notes-grid article + article {
+    padding: 22px 0 25px;
+    border-left: 0;
+    border-bottom: 1px solid #d4d5cd;
+  }
+
+  .project-detail-shell .engineering-notes-grid article:last-child {
+    border-bottom: 0;
+  }
+
+  .project-detail-shell .case-evidence,
+  .project-detail-shell .case-reflection,
+  .project-detail-shell .case-resources-wrap {
+    padding: 20px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

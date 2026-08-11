@@ -1009,9 +1009,15 @@ export default function DashboardClient({
                         {project.summary || "프로젝트의 목적과 배경을 한두 문장으로 정리해 보세요."}
                       </p>
                       <div className="project-keywords" aria-label="프로젝트 핵심 키워드">
-                        {project.contribution.split(",").map((item) => item.trim()).filter(Boolean).map((contribution) => <b key={contribution}>{contribution}</b>)}
-                        {project.role && <b>{project.role}</b>}
-                        {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => <b key={tech}>{tech}</b>)}
+                        {project.contribution.split(",").map((item) => item.trim()).filter(Boolean).map((contribution) => {
+                          const kind = contributionChoices.find((choice) => choice.label === contribution)?.kind ?? "general";
+                          return <b className={`keyword-chip contribution-chip ${kind}`} key={contribution}>{contribution}</b>;
+                        })}
+                        {project.role && <b className="keyword-chip role-chip">{project.role}</b>}
+                        {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => {
+                          const kind = techChoices.find((choice) => choice.label === tech)?.kind ?? "general";
+                          return <b className={`keyword-chip tech-chip ${kind}`} key={tech}>{tech}</b>;
+                        })}
                       </div>
                       <div className={`project-highlight ${project.result ? "has-result" : "empty"}`}>
                         <span>KEY RESULT</span>

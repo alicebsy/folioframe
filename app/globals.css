@@ -5185,6 +5185,30 @@ label em {
   white-space: nowrap;
 }
 
+.interactive-project-card .project-keywords b.frontend {
+  color: #4e6d14;
+  background: #eff7d9;
+  border-color: #cce397;
+}
+
+.interactive-project-card .project-keywords b.backend {
+  color: #385b91;
+  background: #edf4ff;
+  border-color: #c8dcfa;
+}
+
+.interactive-project-card .project-keywords b.general {
+  color: #77552d;
+  background: #fff4e6;
+  border-color: #efd4ac;
+}
+
+.interactive-project-card .project-keywords b.role-chip {
+  color: #60655b;
+  background: #f1f2ed;
+  border-color: #e1e3db;
+}
+
 .interactive-project-card .project-summary-preview {
   max-width: 680px;
   margin: 0;

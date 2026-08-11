@@ -875,9 +875,14 @@ export default function DashboardClient({
                         style={project.coverImageUrl ? { backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}
                       >
                         {!project.coverImageUrl && <span>{project.title.slice(0, 1)}</span>}
+                        <em>{project.coverImageUrl ? "대표 이미지" : "이미지 추가"}</em>
                       </div>
                     </div>
                     <div className="project-main">
+                      <div className="project-card-kicker">
+                        <span>PROJECT {String(index + 1).padStart(2, "0")}</span>
+                        <i>{project.isPublic ? "PUBLIC" : "PRIVATE"}</i>
+                      </div>
                       <div className="project-title-row">
                         <h3>{project.title}</h3>
                         <span className={`completion-badge ${complete ? "complete" : ""}`}>
@@ -907,10 +912,11 @@ export default function DashboardClient({
                         <span className={project.isPublic ? "public-text" : "private-text"}>
                           {project.isPublic ? "공개" : "비공개"}
                         </span>
-                        <button className="icon-button" onClick={() => openProject(project)} aria-label={`${project.title} 수정`}>
-                          <Icon name="edit" />
+                        <button className="project-edit-button" onClick={() => openProject(project)} aria-label={`${project.title} 수정`}>
+                          <Icon name="edit" /><span>수정</span>
                         </button>
                       </div>
+                      <span className="project-open-cue">카드 열어 상세 보기 <b>↗</b></span>
                     </div>
                   </article>
                 );

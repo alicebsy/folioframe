@@ -4862,6 +4862,15 @@ label em {
   align-items: center;
 }
 
+.interactive-project-card .project-visual-column {
+  width: 210px;
+  grid-template-rows: 38px 210px;
+}
+
+.interactive-project-card .project-thumb {
+  min-height: 210px;
+}
+
 .interactive-project-card .project-main {
   display: flex;
   flex-direction: column;
@@ -4962,6 +4971,18 @@ label em {
 @media (max-width: 620px) {
   .interactive-project-card {
     align-items: stretch;
+  }
+
+  .interactive-project-card .project-visual-column {
+    width: 100%;
+    grid-template-columns: 56px 1fr;
+    grid-template-rows: 148px;
+  }
+
+  .interactive-project-card .project-thumb,
+  .interactive-project-card .project-visual-column .project-number {
+    height: 148px;
+    min-height: 0;
   }
 
   .interactive-project-card .project-main {

@@ -884,10 +884,17 @@ export default function DashboardClient({
                           {complete ? "작성 완료" : "작성 중"}
                         </span>
                       </div>
+                      <p className="project-summary-preview">
+                        {project.summary || "프로젝트의 목적과 배경을 한두 문장으로 정리해 보세요."}
+                      </p>
                       <div className="project-keywords" aria-label="프로젝트 핵심 키워드">
                         {project.contribution && <b>{project.contribution}</b>}
                         {project.role && <b>{project.role}</b>}
                         {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => <b key={tech}>{tech}</b>)}
+                      </div>
+                      <div className={`project-highlight ${project.result ? "has-result" : "empty"}`}>
+                        <span>KEY RESULT</span>
+                        <strong>{project.result || "대표 성과를 입력하면 여기에 보여요."}</strong>
                       </div>
                     </div>
                     <div className="project-controls" onClick={(event) => event.stopPropagation()}>

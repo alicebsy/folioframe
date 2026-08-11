@@ -4866,7 +4866,7 @@ label em {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 13px;
+  gap: 11px;
 }
 
 .interactive-project-card .project-title-row {
@@ -4892,6 +4892,58 @@ label em {
   white-space: nowrap;
 }
 
+.interactive-project-card .project-summary-preview {
+  max-width: 680px;
+  margin: 0;
+  overflow: hidden;
+  color: #5f6259;
+  font-size: 13px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.interactive-project-card .project-highlight {
+  max-width: 680px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: #f1f7df;
+  border-left: 3px solid #c7e85a;
+  border-radius: 0 8px 8px 0;
+}
+
+.interactive-project-card .project-highlight.empty {
+  background: #faf7ee;
+  border-left-color: #e6c992;
+}
+
+.interactive-project-card .project-highlight span {
+  flex: 0 0 auto;
+  color: #7b8b45;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.interactive-project-card .project-highlight strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #4e5d2d;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.interactive-project-card .project-highlight.empty strong {
+  color: #9b8560;
+}
+
 .interactive-project-card .project-controls {
   min-width: 70px;
   align-self: center;
@@ -4914,6 +4966,12 @@ label em {
 
   .interactive-project-card .project-main {
     gap: 10px;
+  }
+
+  .interactive-project-card .project-highlight {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
   }
 
   .interactive-project-card .project-keywords b {

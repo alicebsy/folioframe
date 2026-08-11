@@ -9786,10 +9786,103 @@ label em {
     padding: 24px 0 0;
   }
 
-  .theme-bold .aspiration-inner {
-    padding: 24px 20px;
-    box-shadow: 6px 6px 0 var(--bold-yellow);
+.theme-bold .aspiration-inner {
+  padding: 24px 20px;
+  box-shadow: 6px 6px 0 var(--bold-yellow);
+}
+
+/* Long-profile layout pass: keep added biography content readable without
+   letting one section dominate the page or squeeze copy into narrow columns. */
+.public-shell:not(.project-detail-shell) .identity-section {
+  grid-template-columns: minmax(200px, .62fr) minmax(0, 1.58fr);
+  gap: clamp(42px, 6vw, 86px);
+}
+
+.public-shell:not(.project-detail-shell) .identity-lead {
+  max-width: 700px;
+  font-size: clamp(16px, 1.45vw, 22px);
+  line-height: 1.9;
+  letter-spacing: -0.018em;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid {
+  margin-top: 48px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid article,
+.public-shell:not(.project-detail-shell) .identity-grid article + article {
+  min-width: 0;
+  padding: 22px 24px 0 0;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid article + article {
+  padding-left: 24px;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid h3 {
+  margin: 10px 0 12px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid p {
+  max-width: 30ch;
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: -0.012em;
+}
+
+.public-shell:not(.project-detail-shell) .career-timeline p,
+.public-shell:not(.project-detail-shell) .education-section .career-timeline p {
+  max-width: 680px;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.theme-noir:not(.project-detail-shell) .identity-lead {
+  font-size: clamp(16px, 1.45vw, 22px);
+  line-height: 1.9;
+}
+
+.theme-noir:not(.project-detail-shell) .identity-grid {
+  gap: 12px;
+}
+
+.theme-noir:not(.project-detail-shell) .identity-grid article,
+.theme-noir:not(.project-detail-shell) .identity-grid article + article {
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .public-shell:not(.project-detail-shell) .identity-section {
+    grid-template-columns: 1fr;
+    gap: 38px;
   }
+
+  .public-shell:not(.project-detail-shell) .identity-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-shell:not(.project-detail-shell) .identity-grid article,
+  .public-shell:not(.project-detail-shell) .identity-grid article + article,
+  .theme-noir:not(.project-detail-shell) .identity-grid article,
+  .theme-noir:not(.project-detail-shell) .identity-grid article + article {
+    padding: 22px 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .14);
+  }
+
+  .public-shell:not(.project-detail-shell) .identity-grid article:last-child {
+    border-bottom: 0;
+  }
+
+  .public-shell:not(.project-detail-shell) .identity-grid p {
+    max-width: 62ch;
+  }
+}
 }
 
 /* Final theme closing overrides */

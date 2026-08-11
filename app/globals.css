@@ -1836,6 +1836,33 @@ label em {
   }
 }
 
+/* Published profile photo: give the face enough space to read at a glance */
+.public-shell .hero-side .large-avatar {
+  width: 156px;
+  height: 156px;
+  margin-bottom: 24px;
+  flex: 0 0 auto;
+}
+
+.public-shell .hero-side .large-avatar-image {
+  object-position: center 28%;
+}
+
+@media (max-width: 900px) {
+  .public-shell .hero-side .large-avatar {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 620px) {
+  .public-shell .hero-side .large-avatar {
+    width: 124px;
+    height: 124px;
+    margin-bottom: 18px;
+  }
+}
+
 /* Project media collections */
 .media-editor {
   gap: 16px;

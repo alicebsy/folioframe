@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Folioframe">
+  <rect width="64" height="64" rx="16" fill="#20251e"/>
+  <circle cx="47" cy="17" r="7" fill="#d9ff4d" opacity=".92"/>
+  <path d="M32 10l4.35 13.65L50 28l-13.65 4.35L32 46l-4.35-13.65L14 28l13.65-4.35L32 10z" fill="#f7f6f0"/>
+  <path d="M32 18l2.2 7.8L42 28l-7.8 2.2L32 38l-2.2-7.8L22 28l7.8-2.2L32 18z" fill="#d9ff4d"/>
+</svg>

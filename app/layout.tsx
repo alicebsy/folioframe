@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://folioframe-lake.vercel.app"),
   title: "Folioframe — 개발 과정이 보이는 포트폴리오",
   description: "기술 선택, 구현, 테스트, 배포 과정을 중심으로 완성하는 개발자 포트폴리오",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: ["/icon.svg"],
+    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: "Folioframe — 개발 과정이 보이는 포트폴리오",
     description: "기술 선택과 문제 해결, 테스트와 배포 경험을 한 편의 개발 프로젝트 이야기로 정리하세요.",

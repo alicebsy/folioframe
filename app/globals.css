@@ -9791,6 +9791,96 @@ label em {
   box-shadow: 6px 6px 0 var(--bold-yellow);
 }
 
+}
+
+/* Final theme closing overrides */
+.theme-minimal .aspiration-section {
+  padding-top: 88px;
+  padding-bottom: 88px;
+  color: #141414;
+  background: #fff;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.theme-minimal .aspiration-inner {
+  max-width: 980px;
+  padding: 30px 0 0;
+  text-align: left;
+  border-top: 4px solid #1f57d6;
+  border-left: 0;
+}
+
+.theme-minimal .aspiration-inner::before {
+  display: none;
+}
+
+.theme-minimal .aspiration-inner h2 {
+  max-width: 720px;
+  margin: 16px 0;
+  font-family: inherit;
+  font-size: clamp(30px, 3.8vw, 48px);
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.theme-minimal .aspiration-inner p {
+  max-width: 640px;
+  margin: 0;
+  color: #545454;
+}
+
+.theme-bold .aspiration-section {
+  padding-top: 84px;
+  padding-bottom: 84px;
+  color: #fff;
+  background: #171717;
+  border-top: 4px solid var(--bold-black);
+  border-bottom: 4px solid var(--bold-black);
+}
+
+.theme-bold .aspiration-inner {
+  max-width: 1080px;
+  padding: 34px;
+  text-align: left;
+  border: 3px solid var(--bold-yellow);
+  box-shadow: 10px 10px 0 var(--bold-yellow);
+}
+
+.theme-bold .aspiration-inner::before {
+  display: none;
+}
+
+.theme-bold .aspiration-inner > span {
+  color: var(--bold-yellow);
+}
+
+.theme-bold .aspiration-inner h2 {
+  max-width: 820px;
+  margin: 18px 0;
+  color: #fff;
+  font-family: inherit;
+  font-size: clamp(32px, 4.5vw, 58px);
+  font-weight: 900;
+  line-height: 1.08;
+}
+
+.theme-bold .aspiration-inner h2 em,
+.theme-bold .aspiration-inner p {
+  color: var(--bold-yellow);
+}
+
+@media (max-width: 620px) {
+  .theme-minimal .aspiration-inner {
+    padding: 24px 0 0;
+  }
+
+  .theme-bold .aspiration-inner {
+    padding: 24px 20px;
+    box-shadow: 6px 6px 0 var(--bold-yellow);
+  }
+}
+
 /* Long-profile layout pass: keep added biography content readable without
    letting one section dominate the page or squeeze copy into narrow columns. */
 .public-shell:not(.project-detail-shell) .identity-section {
@@ -9881,94 +9971,5 @@ label em {
 
   .public-shell:not(.project-detail-shell) .identity-grid p {
     max-width: 62ch;
-  }
-}
-}
-
-/* Final theme closing overrides */
-.theme-minimal .aspiration-section {
-  padding-top: 88px;
-  padding-bottom: 88px;
-  color: #141414;
-  background: #fff;
-  border-top: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-}
-
-.theme-minimal .aspiration-inner {
-  max-width: 980px;
-  padding: 30px 0 0;
-  text-align: left;
-  border-top: 4px solid #1f57d6;
-  border-left: 0;
-}
-
-.theme-minimal .aspiration-inner::before {
-  display: none;
-}
-
-.theme-minimal .aspiration-inner h2 {
-  max-width: 720px;
-  margin: 16px 0;
-  font-family: inherit;
-  font-size: clamp(30px, 3.8vw, 48px);
-  font-weight: 700;
-  line-height: 1.24;
-}
-
-.theme-minimal .aspiration-inner p {
-  max-width: 640px;
-  margin: 0;
-  color: #545454;
-}
-
-.theme-bold .aspiration-section {
-  padding-top: 84px;
-  padding-bottom: 84px;
-  color: #fff;
-  background: #171717;
-  border-top: 4px solid var(--bold-black);
-  border-bottom: 4px solid var(--bold-black);
-}
-
-.theme-bold .aspiration-inner {
-  max-width: 1080px;
-  padding: 34px;
-  text-align: left;
-  border: 3px solid var(--bold-yellow);
-  box-shadow: 10px 10px 0 var(--bold-yellow);
-}
-
-.theme-bold .aspiration-inner::before {
-  display: none;
-}
-
-.theme-bold .aspiration-inner > span {
-  color: var(--bold-yellow);
-}
-
-.theme-bold .aspiration-inner h2 {
-  max-width: 820px;
-  margin: 18px 0;
-  color: #fff;
-  font-family: inherit;
-  font-size: clamp(32px, 4.5vw, 58px);
-  font-weight: 900;
-  line-height: 1.08;
-}
-
-.theme-bold .aspiration-inner h2 em,
-.theme-bold .aspiration-inner p {
-  color: var(--bold-yellow);
-}
-
-@media (max-width: 620px) {
-  .theme-minimal .aspiration-inner {
-    padding: 24px 0 0;
-  }
-
-  .theme-bold .aspiration-inner {
-    padding: 24px 20px;
-    box-shadow: 6px 6px 0 var(--bold-yellow);
   }
 }

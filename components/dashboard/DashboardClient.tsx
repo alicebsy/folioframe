@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import type {
   CareerEntry,
@@ -89,6 +89,79 @@ const themeChoices: Array<{
   { id: "noir", name: "누아르 쇼케이스", description: "큰 이미지와 절제된 빛으로 결과물을 강조합니다.", available: true },
 ];
 
+type PickerName = "contribution" | "tech" | null;
+type ChoiceKind = "frontend" | "backend" | "general";
+
+const contributionChoices: Array<{ label: string; kind: ChoiceKind }> = [
+  { label: "프론트엔드 개발", kind: "frontend" },
+  { label: "백엔드 개발", kind: "backend" },
+  { label: "풀스택 개발", kind: "general" },
+  { label: "기획", kind: "general" },
+  { label: "UI/UX 디자인", kind: "general" },
+  { label: "데이터 분석", kind: "general" },
+  { label: "테스트·QA", kind: "general" },
+  { label: "배포·운영", kind: "general" },
+];
+
+const techChoices: Array<{ label: string; kind: ChoiceKind }> = [
+  { label: "React", kind: "frontend" },
+  { label: "Next.js", kind: "frontend" },
+  { label: "TypeScript", kind: "frontend" },
+  { label: "JavaScript", kind: "frontend" },
+  { label: "HTML", kind: "frontend" },
+  { label: "CSS", kind: "frontend" },
+  { label: "Tailwind CSS", kind: "frontend" },
+  { label: "Vue", kind: "frontend" },
+  { label: "Angular", kind: "frontend" },
+  { label: "Node.js", kind: "backend" },
+  { label: "Express", kind: "backend" },
+  { label: "NestJS", kind: "backend" },
+  { label: "Python", kind: "backend" },
+  { label: "Django", kind: "backend" },
+  { label: "FastAPI", kind: "backend" },
+  { label: "Java", kind: "backend" },
+  { label: "Spring", kind: "backend" },
+  { label: "Go", kind: "backend" },
+  { label: "PostgreSQL", kind: "backend" },
+  { label: "MySQL", kind: "backend" },
+  { label: "MongoDB", kind: "backend" },
+  { label: "Redis", kind: "backend" },
+  { label: "Git", kind: "general" },
+  { label: "Docker", kind: "general" },
+  { label: "AWS", kind: "general" },
+  { label: "Vercel", kind: "general" },
+  { label: "Figma", kind: "general" },
+  { label: "Jest", kind: "general" },
+  { label: "Playwright", kind: "general" },
+];
+
+function compressImageFile(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("이미지를 읽지 못했습니다."));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error("이미지를 불러오지 못했습니다."));
+      image.onload = () => {
+        const maxSize = 1400;
+        const scale = Math.min(1, maxSize / image.width, maxSize / image.height);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        const context = canvas.getContext("2d");
+        if (!context) {
+          reject(new Error("이미지를 처리하지 못했습니다."));
+          return;
+        }
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/webp", 0.82));
+      };
+      image.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
   if (!start && !end) return "";
@@ -153,6 +226,7 @@ export default function DashboardClient({
   );
   const [projectModal, setProjectModal] = useState(false);
   const [projectDraft, setProjectDraft] = useState<ProjectDraft>(emptyProject);
+  const [openPicker, setOpenPicker] = useState<PickerName>(null);
   const [previewProject, setPreviewProject] = useState<Project | null>(null);
   const [publishResult, setPublishResult] = useState<PublishResult>(null);
   const [toast, setToast] = useState("");
@@ -254,7 +328,36 @@ export default function DashboardClient({
 
   const openProject = (project?: Project) => {
     setProjectDraft(project ? { ...project } : { ...emptyProject, links: [] });
+    setOpenPicker(null);
     setProjectModal(true);
+  };
+
+  const toggleTechStack = (tech: string) => {
+    setProjectDraft((current) => ({
+      ...current,
+      techStacks: current.techStacks.includes(tech)
+        ? current.techStacks.filter((item) => item !== tech)
+        : current.techStacks.length < 15
+          ? [...current.techStacks, tech]
+          : current.techStacks,
+    }));
+  };
+
+  const handleCoverImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      notify("이미지 파일만 업로드할 수 있어요.");
+      return;
+    }
+    try {
+      const coverImageUrl = await compressImageFile(file);
+      setProjectDraft((current) => ({ ...current, coverImageUrl }));
+      notify("대표 이미지를 불러왔습니다.");
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "이미지를 불러오지 못했습니다.");
+    }
   };
 
   const saveProject = async () => {
@@ -984,21 +1087,82 @@ export default function DashboardClient({
                 <label>시작 월<input type="month" value={projectDraft.periodStart} onChange={(event) => setProjectDraft({ ...projectDraft, periodStart: event.target.value })} /></label>
                 <label>종료 월<input type="month" value={projectDraft.periodEnd} onChange={(event) => setProjectDraft({ ...projectDraft, periodEnd: event.target.value })} /></label>
                 <label>참여 인원<input maxLength={40} value={projectDraft.teamSize} onChange={(event) => setProjectDraft({ ...projectDraft, teamSize: event.target.value })} placeholder="예: 4명" /></label>
-                <label>기여 범위<input maxLength={80} value={projectDraft.contribution} onChange={(event) => setProjectDraft({ ...projectDraft, contribution: event.target.value })} placeholder="예: 기획·개발 전담" /></label>
+                <div className="picker-field">
+                  <span className="picker-label">기여 범위</span>
+                  <button
+                    type="button"
+                    className={`picker-trigger contribution-trigger ${projectDraft.contribution ? "has-value" : ""}`}
+                    onClick={() => setOpenPicker((current) => current === "contribution" ? null : "contribution")}
+                    aria-expanded={openPicker === "contribution"}
+                  >
+                    <span>{projectDraft.contribution || "내가 맡은 역할을 선택해 주세요"}</span><b>⌄</b>
+                  </button>
+                  {openPicker === "contribution" && (
+                    <div className="picker-menu contribution-menu">
+                      {contributionChoices.map((choice) => (
+                        <button
+                          type="button"
+                          className={`picker-option ${choice.kind} ${projectDraft.contribution === choice.label ? "selected" : ""}`}
+                          key={choice.label}
+                          onClick={() => {
+                            setProjectDraft((current) => ({ ...current, contribution: choice.label }));
+                            setOpenPicker(null);
+                          }}
+                        ><span>{choice.label}</span>{projectDraft.contribution === choice.label && <b>✓</b>}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-              <label>
-                프로젝트 기술 스택
-                <input value={projectDraft.techStacks.join(", ")} onChange={(event) => setProjectDraft({ ...projectDraft, techStacks: event.target.value.split(",").map((item) => item.trim()).slice(0, 15) })} placeholder="TypeScript, React, Next.js, PostgreSQL처럼 쉼표로 구분" />
-              </label>
+              <div className="picker-field tech-picker-field">
+                <div className="picker-label-row">
+                  <span className="picker-label">프로젝트 기술 스택</span>
+                  <small>{projectDraft.techStacks.length}/15 선택</small>
+                </div>
+                <button
+                  type="button"
+                  className={`picker-trigger tech-trigger ${projectDraft.techStacks.length ? "has-value" : ""}`}
+                  onClick={() => setOpenPicker((current) => current === "tech" ? null : "tech")}
+                  aria-expanded={openPicker === "tech"}
+                >
+                  <span>{projectDraft.techStacks.length ? `${projectDraft.techStacks.length}개 기술 스택 선택됨` : "사용한 기술을 선택해 주세요"}</span><b>⌄</b>
+                </button>
+                {projectDraft.techStacks.length > 0 && (
+                  <div className="selected-chip-list">
+                    {projectDraft.techStacks.map((tech) => {
+                      const choice = techChoices.find((item) => item.label === tech);
+                      return <span className={`selected-chip ${choice?.kind ?? "general"}`} key={tech}>{tech}<button type="button" onClick={() => toggleTechStack(tech)} aria-label={`${tech} 선택 해제`}>×</button></span>;
+                    })}
+                  </div>
+                )}
+                {openPicker === "tech" && (
+                  <div className="picker-menu tech-menu">
+                    <div className="picker-menu-heading"><span>기술을 눌러 추가하거나 해제하세요</span><b>프론트엔드 / 백엔드</b></div>
+                    <div className="picker-option-grid">
+                      {techChoices.map((choice) => (
+                        <button
+                          type="button"
+                          className={`picker-option ${choice.kind} ${projectDraft.techStacks.includes(choice.label) ? "selected" : ""}`}
+                          key={choice.label}
+                          onClick={() => toggleTechStack(choice.label)}
+                        ><span>{choice.label}</span>{projectDraft.techStacks.includes(choice.label) && <b>✓</b>}</button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="media-editor">
                 <div className={`media-preview ${projectDraft.coverImageUrl || projectDraft.videoUrl ? "has-image" : ""}`} style={!projectDraft.videoUrl && projectDraft.coverImageUrl ? { backgroundImage: `url("${projectDraft.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}>
                   {projectDraft.videoUrl ? <video src={projectDraft.videoUrl} poster={projectDraft.coverImageUrl || undefined} muted loop autoPlay playsInline /> : !projectDraft.coverImageUrl && <><span>MEDIA</span><b>프로젝트를 대표하는 이미지나 영상을 추가하세요.</b></>}
                 </div>
-                <label>
-                  대표 이미지 URL <em>권장</em>
-                  <input type="url" value={projectDraft.coverImageUrl} onChange={(event) => setProjectDraft({ ...projectDraft, coverImageUrl: event.target.value })} placeholder="https://.../project-cover.jpg" />
-                  <small>노션·피그마·블로그 등에 공개된 이미지 주소를 넣어 주세요. 16:9 비율을 권장합니다.</small>
-                </label>
+                <div className="upload-field">
+                  <span className="upload-label">대표 이미지 <em>선택</em></span>
+                  <label className="file-upload-button">
+                    <input type="file" accept="image/*" onChange={handleCoverImageUpload} />
+                    <span>{projectDraft.coverImageUrl ? "다른 이미지 선택" : "내 기기에서 이미지 선택"}</span>
+                  </label>
+                  <small>컴퓨터나 휴대폰에서 이미지를 선택하세요. 큰 이미지는 자동으로 최적화됩니다.</small>
+                </div>
                 <label>
                   대표 영상 URL <em>선택</em>
                   <input type="url" value={projectDraft.videoUrl} onChange={(event) => setProjectDraft({ ...projectDraft, videoUrl: event.target.value })} placeholder="https://.../project-demo.mp4" />

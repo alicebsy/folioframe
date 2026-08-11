@@ -4566,6 +4566,240 @@ label em {
   }
 }
 
+/* Project editor: restore compact type and simplify the writing surface */
+.dashboard-shell {
+  font-size: 14px;
+}
+
+.dashboard-shell .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+}
+
+.dashboard-shell .page-intro > div > p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.dashboard-shell .publish-summary {
+  min-width: 300px;
+  padding: 15px 16px;
+}
+
+.dashboard-shell .publish-summary strong {
+  font-size: 13px;
+}
+
+.dashboard-shell .publish-summary span {
+  font-size: 11px;
+}
+
+.dashboard-shell .profile-title h2 {
+  font-size: 22px;
+}
+
+.dashboard-shell .profile-copy > p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dashboard-shell .profile-about-preview {
+  font-size: 10px !important;
+  line-height: 1.65 !important;
+  -webkit-line-clamp: 2;
+}
+
+.dashboard-shell .profile-summary-chips span,
+.dashboard-shell .profile-summary-chips b {
+  padding: 5px 8px;
+  font-size: 9px;
+}
+
+.dashboard-shell .theme-panel-heading p,
+.dashboard-shell .section-heading p {
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.dashboard-shell .theme-current {
+  font-size: 9px;
+}
+
+.dashboard-shell .project-title-row h3 {
+  font-size: 18px;
+}
+
+.dashboard-shell .source-badge,
+.dashboard-shell .completion-badge {
+  padding: 4px 7px;
+  font-size: 9px;
+}
+
+.dashboard-shell .project-main > p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dashboard-shell .evidence-meta span,
+.dashboard-shell .evidence-meta b {
+  padding: 5px 8px;
+  font-size: 9px;
+}
+
+.dashboard-shell .project-scan span {
+  font-size: 8px;
+}
+
+.dashboard-shell .project-scan strong {
+  font-size: 11px;
+  line-height: 1.55;
+  -webkit-line-clamp: 2;
+}
+
+.dashboard-shell .story-grid-preview > span i {
+  font-size: 8px;
+}
+
+.dashboard-shell .story-grid-preview > span b {
+  font-size: 9px;
+}
+
+.dashboard-shell .story-grid-preview > span em {
+  font-size: 10px;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+}
+
+.dashboard-shell .visibility-row > span {
+  width: 38px;
+  font-size: 10px;
+}
+
+.dashboard-shell .project-preview-button {
+  font-size: 9px;
+}
+
+.dashboard-shell .draft-guide {
+  font-size: 11px;
+}
+
+.project-modal .modal-body > label,
+.project-modal .modal-body .form-row > label {
+  gap: 8px;
+}
+
+.project-modal > .modal-body > input,
+.project-modal > .modal-body > label > input,
+.project-modal > .modal-body > label > textarea,
+.project-modal .project-facts input,
+.project-modal .media-editor input,
+.project-modal .links-editor input {
+  padding: 12px 2px;
+  background: #fbfbf8;
+  border: 0;
+  border-bottom: 1px solid #dfe1d8;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.project-modal > .modal-body > label > textarea {
+  min-height: 92px;
+  padding: 14px 15px;
+  background: #f8f9f4;
+  border-left: 3px solid #d6ff57;
+  border-bottom: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.project-modal .project-facts {
+  gap: 18px;
+}
+
+.project-modal .story-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid #dfe1d8;
+}
+
+.project-modal .story-field {
+  min-height: 0;
+  padding: 18px 0;
+  display: grid;
+  grid-template-columns: 32px 145px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #dfe1d8;
+  border-radius: 0;
+}
+
+.project-modal .step-number {
+  width: 28px;
+  height: 28px;
+  margin-top: 1px;
+  border-radius: 50%;
+  font-size: 9px;
+}
+
+.project-modal .field-copy {
+  display: contents;
+}
+
+.project-modal .field-copy b {
+  grid-column: 2;
+  margin: 5px 0 0;
+  color: #30332c;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.project-modal .field-copy textarea {
+  grid-column: 3;
+  min-height: 92px;
+  padding: 11px 13px;
+  background: #fbfbf8;
+  border: 0;
+  border-bottom: 1px solid #cfd3c5;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.project-modal .field-copy textarea:focus {
+  border-bottom: 2px solid #9db652;
+  box-shadow: none;
+}
+
+.project-modal .writing-guide {
+  padding: 15px 17px;
+}
+
+.project-modal .writing-guide li {
+  font-size: 10px;
+}
+
+.project-modal .quality-checklist span {
+  font-size: 9px;
+}
+
+@media (max-width: 760px) {
+  .project-modal .story-field {
+    grid-template-columns: 32px 1fr;
+  }
+
+  .project-modal .field-copy b,
+  .project-modal .field-copy textarea {
+    grid-column: 2;
+  }
+
+  .project-modal .field-copy textarea {
+    margin-top: 5px;
+  }
+}
+
 .theme-selection-button:disabled {
   cursor: default;
   opacity: 0.56;

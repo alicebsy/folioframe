@@ -8132,10 +8132,13 @@ label em {
 
 .interactive-project-card .visibility-row > span {
   width: auto;
+  flex: 0 0 auto;
   font-size: 10px;
+  white-space: nowrap;
 }
 
 .interactive-project-card .project-edit-button {
+  flex: 0 0 auto;
   min-height: 30px;
   padding: 0 8px;
   display: inline-flex;
@@ -8147,6 +8150,7 @@ label em {
   border-radius: 8px;
   font-size: 10px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .interactive-project-card .project-edit-button:hover {

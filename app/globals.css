@@ -9973,3 +9973,40 @@ label em {
     max-width: 62ch;
   }
 }
+
+/* Let the introduction breathe: heading and lead share the first row,
+   while the three supporting points use the full section width below. */
+.public-shell:not(.project-detail-shell) .identity-section {
+  row-gap: 56px;
+}
+
+.public-shell:not(.project-detail-shell) .identity-content {
+  display: contents;
+}
+
+.public-shell:not(.project-detail-shell) .identity-heading {
+  grid-column: 1;
+  align-self: start;
+}
+
+.public-shell:not(.project-detail-shell) .identity-lead {
+  grid-column: 2;
+  align-self: start;
+}
+
+.public-shell:not(.project-detail-shell) .identity-grid {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .public-shell:not(.project-detail-shell) .identity-section {
+    row-gap: 34px;
+  }
+
+  .public-shell:not(.project-detail-shell) .identity-heading,
+  .public-shell:not(.project-detail-shell) .identity-lead,
+  .public-shell:not(.project-detail-shell) .identity-grid {
+    grid-column: 1;
+  }
+}

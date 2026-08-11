@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const searchParams = useSearchParams();
+  const [mode, setMode] = useState<"login" | "register">(
+    searchParams.get("mode") === "register" ? "register" : "login",
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,50 +40,11 @@ export default function LoginForm() {
 
   return (
     <main className="login-shell">
-      <section className="login-story">
-        <a className="brand login-brand" href="/">
+      <section className="login-panel">
+        <a className="brand login-panel-brand" href="/">
           <span className="brand-mark">✦</span>
           <span>Folioframe</span>
         </a>
-        <div>
-          <span className="eyebrow">BUILD. EXPLAIN. SHIP.</span>
-          <h1>
-            기술을 나열하지 말고,
-            <br />
-            <em>해결한 이야기</em>로
-            <br />
-            보여주세요.
-          </h1>
-          <p>
-            기술 선택, 구현, 테스트, 배포 과정을 하나의 흐름으로 정리해
-            면접관이 개발자의 판단과 기여를 이해할 수 있게 만듭니다.
-          </p>
-        </div>
-        <div className="login-story-card">
-          <span>01</span>
-          <div>
-            <strong>기술 선택</strong>
-            <small>왜 이 구조와 도구를 선택했는지</small>
-          </div>
-          <i />
-          <span>02</span>
-          <div>
-            <strong>구현과 검증</strong>
-            <small>문제를 어떻게 재현하고 해결했는지</small>
-          </div>
-          <i />
-          <span>03</span>
-          <div>
-            <strong>배포와 운영</strong>
-            <small>실제로 어떻게 출시하고 지켜봤는지</small>
-          </div>
-        </div>
-        <small className="login-caption">
-          코드 뒤의 판단이 개발자의 경쟁력이 되도록.
-        </small>
-      </section>
-
-      <section className="login-panel">
         <div className="login-box">
           <span className="eyebrow">
             {mode === "login" ? "WELCOME BACK" : "START YOUR PORTFOLIO"}

@@ -884,54 +884,11 @@ export default function DashboardClient({
                           {complete ? "작성 완료" : "작성 중"}
                         </span>
                       </div>
-                      <p>{project.summary || "프로젝트 개요를 입력해 주세요."}</p>
-                      {(project.periodStart || project.teamSize || project.contribution || project.techStacks.length > 0) && (
-                        <div className="evidence-meta">
-                          {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
-                          {project.teamSize && <span>{project.teamSize}</span>}
-                          {project.contribution && <span>기여 {project.contribution}</span>}
-                          {project.techStacks.filter(Boolean).map((tech) => <b key={tech}>{tech}</b>)}
-                        </div>
-                      )}
-                      <div className="project-scan">
-                        <section>
-                          <span>MY CONTRIBUTION</span>
-                          <strong>{project.contribution || project.role || "기여 범위를 작성해 주세요."}</strong>
-                        </section>
-                        <section className={project.result ? "result" : "empty"}>
-                          <span>KEY RESULT</span>
-                          <strong>{project.result || "대표 성과를 작성해 주세요."}</strong>
-                        </section>
+                      <div className="project-keywords" aria-label="프로젝트 핵심 키워드">
+                        {project.contribution && <b>{project.contribution}</b>}
+                        {project.role && <b>{project.role}</b>}
+                        {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => <b key={tech}>{tech}</b>)}
                       </div>
-                      <div className="story-preview story-grid-preview compact-story-preview">
-                        {[
-                          ["01", "해결한 문제", project.problem],
-                          ["02", "선택과 실행", project.troubleshooting],
-                        ].map(([number, label, value]) => (
-                          <span className={value ? "" : "story-missing"} key={label}>
-                            <i>{number}</i>
-                            <b>{label}</b>
-                            <em>{value || `${label}을 작성해 주세요.`}</em>
-                          </span>
-                        ))}
-                      </div>
-                      {!complete && (
-                        <div className="draft-guide">
-                          <span className="draft-icon">!</span>
-                          {missingByProject.length && project.id === incompleteProject?.id
-                            ? `${missingByProject.join(" · ")} 항목을 작성하면 공개할 수 있어요.`
-                            : "필수 내용을 완성하면 공개할 수 있어요."}
-                        </div>
-                      )}
-                      {!!project.links.length && (
-                        <div className="project-meta project-resource-links">
-                          {project.links.map((link) => (
-                            <a key={`${project.id}-${link.url}`} href={link.url} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
-                              <Icon name="link" />{link.label}<b>↗</b>
-                            </a>
-                          ))}
-                        </div>
-                      )}
                     </div>
                     <div className="project-controls" onClick={(event) => event.stopPropagation()}>
                       <div className="visibility-row">
@@ -947,19 +904,6 @@ export default function DashboardClient({
                           <Icon name="edit" />
                         </button>
                       </div>
-                      <button
-                        className="project-preview-button"
-                        onClick={() => window.open(
-                          previewMode
-                            ? `/portfolio-preview/project/${project.id}?theme=${data.portfolio.theme}`
-                            : `/p/${data.portfolio.slug}/projects/${project.id}`,
-                          "_blank",
-                        )}
-                      >
-                        <Icon name="eye" />
-                        공개 화면에서 보기
-                      </button>
-                      <span className="project-card-hint">카드를 눌러 전체 내용 보기 · 수정</span>
                     </div>
                   </article>
                 );

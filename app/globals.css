@@ -4856,6 +4856,76 @@ label em {
   }
 }
 
+/* Portfolio-like project index: keep the dashboard card intentionally quiet */
+.interactive-project-card {
+  min-height: 0;
+  align-items: center;
+}
+
+.interactive-project-card .project-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 13px;
+}
+
+.interactive-project-card .project-title-row {
+  align-items: center;
+}
+
+.interactive-project-card .project-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.interactive-project-card .project-keywords b {
+  max-width: 180px;
+  overflow: hidden;
+  padding: 6px 9px;
+  color: #65752f;
+  background: #eff6dc;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interactive-project-card .project-controls {
+  min-width: 70px;
+  align-self: center;
+  gap: 0;
+}
+
+.interactive-project-card .visibility-row {
+  gap: 7px;
+}
+
+.interactive-project-card .project-preview-button,
+.interactive-project-card .project-card-hint {
+  display: none;
+}
+
+@media (max-width: 620px) {
+  .interactive-project-card {
+    align-items: stretch;
+  }
+
+  .interactive-project-card .project-main {
+    gap: 10px;
+  }
+
+  .interactive-project-card .project-keywords b {
+    max-width: 150px;
+  }
+
+  .interactive-project-card .project-controls {
+    min-width: 0;
+    align-self: flex-start;
+  }
+}
+
 .theme-selection-button:disabled {
   cursor: default;
   opacity: 0.56;

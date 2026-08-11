@@ -186,8 +186,8 @@ export default function PublicPortfolio({
       {(portfolio.aspirationTitle || portfolio.aspiration) && (
         <section className="aspiration-section">
           <div className="aspiration-inner">
-            <span>MY ASPIRATION</span>
-            <h2>{portfolio.aspirationTitle || "마지막으로 전하고 싶은 이야기"}</h2>
+            <span>CLOSING NOTE</span>
+            <h2>{portfolio.aspirationTitle || "함께 더 나은 제품을 만들고 싶습니다."}</h2>
             {portfolio.aspiration && <p>{portfolio.aspiration}</p>}
           </div>
         </section>

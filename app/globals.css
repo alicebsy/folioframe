@@ -4800,6 +4800,56 @@ label em {
   }
 }
 
+/* Dashboard project cards open the full editor */
+.interactive-project-card {
+  cursor: pointer;
+  outline: none;
+}
+
+.interactive-project-card:hover {
+  border-color: #b9ca7c;
+  box-shadow: 0 12px 30px rgba(29, 32, 23, 0.08);
+}
+
+.interactive-project-card:focus-visible {
+  border-color: #8ea849;
+  box-shadow: 0 0 0 4px rgba(190, 225, 88, 0.22);
+}
+
+.interactive-project-card .story-grid-preview {
+  display: none;
+}
+
+.interactive-project-card .project-card-hint {
+  max-width: 170px;
+  color: #81857a;
+  font-size: 10px;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.interactive-project-card .project-preview-button {
+  font-size: 10px;
+}
+
+.interactive-project-card .project-controls {
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .interactive-project-card .project-card-hint {
+    max-width: none;
+    text-align: left;
+  }
+}
+
+@media (max-width: 620px) {
+  .interactive-project-card .project-card-hint {
+    width: 100%;
+    text-align: left;
+  }
+}
+
 .theme-selection-button:disabled {
   cursor: default;
   opacity: 0.56;

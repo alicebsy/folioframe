@@ -745,24 +745,35 @@ export default function DashboardClient({
             <div>
               <span className="eyebrow">PORTFOLIO THEME · 04 / 04</span>
               <h2 id="theme-panel-title">보여주는 방식도 나답게</h2>
-              <p>내용은 그대로 유지하고 발행 화면의 인상만 바꿉니다.</p>
+              <p>카드를 누르면 테마가 저장됩니다. 예시 페이지 보기는 선택을 바꾸지 않습니다.</p>
             </div>
             <span className="theme-current">현재 · {selectedTheme.name}</span>
           </div>
           <div className="theme-picker">
             {themeChoices.map((theme) => (
-              <button
-                type="button"
+              <article
                 key={theme.id}
                 className={`theme-option theme-option-${theme.id} ${data.portfolio.theme === theme.id ? "selected" : ""}`}
-                disabled={!theme.available || loading}
-                aria-pressed={data.portfolio.theme === theme.id}
-                onClick={() => selectTheme(theme.id)}
               >
-                <span className="theme-swatch" aria-hidden="true"><i /><i /><i /></span>
-                <span className="theme-option-copy"><strong>{theme.name}</strong><small>{theme.description}</small></span>
-                <b>{theme.available ? (data.portfolio.theme === theme.id ? "선택됨" : "선택") : "다음 단계"}</b>
-              </button>
+                <button
+                  type="button"
+                  className="theme-selection-button"
+                  disabled={!theme.available || loading}
+                  aria-pressed={data.portfolio.theme === theme.id}
+                  onClick={() => selectTheme(theme.id)}
+                >
+                  <span className="theme-swatch" aria-hidden="true"><i /><i /><i /></span>
+                  <span className="theme-option-copy"><strong>{theme.name}</strong><small>{theme.description}</small></span>
+                  <b>{theme.available ? (data.portfolio.theme === theme.id ? "선택됨" : "이 테마 선택") : "다음 단계"}</b>
+                </button>
+                <a
+                  className="theme-example-button"
+                  href={`/portfolio-preview?theme=${theme.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${theme.name} 테마 예시 페이지 보기`}
+                >예시 페이지 보기 ↗</a>
+              </article>
             ))}
           </div>
         </section>
@@ -842,8 +853,16 @@ export default function DashboardClient({
                 const complete = projectIsComplete(project);
                 return (
                   <article
-                    className={`project-card ${complete ? "complete-card" : "needs-work"}`}
+                    className={`project-card interactive-project-card ${complete ? "complete-card" : "needs-work"}`}
                     key={project.id}
+                    tabIndex={0}
+                    onClick={() => openProject(project)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openProject(project);
+                      }
+                    }}
                   >
                     <div className="project-visual-column">
                       <div className={`project-number tone-${(index % 3) + 1}`}>
@@ -907,14 +926,14 @@ export default function DashboardClient({
                       {!!project.links.length && (
                         <div className="project-meta project-resource-links">
                           {project.links.map((link) => (
-                            <a key={`${project.id}-${link.url}`} href={link.url} target="_blank" rel="noreferrer">
+                            <a key={`${project.id}-${link.url}`} href={link.url} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
                               <Icon name="link" />{link.label}<b>↗</b>
                             </a>
                           ))}
                         </div>
                       )}
                     </div>
-                    <div className="project-controls">
+                    <div className="project-controls" onClick={(event) => event.stopPropagation()}>
                       <div className="visibility-row">
                         <button
                           className={`visibility-toggle ${project.isPublic ? "on" : ""}`}
@@ -940,6 +959,7 @@ export default function DashboardClient({
                         <Icon name="eye" />
                         공개 화면에서 보기
                       </button>
+                      <span className="project-card-hint">카드를 눌러 전체 내용 보기 · 수정</span>
                     </div>
                   </article>
                 );

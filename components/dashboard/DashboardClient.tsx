@@ -10,6 +10,7 @@ import type {
   Portfolio,
   PortfolioTheme,
   Project,
+  ProjectMedia,
   ProjectLink,
 } from "@/lib/models";
 import { projectIsComplete, projectQualityChecks } from "@/lib/models";
@@ -45,6 +46,7 @@ const emptyProject: ProjectDraft = {
   deployment: "",
   coverImageUrl: "",
   videoUrl: "",
+  media: [],
   isPublic: false,
   links: [],
 };
@@ -170,6 +172,16 @@ function compressImageFile(file: File): Promise<string> {
   });
 }
 
+function projectMedia(project: Pick<Project, "media" | "coverImageUrl" | "videoUrl">): ProjectMedia[] {
+  const legacy: ProjectMedia[] = [
+    ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
+    ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
+  ];
+  return [...(project.media ?? []), ...legacy].filter(
+    (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
+  );
+}
+
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
   if (!start && !end) return "";
@@ -275,6 +287,7 @@ export default function DashboardClient({
   const qualityChecks = projectQualityChecks(projectDraft);
   const qualityCount = qualityChecks.filter((item) => item.complete).length;
   const selectedContributions = projectDraft.contribution.split(",").map((item) => item.trim()).filter(Boolean);
+  const selectedMedia = projectMedia(projectDraft);
   const writingGuide = writingGuides.find((guide) =>
     guide.test.test(data.portfolio.jobTitle),
   )!;
@@ -336,7 +349,7 @@ export default function DashboardClient({
   };
 
   const openProject = (project?: Project) => {
-    setProjectDraft(project ? { ...project } : { ...emptyProject, links: [] });
+    setProjectDraft(project ? { ...project, media: projectMedia(project) } : { ...emptyProject, links: [] });
     setOpenPicker(null);
     setProjectModal(true);
   };
@@ -364,21 +377,62 @@ export default function DashboardClient({
     });
   };
 
-  const handleCoverImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleMediaUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
     event.target.value = "";
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      notify("이미지 파일만 업로드할 수 있어요.");
+    if (!files.length) return;
+    if (files.some((file) => !file.type.startsWith("image/"))) {
+      notify("이미지 파일만 여러 장 선택할 수 있어요. 영상은 URL로 추가해 주세요.");
       return;
     }
     try {
-      const coverImageUrl = await compressImageFile(file);
-      setProjectDraft((current) => ({ ...current, coverImageUrl }));
-      notify("대표 이미지를 불러왔습니다.");
+      const uploaded = await Promise.all(files.map(async (file, index) => ({
+        id: `image-${Date.now()}-${index}`,
+        type: "image" as const,
+        url: await compressImageFile(file),
+      })));
+      setProjectDraft((current) => {
+        const nextMedia = [...projectMedia(current), ...uploaded].filter(
+          (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
+        ).slice(0, 12);
+        const firstImage = nextMedia.find((item) => item.type === "image");
+        return { ...current, media: nextMedia, coverImageUrl: firstImage?.url ?? current.coverImageUrl };
+      });
+      notify(`${files.length}장의 이미지를 추가했습니다.`);
     } catch (error) {
       notify((error as { message?: string }).message ?? "이미지를 불러오지 못했습니다.");
     }
+  };
+
+  const addVideoMedia = () => {
+    const url = projectDraft.videoUrl.trim();
+    if (!url) return;
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") throw new Error();
+    } catch {
+      notify("http 또는 https 형식의 영상 URL을 입력해 주세요.");
+      return;
+    }
+    setProjectDraft((current) => {
+      const nextMedia = [...projectMedia(current), { id: `video-${Date.now()}`, type: "video" as const, url }].filter(
+        (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
+      ).slice(0, 12);
+      return { ...current, media: nextMedia, videoUrl: "" };
+    });
+    notify("영상을 추가했습니다.");
+  };
+
+  const removeProjectMedia = (id: string) => {
+    setProjectDraft((current) => {
+      const nextMedia = projectMedia(current).filter((item) => item.id !== id);
+      return {
+        ...current,
+        media: nextMedia,
+        coverImageUrl: nextMedia.find((item) => item.type === "image")?.url ?? "",
+        videoUrl: nextMedia.find((item) => item.type === "video")?.url ?? "",
+      };
+    });
   };
 
   const handleProfileImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -435,6 +489,7 @@ export default function DashboardClient({
           deployment: projectDraft.deployment,
           coverImageUrl: projectDraft.coverImageUrl,
           videoUrl: projectDraft.videoUrl,
+          media: projectMedia(projectDraft),
           isPublic: projectDraft.isPublic,
           links: projectDraft.links,
         };
@@ -1214,21 +1269,33 @@ export default function DashboardClient({
                 )}
               </div>
               <div className="media-editor">
-                <div className={`media-preview ${projectDraft.coverImageUrl || projectDraft.videoUrl ? "has-image" : ""}`} style={!projectDraft.videoUrl && projectDraft.coverImageUrl ? { backgroundImage: `url("${projectDraft.coverImageUrl.replaceAll('"', "%22")}")` } : undefined}>
-                  {projectDraft.videoUrl ? <video src={projectDraft.videoUrl} poster={projectDraft.coverImageUrl || undefined} muted loop autoPlay playsInline /> : !projectDraft.coverImageUrl && <><span>MEDIA</span><b>프로젝트를 대표하는 이미지나 영상을 추가하세요.</b></>}
+                <div className={`media-preview ${selectedMedia.length ? "has-image" : ""}`} style={selectedMedia[0]?.type === "image" ? { backgroundImage: `url("${selectedMedia[0].url.replaceAll('"', "%22")}")` } : undefined}>
+                  {selectedMedia[0]?.type === "video" ? <video src={selectedMedia[0].url} poster={selectedMedia.find((item) => item.type === "image")?.url || undefined} muted loop autoPlay playsInline /> : !selectedMedia.length && <><span>MEDIA</span><b>프로젝트의 사진과 영상을 여러 개 추가하세요.</b></>}
                 </div>
+                {selectedMedia.length > 0 && (
+                  <div className="media-asset-list" aria-label="추가된 프로젝트 미디어">
+                    {selectedMedia.map((item, index) => (
+                      <div className={`media-asset ${item.type}`} key={`${item.id}-${item.url}`}>
+                        {item.type === "video" ? <video src={item.url} muted playsInline /> : <span style={{ backgroundImage: `url("${item.url.replaceAll('"', "%22")}")` }} />}
+                        <small>{item.type === "video" ? "영상" : `사진 ${index + 1}`}</small>
+                        <button type="button" onClick={() => removeProjectMedia(item.id)} aria-label="미디어 삭제">×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="upload-field">
-                  <span className="upload-label">대표 이미지 <em>선택</em></span>
+                  <span className="upload-label">프로젝트 사진 <em>여러 장 선택 가능</em></span>
                   <label className="file-upload-button">
-                    <input type="file" accept="image/*" onChange={handleCoverImageUpload} />
-                    <span>{projectDraft.coverImageUrl ? "다른 이미지 선택" : "내 기기에서 이미지 선택"}</span>
+                    <input type="file" accept="image/*" multiple onChange={handleMediaUpload} />
+                    <span>내 기기에서 사진 추가</span>
                   </label>
-                  <small>컴퓨터나 휴대폰에서 이미지를 선택하세요. 큰 이미지는 자동으로 최적화됩니다.</small>
+                  <small>컴퓨터나 휴대폰에서 여러 장을 선택하세요. 큰 이미지는 자동으로 최적화됩니다. 최대 12개까지 추가할 수 있어요.</small>
                 </div>
                 <label>
-                  대표 영상 URL <em>선택</em>
+                  프로젝트 영상 URL <em>여러 개 추가 가능</em>
                   <input type="url" value={projectDraft.videoUrl} onChange={(event) => setProjectDraft({ ...projectDraft, videoUrl: event.target.value })} placeholder="https://.../project-demo.mp4" />
-                  <small>브라우저에서 직접 재생할 수 있는 MP4·WebM 주소를 넣으면 메인 카드에서 자동 재생됩니다.</small>
+                  <button type="button" className="media-add-button" onClick={addVideoMedia}>영상 추가</button>
+                  <small>브라우저에서 직접 재생할 수 있는 MP4·WebM 주소를 입력하고 추가하세요. 추가된 영상도 위에서 삭제할 수 있습니다.</small>
                 </label>
               </div>
               <div className="story-fields">

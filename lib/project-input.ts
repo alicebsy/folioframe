@@ -1,4 +1,4 @@
-import type { ProjectLink } from "./models";
+import type { ProjectLink, ProjectMedia } from "./models";
 
 export type ProjectInput = {
   title: string;
@@ -25,6 +25,7 @@ export type ProjectInput = {
   deployment: string;
   coverImageUrl: string;
   videoUrl: string;
+  media: ProjectMedia[];
   isPublic: boolean;
   links: ProjectLink[];
 };
@@ -55,6 +56,7 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     deployment: String(body.deployment ?? "").trim().slice(0, 700),
     coverImageUrl: normalizeUrl(body.coverImageUrl),
     videoUrl: normalizeUrl(body.videoUrl),
+    media: normalizeMedia(body.media),
     isPublic: Boolean(body.isPublic),
     links: normalizeLinks(body.links),
   };
@@ -74,6 +76,29 @@ function normalizeUrl(value: unknown) {
   } catch {
     return "";
   }
+}
+
+function normalizeMedia(value: unknown): ProjectMedia[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .slice(0, 12)
+    .map((rawItem, index) => {
+      const item = rawItem && typeof rawItem === "object" ? rawItem as Record<string, unknown> : {};
+      const type = item.type === "video" ? "video" : "image";
+      const url = String(item.url ?? "").trim().slice(0, 1_200_000);
+      const validDataImage = type === "image" && /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(url);
+      if (!validDataImage) {
+        try {
+          const parsed = new URL(url);
+          if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
+        } catch {
+          return null;
+        }
+      }
+      return { id: String(item.id ?? `media-${index}`), type, url } satisfies ProjectMedia;
+    })
+    .filter((item): item is ProjectMedia => Boolean(item))
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index);
 }
 
 function normalizeTechStacks(value: unknown) {

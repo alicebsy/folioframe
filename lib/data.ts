@@ -1,6 +1,6 @@
 import "server-only";
 import { query } from "./db";
-import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectLink } from "./models";
+import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectLink, ProjectMedia } from "./models";
 
 type PortfolioRow = {
   id: string;
@@ -56,12 +56,14 @@ type ProjectRow = {
   deployment: string;
   cover_image_url: string;
   video_url: string;
+  media: ProjectMedia[] | null;
   is_public: boolean;
   display_order: number;
   links: ProjectLink[] | null;
 };
 
 let profileImageColumnReady: Promise<void> | null = null;
+let projectMediaColumnReady: Promise<void> | null = null;
 
 async function ensureProfileImageColumn() {
   if (!profileImageColumnReady) {
@@ -70,6 +72,15 @@ async function ensureProfileImageColumn() {
     ).then(() => undefined);
   }
   await profileImageColumnReady;
+}
+
+export async function ensureProjectMediaColumn() {
+  if (!projectMediaColumnReady) {
+    projectMediaColumnReady = query(
+      `ALTER TABLE projects ADD COLUMN IF NOT EXISTS media JSONB NOT NULL DEFAULT '[]'::jsonb`,
+    ).then(() => undefined);
+  }
+  await projectMediaColumnReady;
 }
 
 function mapPortfolio(row: PortfolioRow): Portfolio {
@@ -103,6 +114,13 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
 }
 
 function mapProject(row: ProjectRow): Project {
+  const legacyMedia: ProjectMedia[] = [
+    ...(row.cover_image_url ? [{ id: "legacy-cover", type: "image" as const, url: row.cover_image_url }] : []),
+    ...(row.video_url ? [{ id: "legacy-video", type: "video" as const, url: row.video_url }] : []),
+  ];
+  const media = [...(row.media ?? []), ...legacyMedia].filter(
+    (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
+  );
   return {
     id: row.id,
     title: row.title,
@@ -129,6 +147,7 @@ function mapProject(row: ProjectRow): Project {
     deployment: row.deployment,
     coverImageUrl: row.cover_image_url,
     videoUrl: row.video_url,
+    media,
     isPublic: row.is_public,
     displayOrder: row.display_order,
     links: row.links ?? [],
@@ -141,7 +160,7 @@ const projectSelect = `
          p.key_decision, p.collaboration, p.learnings, p.next_time,
          p.evidence, p.period_start, p.period_end,
          p.team_size, p.contribution, p.tech_stacks, p.architecture,
-         p.quality_assurance, p.deployment, p.cover_image_url, p.video_url,
+         p.quality_assurance, p.deployment, p.cover_image_url, p.video_url, p.media,
          p.is_public, p.display_order,
          COALESCE(
            json_agg(
@@ -158,6 +177,7 @@ export async function getDashboardData(
   user: DashboardData["user"],
 ): Promise<DashboardData> {
   await ensureProfileImageColumn();
+  await ensureProjectMediaColumn();
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
@@ -191,6 +211,7 @@ export async function getDashboardData(
 
 export async function getPublicPortfolio(slug: string) {
   await ensureProfileImageColumn();
+  await ensureProjectMediaColumn();
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,

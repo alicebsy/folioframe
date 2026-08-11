@@ -23,6 +23,13 @@ export default function PublicProjectDetail({
   project: Project;
   backHref: string;
 }) {
+  const media = [
+    ...(project.media ?? []),
+    ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
+    ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
+  ].filter((item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index);
+  const heroMedia = media[0];
+
   return (
     <main className={`public-shell project-detail-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
       <nav className="public-nav">
@@ -43,15 +50,25 @@ export default function PublicProjectDetail({
           {!!project.techStacks.length && <div className="project-showcase-tags detail-tech-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
         </div>
 
-        <div className={`project-detail-media ${project.videoUrl || project.coverImageUrl ? "has-media" : "empty"}`}>
-          {project.videoUrl ? (
-            <video src={project.videoUrl} poster={project.coverImageUrl || undefined} controls playsInline />
-          ) : project.coverImageUrl ? (
-            <span style={{ backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` }} />
+        <div className={`project-detail-media ${heroMedia ? "has-media" : "empty"}`}>
+          {heroMedia?.type === "video" ? (
+            <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} controls playsInline />
+          ) : heroMedia?.type === "image" ? (
+            <span style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
           ) : (
             <strong>{project.title.slice(0, 1)}</strong>
           )}
         </div>
+        {media.length > 1 && (
+          <div className="project-detail-gallery" aria-label="프로젝트 추가 미디어">
+            {media.slice(1).map((item) => (
+              <figure className={`project-detail-gallery-item ${item.type}`} key={item.id}>
+                {item.type === "video" ? <video src={item.url} controls playsInline /> : <span style={{ backgroundImage: `url("${item.url.replaceAll('"', "%22")}")` }} />}
+                <figcaption>{item.type === "video" ? "프로젝트 영상" : "프로젝트 이미지"}</figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
 
         <div className="project-detail-content">
           <div className="case-scan-grid">

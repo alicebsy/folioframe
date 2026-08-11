@@ -4,6 +4,12 @@ export type ProjectLink = {
   url: string;
 };
 
+export type ProjectMedia = {
+  id: string;
+  type: "image" | "video";
+  url: string;
+};
+
 export type CareerEntry = {
   id: string;
   organization: string;
@@ -56,6 +62,7 @@ export type Project = {
   deployment: string;
   coverImageUrl: string;
   videoUrl: string;
+  media?: ProjectMedia[];
   isPublic: boolean;
   displayOrder: number;
   links: ProjectLink[];

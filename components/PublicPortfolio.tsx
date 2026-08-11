@@ -148,13 +148,19 @@ export default function PublicPortfolio({
         <div className="project-showcase-grid">
           {projects.map((project, index) => {
             const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
+            const media = [
+              ...(project.media ?? []),
+              ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
+              ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
+            ].filter((item, mediaIndex, items) => items.findIndex((candidate) => candidate.url === item.url) === mediaIndex);
+            const heroMedia = media[0];
             return (
               <article className="project-showcase-card" key={project.id}>
                 <a className="project-showcase-media" href={href} aria-label={`${project.title} 상세 보기`}>
-                  {project.videoUrl ? (
-                    <video src={project.videoUrl} poster={project.coverImageUrl || undefined} autoPlay muted loop playsInline />
-                  ) : project.coverImageUrl ? (
-                    <span className="project-showcase-image" style={{ backgroundImage: `url("${project.coverImageUrl.replaceAll('"', "%22")}")` }} />
+                  {heroMedia?.type === "video" ? (
+                    <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
+                  ) : heroMedia?.type === "image" ? (
+                    <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
                   ) : (
                     <span className="project-showcase-placeholder">{project.title.slice(0, 1)}</span>
                   )}

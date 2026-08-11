@@ -841,7 +841,8 @@ export default function DashboardClient({
                     <label>중요하게 생각하는 가치<textarea value={profileDraft.values} onChange={(event) => setProfileDraft({ ...profileDraft, values: event.target.value })} placeholder="좋은 제품과 좋은 동료 관계에서 중요하게 보는 기준을 적어 주세요." /></label>
                   </div>
                   <label>앞으로의 방향<textarea value={profileDraft.lookingFor} onChange={(event) => setProfileDraft({ ...profileDraft, lookingFor: event.target.value })} placeholder="앞으로 맡고 싶은 역할과 함께 성장하고 싶은 환경을 적어 주세요." /></label>
-                  <label>포트폴리오 마무리 문구<textarea value={profileDraft.aspiration ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspiration: event.target.value })} placeholder="마지막으로 어떤 개발자로 기억되고 싶은지, 함께 일할 사람에게 전하고 싶은 말을 적어 주세요." /></label>
+                  <label>마무리 제목<input value={profileDraft.aspirationTitle ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspirationTitle: event.target.value })} placeholder="예: 오래 쓰이는 제품을 만드는 개발자" /></label>
+                  <label>마무리 문구<textarea value={profileDraft.aspiration ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspiration: event.target.value })} placeholder="마지막으로 어떤 개발자로 기억되고 싶은지, 함께 일할 사람에게 전하고 싶은 말을 적어 주세요." /></label>
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">

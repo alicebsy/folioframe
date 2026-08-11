@@ -93,6 +93,7 @@ export type Portfolio = {
   values: string;
   lookingFor: string;
   aspiration?: string;
+  aspirationTitle?: string;
   resumeUrl: string;
   githubUrl: string;
   linkedinUrl: string;

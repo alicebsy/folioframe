@@ -95,6 +95,7 @@ export async function POST(request: Request) {
     const values = String(body.values ?? "").trim().slice(0, 300);
     const lookingFor = String(body.lookingFor ?? "").trim().slice(0, 300);
     const aspiration = String(body.aspiration ?? "").trim().slice(0, 500);
+    const aspirationTitle = String(body.aspirationTitle ?? "").trim().slice(0, 120);
     const resumeUrl = normalizeUrl(body.resumeUrl);
     const githubUrl = normalizeUrl(body.githubUrl);
     const linkedinUrl = normalizeUrl(body.linkedinUrl);
@@ -115,13 +116,13 @@ export async function POST(request: Request) {
           SET name = $1, job_title = $2, bio = $3, contact_email = $4,
               slug = $5, experience_level = $6, interests = $7, strengths = $8,
               about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
-              aspiration = $13, resume_url = $14, github_url = $15, linkedin_url = $16,
-              blog_url = $17, careers = $18::jsonb, core_skills = $19,
-              educations = $20::jsonb, certificates = $21::jsonb,
-              profile_image_url = $22, updated_at = NOW()
-        WHERE owner_id = $23`,
+              aspiration = $13, aspiration_title = $14, resume_url = $15, github_url = $16,
+              linkedin_url = $17, blog_url = $18, careers = $19::jsonb, core_skills = $20,
+              educations = $21::jsonb, certificates = $22::jsonb,
+              profile_image_url = $23, updated_at = NOW()
+        WHERE owner_id = $24`,
       [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
-        interests, strengths, aboutMe, workStyle, values, lookingFor, aspiration,
+        interests, strengths, aboutMe, workStyle, values, lookingFor, aspiration, aspirationTitle,
         resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), coreSkills,
         JSON.stringify(educations), JSON.stringify(certificates), profileImageUrl, user.id],
     );

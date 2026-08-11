@@ -135,6 +135,14 @@ const techChoices: Array<{ label: string; kind: ChoiceKind }> = [
   { label: "Playwright", kind: "general" },
 ];
 
+function getChoiceKind(value: string, choices: Array<{ label: string; kind: ChoiceKind }>): ChoiceKind {
+  const exact = choices.find((choice) => choice.label === value)?.kind;
+  if (exact) return exact;
+  if (/프론트엔드|frontend/i.test(value)) return "frontend";
+  if (/백엔드|backend/i.test(value)) return "backend";
+  return "general";
+}
+
 function compressImageFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1010,12 +1018,12 @@ export default function DashboardClient({
                       </p>
                       <div className="project-keywords" aria-label="프로젝트 핵심 키워드">
                         {project.contribution.split(",").map((item) => item.trim()).filter(Boolean).map((contribution) => {
-                          const kind = contributionChoices.find((choice) => choice.label === contribution)?.kind ?? "general";
+                          const kind = getChoiceKind(contribution, contributionChoices);
                           return <b className={`keyword-chip contribution-chip ${kind}`} key={contribution}>{contribution}</b>;
                         })}
                         {project.role && <b className="keyword-chip role-chip">{project.role}</b>}
                         {project.techStacks.filter(Boolean).slice(0, 5).map((tech) => {
-                          const kind = techChoices.find((choice) => choice.label === tech)?.kind ?? "general";
+                          const kind = getChoiceKind(tech, techChoices);
                           return <b className={`keyword-chip tech-chip ${kind}`} key={tech}>{tech}</b>;
                         })}
                       </div>
@@ -1119,8 +1127,7 @@ export default function DashboardClient({
                   {selectedContributions.length > 0 && (
                     <div className="selected-chip-list contribution-chip-list">
                       {selectedContributions.map((contribution) => {
-                        const choice = contributionChoices.find((item) => item.label === contribution);
-                        return <span className={`selected-chip ${choice?.kind ?? "general"}`} key={contribution}>{contribution}<button type="button" onClick={() => toggleContribution(contribution)} aria-label={`${contribution} 선택 해제`}>×</button></span>;
+                        return <span className={`selected-chip ${getChoiceKind(contribution, contributionChoices)}`} key={contribution}>{contribution}<button type="button" onClick={() => toggleContribution(contribution)} aria-label={`${contribution} 선택 해제`}>×</button></span>;
                       })}
                     </div>
                   )}
@@ -1154,8 +1161,7 @@ export default function DashboardClient({
                 {projectDraft.techStacks.length > 0 && (
                   <div className="selected-chip-list">
                     {projectDraft.techStacks.map((tech) => {
-                      const choice = techChoices.find((item) => item.label === tech);
-                      return <span className={`selected-chip ${choice?.kind ?? "general"}`} key={tech}>{tech}<button type="button" onClick={() => toggleTechStack(tech)} aria-label={`${tech} 선택 해제`}>×</button></span>;
+                      return <span className={`selected-chip ${getChoiceKind(tech, techChoices)}`} key={tech}>{tech}<button type="button" onClick={() => toggleTechStack(tech)} aria-label={`${tech} 선택 해제`}>×</button></span>;
                     })}
                   </div>
                 )}

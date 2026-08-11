@@ -90,17 +90,17 @@ const themeChoices: Array<{
 ];
 
 type PickerName = "contribution" | "tech" | null;
-type ChoiceKind = "frontend" | "backend" | "general";
+type ChoiceKind = "frontend" | "backend" | "general" | "fullstack" | "planning" | "design" | "data" | "qa" | "ops";
 
 const contributionChoices: Array<{ label: string; kind: ChoiceKind }> = [
   { label: "프론트엔드 개발", kind: "frontend" },
   { label: "백엔드 개발", kind: "backend" },
-  { label: "풀스택 개발", kind: "general" },
-  { label: "기획", kind: "general" },
-  { label: "UI/UX 디자인", kind: "general" },
-  { label: "데이터 분석", kind: "general" },
-  { label: "테스트·QA", kind: "general" },
-  { label: "배포·운영", kind: "general" },
+  { label: "풀스택 개발", kind: "fullstack" },
+  { label: "기획", kind: "planning" },
+  { label: "UI/UX 디자인", kind: "design" },
+  { label: "데이터 분석", kind: "data" },
+  { label: "테스트·QA", kind: "qa" },
+  { label: "배포·운영", kind: "ops" },
 ];
 
 const techChoices: Array<{ label: string; kind: ChoiceKind }> = [
@@ -717,7 +717,14 @@ export default function DashboardClient({
             className={`profile-avatar ${profileDraft.profileImageUrl ? "has-image" : ""}`}
             style={profileDraft.profileImageUrl ? { backgroundImage: `url("${profileDraft.profileImageUrl.replaceAll('"', "%22")}")` } : undefined}
           >
-            {!profileDraft.profileImageUrl && <span>{(profileDraft.name || data.user.email).slice(0, 1).toUpperCase()}</span>}
+            {!profileDraft.profileImageUrl && (
+              <span className="profile-mannequin" aria-label="프로필 사진 placeholder">
+                <svg viewBox="0 0 80 104" aria-hidden="true">
+                  <circle cx="40" cy="20" r="13" />
+                  <path d="M18 91c2-20 10-34 22-34s20 14 22 34M28 57l-9 29M52 57l9 29M31 91h18" />
+                </svg>
+              </span>
+            )}
             {profileEditing && (
               <label className="profile-avatar-upload">
                 <input type="file" accept="image/*" onChange={handleProfileImageUpload} />

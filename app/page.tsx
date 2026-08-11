@@ -10,7 +10,7 @@ export default async function Home() {
         <a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a>
         <div className="landing-nav-actions">
           <a className="landing-text-link" href="#templates">테마 예시</a>
-          <a className="landing-login" href={isLoggedIn ? "/dashboard" : "/login"}>{isLoggedIn ? "마이페이지" : "로그인"}</a>
+          <a className="landing-login" href={isLoggedIn ? "/api/auth/logout" : "/login"}>{isLoggedIn ? "로그아웃" : "로그인"}</a>
           <a className="landing-nav-cta" href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "포트폴리오 만들기"}</a>
         </div>
       </nav>

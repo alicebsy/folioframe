@@ -10,3 +10,12 @@ export async function POST() {
     return serverError(error);
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    await deleteSession();
+    return NextResponse.redirect(new URL("/", request.url));
+  } catch (error) {
+    return serverError(error);
+  }
+}

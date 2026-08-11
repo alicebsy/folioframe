@@ -718,17 +718,16 @@ export default function DashboardClient({
             style={profileDraft.profileImageUrl ? { backgroundImage: `url("${profileDraft.profileImageUrl.replaceAll('"', "%22")}")` } : undefined}
           >
             {!profileDraft.profileImageUrl && (
-              <span className="profile-mannequin" aria-label="프로필 사진 placeholder">
-                <svg viewBox="0 0 80 104" aria-hidden="true">
-                  <circle cx="40" cy="20" r="13" />
-                  <path d="M18 91c2-20 10-34 22-34s20 14 22 34M28 57l-9 29M52 57l9 29M31 91h18" />
+              <span className="profile-default-avatar" aria-label="기본 프로필 사진">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <circle cx="50" cy="31" r="18" />
+                  <path d="M14 88c2-22 16-34 36-34s34 12 36 34Z" />
                 </svg>
               </span>
             )}
             {profileEditing && (
-              <label className="profile-avatar-upload">
+              <label className="profile-avatar-picker" aria-label="프로필 사진 추가 또는 수정">
                 <input type="file" accept="image/*" onChange={handleProfileImageUpload} />
-                <span>{profileDraft.profileImageUrl ? "사진 변경" : "사진 추가"}</span>
               </label>
             )}
           </div>

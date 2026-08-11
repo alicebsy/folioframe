@@ -8744,3 +8744,46 @@ label em {
     font-size: 14px;
   }
 }
+
+/* Default avatar: simple rounded profile silhouette, clickable while editing */
+.profile-avatar:not(.has-image) {
+  display: grid;
+  place-items: center;
+  background: #eef4dc;
+}
+
+.profile-default-avatar {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  color: #91aa4a;
+}
+
+.profile-default-avatar svg {
+  width: 78px;
+  height: 78px;
+  fill: currentColor;
+}
+
+.profile-avatar-picker {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+}
+
+.profile-avatar-picker:hover {
+  background: rgba(216, 255, 77, 0.16);
+}
+
+.profile-avatar-picker input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

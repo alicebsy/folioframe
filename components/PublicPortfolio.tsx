@@ -72,7 +72,7 @@ export default function PublicPortfolio({
         </div>
       </div>
 
-      {(portfolio.aboutMe || portfolio.workStyle || portfolio.values) && (
+      {(portfolio.aboutMe || portfolio.workStyle || portfolio.values || portfolio.lookingFor) && (
         <section className="identity-section">
           <div className="identity-heading">
             <span>ABOUT ME</span>
@@ -83,6 +83,7 @@ export default function PublicPortfolio({
             <div className="identity-grid">
               {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p>{portfolio.workStyle}</p></article>}
               {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p>{portfolio.values}</p></article>}
+              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p>{portfolio.lookingFor}</p></article>}
             </div>
           </div>
         </section>
@@ -182,12 +183,12 @@ export default function PublicPortfolio({
         </div>
       </section>
 
-      {portfolio.lookingFor && (
+      {portfolio.aspiration && (
         <section className="aspiration-section">
           <div className="aspiration-inner">
             <span>MY ASPIRATION</span>
             <h2>앞으로 만들고 싶은<br /><em>변화를 이야기합니다.</em></h2>
-            <p>{portfolio.lookingFor}</p>
+            <p>{portfolio.aspiration}</p>
           </div>
         </section>
       )}

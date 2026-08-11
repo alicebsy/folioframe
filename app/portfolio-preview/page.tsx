@@ -20,6 +20,7 @@ export const portfolio: Portfolio = {
   workStyle: "문제를 재현한 뒤 가설과 로그를 남기고, 작은 단위로 구현해 빠르게 검증합니다. 코드 리뷰에서 선택의 이유를 설명하고 팀이 다시 사용할 수 있는 문서와 컴포넌트를 남깁니다.",
   values: "빠르게 만드는 것과 안정적으로 운영하는 것 사이의 균형, 그리고 동료가 이해할 수 있는 코드를 중요하게 생각합니다.",
   lookingFor: "사용자와 가까운 웹 제품을 만들며 프론트엔드 구조, 성능, 품질을 함께 책임지는 개발자로 성장하고 싶습니다.",
+  aspiration: "좋은 동료와 함께 복잡한 문제를 단순한 경험으로 바꾸고, 오래 쓰이는 제품을 만드는 개발자가 되고 싶습니다.",
   resumeUrl: "https://folioframe-lake.vercel.app/portfolio-preview",
   githubUrl: "https://github.com/alicebsy/folioframe",
   linkedinUrl: "https://www.linkedin.com/",

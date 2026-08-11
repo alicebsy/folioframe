@@ -21,6 +21,7 @@ type PortfolioRow = {
   work_style: string;
   personal_values: string;
   looking_for: string;
+  aspiration: string;
   resume_url: string;
   github_url: string;
   linkedin_url: string;
@@ -68,7 +69,9 @@ let projectMediaColumnReady: Promise<void> | null = null;
 async function ensureProfileImageColumn() {
   if (!profileImageColumnReady) {
     profileImageColumnReady = query(
-      `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS profile_image_url TEXT NOT NULL DEFAULT ''`,
+      `ALTER TABLE portfolios
+         ADD COLUMN IF NOT EXISTS profile_image_url TEXT NOT NULL DEFAULT '',
+         ADD COLUMN IF NOT EXISTS aspiration TEXT NOT NULL DEFAULT ''`,
     ).then(() => undefined);
   }
   await profileImageColumnReady;
@@ -103,6 +106,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     workStyle: row.work_style,
     values: row.personal_values,
     lookingFor: row.looking_for,
+    aspiration: row.aspiration ?? "",
     resumeUrl: row.resume_url,
     githubUrl: row.github_url,
     linkedinUrl: row.linkedin_url,
@@ -181,7 +185,7 @@ export async function getDashboardData(
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
-            about_me, work_style, personal_values, looking_for,
+            about_me, work_style, personal_values, looking_for, aspiration,
             resume_url, github_url, linkedin_url, blog_url, careers, educations, certificates
        FROM portfolios
       WHERE owner_id = $1
@@ -215,7 +219,7 @@ export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
-            p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for,
+            p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for, p.aspiration,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,
             p.careers, p.educations, p.certificates, u.email
        FROM portfolios p

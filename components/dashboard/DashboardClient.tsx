@@ -833,14 +833,15 @@ export default function DashboardClient({
                 />
               </label>
               <details className="editor-disclosure profile-disclosure" open>
-                <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 포부</small></summary>
+                <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향 · 마무리</small></summary>
                 <div className="disclosure-content identity-editor">
                   <label>나에 대한 소개<textarea value={profileDraft.aboutMe} onChange={(event) => setProfileDraft({ ...profileDraft, aboutMe: event.target.value })} placeholder="어떤 경험을 통해 지금의 내가 되었고, 어떤 문제를 풀 때 가장 몰입하는지 이야기해 주세요." /></label>
                   <div className="form-row two">
                     <label>일하는 방식<textarea value={profileDraft.workStyle} onChange={(event) => setProfileDraft({ ...profileDraft, workStyle: event.target.value })} placeholder="협업하고 판단하며 일을 끝내는 나만의 방식을 적어 주세요." /></label>
                     <label>중요하게 생각하는 가치<textarea value={profileDraft.values} onChange={(event) => setProfileDraft({ ...profileDraft, values: event.target.value })} placeholder="좋은 제품과 좋은 동료 관계에서 중요하게 보는 기준을 적어 주세요." /></label>
                   </div>
-                  <label>나의 포부<textarea value={profileDraft.lookingFor} onChange={(event) => setProfileDraft({ ...profileDraft, lookingFor: event.target.value })} placeholder="어떤 개발자로 성장하고 싶은지, 앞으로 만들고 싶은 변화를 적어 주세요." /></label>
+                  <label>앞으로의 방향<textarea value={profileDraft.lookingFor} onChange={(event) => setProfileDraft({ ...profileDraft, lookingFor: event.target.value })} placeholder="앞으로 맡고 싶은 역할과 함께 성장하고 싶은 환경을 적어 주세요." /></label>
+                  <label>포트폴리오 마무리 문구<textarea value={profileDraft.aspiration ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspiration: event.target.value })} placeholder="마지막으로 어떤 개발자로 기억되고 싶은지, 함께 일할 사람에게 전하고 싶은 말을 적어 주세요." /></label>
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">

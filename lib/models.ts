@@ -92,6 +92,7 @@ export type Portfolio = {
   workStyle: string;
   values: string;
   lookingFor: string;
+  aspiration?: string;
   resumeUrl: string;
   githubUrl: string;
   linkedinUrl: string;

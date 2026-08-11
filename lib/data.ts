@@ -61,6 +61,17 @@ type ProjectRow = {
   links: ProjectLink[] | null;
 };
 
+let profileImageColumnReady: Promise<void> | null = null;
+
+async function ensureProfileImageColumn() {
+  if (!profileImageColumnReady) {
+    profileImageColumnReady = query(
+      `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS profile_image_url TEXT NOT NULL DEFAULT ''`,
+    ).then(() => undefined);
+  }
+  await profileImageColumnReady;
+}
+
 function mapPortfolio(row: PortfolioRow): Portfolio {
   return {
     id: row.id,
@@ -146,6 +157,7 @@ const projectSelect = `
 export async function getDashboardData(
   user: DashboardData["user"],
 ): Promise<DashboardData> {
+  await ensureProfileImageColumn();
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
@@ -178,6 +190,7 @@ export async function getDashboardData(
 }
 
 export async function getPublicPortfolio(slug: string) {
+  await ensureProfileImageColumn();
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,

@@ -71,6 +71,9 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    await query(
+      `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS profile_image_url TEXT NOT NULL DEFAULT ''`,
+    );
     const name = String(body.name ?? "").trim().slice(0, 30);
     const profileImageUrl = normalizeProfileImage(body.profileImageUrl);
     const jobTitle = String(body.jobTitle ?? "").trim().slice(0, 50);

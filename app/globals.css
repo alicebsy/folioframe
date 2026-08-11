@@ -8827,9 +8827,11 @@ label em {
 .project-detail-shell .project-detail-intro h1 {
   max-width: 800px;
   margin: 20px 0 19px;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(36px, 4.2vw, 56px);
+  font-weight: 800;
   line-height: 1.18;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.07em;
   text-wrap: balance;
 }
 
@@ -8875,6 +8877,7 @@ label em {
 
 .project-detail-shell .project-detail-content {
   max-width: 940px;
+  margin-right: auto;
   margin-left: auto;
 }
 
@@ -8922,6 +8925,8 @@ label em {
 
 .project-detail-shell .case-detail-heading h4,
 .project-detail-shell .case-resources-wrap > div:first-child h4 {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 800;
   font-size: 22px;
   line-height: 1.35;
   letter-spacing: -0.045em;
@@ -8945,7 +8950,9 @@ label em {
 
 .project-detail-shell .focused-case-story h4 {
   margin: 11px 0 9px;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 17px;
+  font-weight: 700;
   line-height: 1.45;
 }
 
@@ -8975,7 +8982,9 @@ label em {
 }
 
 .project-detail-shell .engineering-notes-heading h4 {
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 22px;
+  font-weight: 800;
   line-height: 1.35;
 }
 
@@ -8990,7 +8999,9 @@ label em {
 
 .project-detail-shell .engineering-notes-grid h5 {
   margin: 13px 0 10px;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
+  font-weight: 700;
   line-height: 1.5;
 }
 

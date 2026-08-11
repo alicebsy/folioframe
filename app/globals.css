@@ -9293,3 +9293,28 @@ label em {
     gap: 14px;
   }
 }
+
+/* Published portfolio: consistent weight hierarchy across every section */
+.public-shell:not(.project-detail-shell) :is(.hero-grid h1, .portfolio-section-title h2, .identity-heading h2, .career-section-title h2, .project-showcase-copy h3, .public-footer h2) {
+  font-weight: 700;
+}
+
+.public-shell:not(.project-detail-shell) :is(.hero-side > strong, .career-timeline h3, .project-showcase-copy h3 a, .project-detail-link) {
+  font-weight: 700;
+}
+
+.public-shell:not(.project-detail-shell) :is(.hero-grid > div > p, .identity-lead, .identity-grid p, .career-timeline p, .project-showcase-copy > p) {
+  font-weight: 400;
+}
+
+.public-shell:not(.project-detail-shell) :is(.career-timeline strong, .project-showcase-meta, .project-showcase-tags span, .portfolio-section-title > p) {
+  font-weight: 600;
+}
+
+.theme-bold:not(.project-detail-shell) :is(.hero-grid h1, .portfolio-section-title h2, .identity-heading h2, .career-section-title h2, .project-showcase-copy h3, .public-footer h2) {
+  font-weight: 900;
+}
+
+.theme-noir:not(.project-detail-shell) :is(.hero-grid h1, .portfolio-section-title h2, .identity-heading h2, .career-section-title h2, .project-showcase-copy h3, .public-footer h2) {
+  font-weight: 700;
+}

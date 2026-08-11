@@ -69,6 +69,7 @@ export type ProjectQualityCheck = {
 export type Portfolio = {
   id: string;
   name: string;
+  profileImageUrl: string;
   jobTitle: string;
   bio: string;
   contactEmail: string;

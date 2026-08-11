@@ -4,6 +4,7 @@ import type { Portfolio, PortfolioTheme, Project } from "@/lib/models";
 export const portfolio: Portfolio = {
   id: "preview-portfolio",
   name: "김코덱스",
+  profileImageUrl: "",
   jobTitle: "프론트엔드 개발자",
   bio: "사용자 경험과 안정적인 구조를 함께 설계하는 프론트엔드 개발자입니다.",
   contactEmail: "hello@folioframe.kr",

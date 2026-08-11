@@ -5,6 +5,7 @@ import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Port
 type PortfolioRow = {
   id: string;
   name: string;
+  profile_image_url: string;
   job_title: string;
   bio: string;
   contact_email: string | null;
@@ -64,6 +65,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
   return {
     id: row.id,
     name: row.name,
+    profileImageUrl: row.profile_image_url ?? "",
     jobTitle: row.job_title,
     bio: row.bio,
     contactEmail: row.contact_email ?? "",
@@ -145,7 +147,7 @@ export async function getDashboardData(
   user: DashboardData["user"],
 ): Promise<DashboardData> {
   const portfolioResult = await query<PortfolioRow>(
-    `SELECT id, name, job_title, bio, contact_email, slug,
+    `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
             about_me, work_style, personal_values, looking_for,
             resume_url, github_url, linkedin_url, blog_url, careers, educations, certificates
@@ -177,7 +179,7 @@ export async function getDashboardData(
 
 export async function getPublicPortfolio(slug: string) {
   const portfolioResult = await query<PortfolioRow & { email: string }>(
-    `SELECT p.id, p.name, p.job_title, p.bio, p.contact_email, p.slug,
+    `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
             p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,

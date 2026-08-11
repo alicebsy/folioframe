@@ -306,6 +306,7 @@ a {
 }
 
 .profile-avatar {
+  position: relative;
   width: 84px;
   height: 84px;
   flex: 0 0 auto;
@@ -317,6 +318,43 @@ a {
     #262820;
   color: var(--lime);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar.has-image {
+  background-position: center;
+  background-size: cover;
+}
+
+.profile-avatar-upload {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  min-width: 52px;
+  padding: 6px 7px;
+  display: grid;
+  place-items: center;
+  color: #29301f;
+  background: var(--lime);
+  border: 2px solid var(--white);
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(29, 32, 23, 0.14);
+}
+
+.profile-avatar-upload:hover {
+  background: #e3ff82;
+}
+
+.profile-avatar-upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .profile-avatar span {
@@ -1252,6 +1290,11 @@ label em {
   font-family: "Gowun Batang", serif;
   font-size: 40px;
   font-weight: 700;
+}
+
+.large-avatar.has-image {
+  background-position: center;
+  background-size: cover;
 }
 
 .hero-side strong {

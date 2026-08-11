@@ -1,9 +1,8 @@
 import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await getCurrentUser();
-  if (user) redirect("/dashboard");
+  const isLoggedIn = Boolean(user);
 
   return (
     <main className="landing-shell">
@@ -11,8 +10,8 @@ export default async function Home() {
         <a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a>
         <div className="landing-nav-actions">
           <a className="landing-text-link" href="#templates">테마 예시</a>
-          <a className="landing-login" href="/login">로그인</a>
-          <a className="landing-nav-cta" href="/login?mode=register">포트폴리오 만들기</a>
+          <a className="landing-login" href={isLoggedIn ? "/dashboard" : "/login"}>{isLoggedIn ? "마이페이지" : "로그인"}</a>
+          <a className="landing-nav-cta" href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "포트폴리오 만들기"}</a>
         </div>
       </nav>
 
@@ -22,7 +21,7 @@ export default async function Home() {
           <h1>코드만큼 중요한<br /><em>개발의 맥락</em>을<br />보여주세요.</h1>
           <p>기술 선택부터 구현, 검증, 배포까지. 개발자가 만든 결과와 판단을 면접관이 한눈에 이해할 수 있는 포트폴리오로 정리합니다.</p>
           <div className="landing-hero-actions">
-            <a className="landing-primary-cta" href="/login?mode=register">무료로 시작하기 <span>→</span></a>
+            <a className="landing-primary-cta" href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "무료로 시작하기"} <span>→</span></a>
             <a className="landing-secondary-cta" href="#templates">예시 포트폴리오 보기</a>
           </div>
           <div className="landing-trust"><span>프로젝트</span><i /><span>기술 스택</span><i /><span>경험과 자격</span><i /><span>배포 링크</span></div>
@@ -61,10 +60,10 @@ export default async function Home() {
       </section>
 
       <section className="landing-final">
-        <span>YOUR NEXT PORTFOLIO</span><h2>이제, 만든 것을<br /><em>제대로 보여줄 차례.</em></h2><p>프로젝트 하나부터 시작해도 충분합니다.</p><a href="/login?mode=register">포트폴리오 만들기 <b>→</b></a>
+        <span>YOUR NEXT PORTFOLIO</span><h2>이제, 만든 것을<br /><em>제대로 보여줄 차례.</em></h2><p>프로젝트 하나부터 시작해도 충분합니다.</p><a href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "포트폴리오 만들기"} <b>→</b></a>
       </section>
 
-      <footer className="landing-footer"><a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a><span>DEVELOPER PORTFOLIO, MADE CLEAR.</span><a href="/login">로그인</a></footer>
+      <footer className="landing-footer"><a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a><span>DEVELOPER PORTFOLIO, MADE CLEAR.</span><a href={isLoggedIn ? "/dashboard" : "/login"}>{isLoggedIn ? "마이페이지" : "로그인"}</a></footer>
     </main>
   );
 }

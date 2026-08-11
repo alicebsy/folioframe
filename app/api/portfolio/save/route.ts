@@ -23,6 +23,13 @@ function normalizeUrl(value: unknown) {
   }
 }
 
+function normalizeProfileImage(value: unknown) {
+  const image = String(value ?? "").trim();
+  if (!image) return "";
+  if (image.length > 2_000_000) return "";
+  return /^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(image) ? image : "";
+}
+
 function normalizeCareers(value: unknown): CareerEntry[] {
   if (!Array.isArray(value)) return [];
   return value.slice(0, 8).map((entry, index) => ({
@@ -65,6 +72,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const name = String(body.name ?? "").trim().slice(0, 30);
+    const profileImageUrl = normalizeProfileImage(body.profileImageUrl);
     const jobTitle = String(body.jobTitle ?? "").trim().slice(0, 50);
     const bio = String(body.bio ?? "").trim().slice(0, 160);
     const contactEmail = String(body.contactEmail ?? "").trim().slice(0, 120);
@@ -105,12 +113,13 @@ export async function POST(request: Request) {
               about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
               resume_url = $13, github_url = $14, linkedin_url = $15,
               blog_url = $16, careers = $17::jsonb, core_skills = $18,
-              educations = $19::jsonb, certificates = $20::jsonb, updated_at = NOW()
-        WHERE owner_id = $21`,
+              educations = $19::jsonb, certificates = $20::jsonb,
+              profile_image_url = $21, updated_at = NOW()
+        WHERE owner_id = $22`,
       [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
         interests, strengths, aboutMe, workStyle, values, lookingFor,
         resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), coreSkills,
-        JSON.stringify(educations), JSON.stringify(certificates), user.id],
+        JSON.stringify(educations), JSON.stringify(certificates), profileImageUrl, user.id],
     );
 
     return NextResponse.json({ ok: true });

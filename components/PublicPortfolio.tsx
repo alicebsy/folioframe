@@ -44,7 +44,12 @@ export default function PublicPortfolio({
             )}
           </div>
           <div className="hero-side">
-            <div className="large-avatar">{portfolio.name.slice(0, 1)}</div>
+            <div
+              className={`large-avatar ${portfolio.profileImageUrl ? "has-image" : ""}`}
+              style={portfolio.profileImageUrl ? { backgroundImage: `url("${portfolio.profileImageUrl.replaceAll('"', "%22")}")` } : undefined}
+            >
+              {!portfolio.profileImageUrl && portfolio.name.slice(0, 1)}
+            </div>
             <strong>{portfolio.jobTitle}</strong>
             {portfolio.contactEmail && (
               <a href={`mailto:${portfolio.contactEmail}`}>{portfolio.contactEmail}</a>

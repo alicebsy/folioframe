@@ -381,6 +381,23 @@ export default function DashboardClient({
     }
   };
 
+  const handleProfileImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      notify("이미지 파일만 업로드할 수 있어요.");
+      return;
+    }
+    try {
+      const profileImageUrl = await compressImageFile(file);
+      setProfileDraft((current) => ({ ...current, profileImageUrl }));
+      notify("프로필 사진을 불러왔습니다.");
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "프로필 사진을 불러오지 못했습니다.");
+    }
+  };
+
   const saveProject = async () => {
     if (!projectDraft.title.trim()) {
       notify("프로젝트명을 입력해 주세요.");
@@ -632,7 +649,7 @@ export default function DashboardClient({
   return (
     <main className="dashboard-shell">
       <header className="topbar">
-        <a className="brand" href="/dashboard">
+        <a className="brand" href="/">
           <span className="brand-mark">✦</span>
           <span>Folioframe</span>
         </a>
@@ -696,8 +713,17 @@ export default function DashboardClient({
         </div>
 
         <section className="profile-card panel">
-          <div className="profile-avatar">
-            <span>{(profileDraft.name || data.user.email).slice(0, 1).toUpperCase()}</span>
+          <div
+            className={`profile-avatar ${profileDraft.profileImageUrl ? "has-image" : ""}`}
+            style={profileDraft.profileImageUrl ? { backgroundImage: `url("${profileDraft.profileImageUrl.replaceAll('"', "%22")}")` } : undefined}
+          >
+            {!profileDraft.profileImageUrl && <span>{(profileDraft.name || data.user.email).slice(0, 1).toUpperCase()}</span>}
+            {profileEditing && (
+              <label className="profile-avatar-upload">
+                <input type="file" accept="image/*" onChange={handleProfileImageUpload} />
+                <span>{profileDraft.profileImageUrl ? "사진 변경" : "사진 추가"}</span>
+              </label>
+            )}
           </div>
           {profileEditing ? (
             <div className="profile-form">

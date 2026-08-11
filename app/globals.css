@@ -4363,6 +4363,209 @@ label em {
   }
 }
 
+/* Dashboard editor usability pass */
+.profile-card:has(.profile-form) {
+  padding: 30px 32px;
+}
+
+.profile-card:has(.profile-form) .profile-edit {
+  position: sticky;
+  top: 88px;
+  z-index: 4;
+  flex: 0 0 auto;
+  box-shadow: 0 6px 18px rgba(29, 32, 23, 0.08);
+}
+
+.project-modal {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.project-modal .modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+}
+
+.project-modal .modal-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.project-modal .modal-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  flex: 0 0 auto;
+  background: rgba(250, 250, 247, 0.96);
+  backdrop-filter: blur(14px);
+}
+
+@media (max-width: 620px) {
+  .profile-card:has(.profile-form) {
+    padding: 22px 18px;
+  }
+
+  .profile-card:has(.profile-form) .profile-edit {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .project-modal .modal-header,
+  .project-modal .modal-footer {
+    position: static;
+  }
+}
+
+/* Dashboard readability pass */
+.dashboard-shell {
+  font-size: 15px;
+}
+
+.dashboard-shell .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.13em;
+}
+
+.dashboard-shell .page-intro > div > p {
+  max-width: 680px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.dashboard-shell .publish-summary {
+  min-width: 330px;
+  padding: 17px 18px;
+}
+
+.dashboard-shell .publish-summary strong {
+  font-size: 14px;
+}
+
+.dashboard-shell .publish-summary span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dashboard-shell .profile-title h2 {
+  font-size: 24px;
+}
+
+.dashboard-shell .profile-copy > p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.dashboard-shell .profile-about-preview {
+  font-size: 13px !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 3;
+}
+
+.dashboard-shell .profile-summary-chips span,
+.dashboard-shell .profile-summary-chips b {
+  padding: 6px 9px;
+  font-size: 11px;
+}
+
+.dashboard-shell .theme-panel-heading p,
+.dashboard-shell .section-heading p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.dashboard-shell .theme-current {
+  font-size: 11px;
+}
+
+.dashboard-shell .project-title-row h3 {
+  font-size: 21px;
+}
+
+.dashboard-shell .source-badge,
+.dashboard-shell .completion-badge {
+  padding: 5px 8px;
+  font-size: 11px;
+}
+
+.dashboard-shell .project-main > p {
+  color: #5f6259;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.dashboard-shell .evidence-meta span,
+.dashboard-shell .evidence-meta b {
+  padding: 6px 9px;
+  font-size: 11px;
+}
+
+.dashboard-shell .project-scan span {
+  font-size: 10px;
+}
+
+.dashboard-shell .project-scan strong {
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-line-clamp: 3;
+}
+
+.dashboard-shell .story-grid-preview > span i {
+  font-size: 10px;
+}
+
+.dashboard-shell .story-grid-preview > span b {
+  font-size: 11px;
+}
+
+.dashboard-shell .story-grid-preview > span em {
+  color: #62665d;
+  font-size: 12px;
+  line-height: 1.6;
+  -webkit-line-clamp: 3;
+}
+
+.dashboard-shell .visibility-row > span {
+  width: 42px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dashboard-shell .project-preview-button {
+  font-size: 11px;
+}
+
+.dashboard-shell .draft-guide {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .dashboard-shell .publish-summary {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-shell .page-intro > div > p {
+    font-size: 15px;
+  }
+
+  .dashboard-shell .publish-summary {
+    width: 100%;
+  }
+
+  .dashboard-shell .project-title-row h3 {
+    font-size: 19px;
+  }
+}
+
 .theme-selection-button:disabled {
   cursor: default;
   opacity: 0.56;

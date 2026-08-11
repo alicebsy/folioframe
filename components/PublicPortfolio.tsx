@@ -46,9 +46,10 @@ export default function PublicPortfolio({
           <div className="hero-side">
             <div
               className={`large-avatar ${portfolio.profileImageUrl ? "has-image" : ""}`}
-              style={portfolio.profileImageUrl ? { backgroundImage: `url("${portfolio.profileImageUrl.replaceAll('"', "%22")}")` } : undefined}
             >
-              {!portfolio.profileImageUrl && portfolio.name.slice(0, 1)}
+              {portfolio.profileImageUrl ? (
+                <img className="large-avatar-image" src={portfolio.profileImageUrl} alt={`${portfolio.name} 프로필 사진`} />
+              ) : portfolio.name.slice(0, 1)}
             </div>
             <strong>{portfolio.jobTitle}</strong>
             {portfolio.contactEmail && (

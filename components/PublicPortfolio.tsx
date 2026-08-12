@@ -181,46 +181,45 @@ export default function PublicPortfolio({
             );
           })}
         </div>}
-        {!!moreProjects.length && (
-          <details className="more-projects-disclosure">
-            <summary>
-              <span><b>ADDITIONAL WORK</b> 대표로 선택하지 않은 프로젝트</span>
-              <strong>추가 프로젝트 보기 <i>＋</i></strong>
-            </summary>
-            <div className="project-showcase-grid more-project-grid">
-              {moreProjects.map((project, index) => {
-                const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
-                const media = orderedProjectMedia(project);
-                const heroMedia = media[0];
-                return (
-                  <article className="project-showcase-card" key={project.id}>
-                    <a className="project-showcase-media" href={href} aria-label={`${project.title} 상세 보기`}>
-                      {heroMedia?.type === "video" ? (
-                        <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
-                      ) : heroMedia?.type === "image" ? (
-                        <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
-                      ) : (
-                        <span className="project-showcase-placeholder">{project.title.slice(0, 1)}</span>
-                      )}
-                      <span className="project-showcase-action">PROJECT DETAIL <b>↗</b></span>
-                    </a>
-                    <div className="project-showcase-copy">
-                      <div className="project-showcase-meta">
-                        <span>{String(featuredProjects.length + index + 1).padStart(2, "0")}</span>
-                        {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
-                        {project.contribution && <span>{project.contribution}</span>}
-                      </div>
-                      <h3><a href={href}>{project.title}</a></h3>
-                      <p>{project.summary}</p>
-                      {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
-                      <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
+        {!!moreProjects.length && <>
+          <div className="portfolio-section-title more-projects-title">
+            <span>MORE WORK</span>
+            <h2>그 외 프로젝트</h2>
+            <p>{String(moreProjects.length).padStart(2, "0")} PROJECTS</p>
+          </div>
+          <div className="project-showcase-grid more-project-grid">
+            {moreProjects.map((project, index) => {
+              const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
+              const media = orderedProjectMedia(project);
+              const heroMedia = media[0];
+              return (
+                <article className="project-showcase-card" key={project.id}>
+                  <a className="project-showcase-media" href={href} aria-label={`${project.title} 상세 보기`}>
+                    {heroMedia?.type === "video" ? (
+                      <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
+                    ) : heroMedia?.type === "image" ? (
+                      <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
+                    ) : (
+                      <span className="project-showcase-placeholder">{project.title.slice(0, 1)}</span>
+                    )}
+                    <span className="project-showcase-action">PROJECT DETAIL <b>↗</b></span>
+                  </a>
+                  <div className="project-showcase-copy">
+                    <div className="project-showcase-meta">
+                      <span>{String(featuredProjects.length + index + 1).padStart(2, "0")}</span>
+                      {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                      {project.contribution && <span>{project.contribution}</span>}
                     </div>
-                  </article>
-                );
-              })}
-            </div>
-          </details>
-        )}
+                    <h3><a href={href}>{project.title}</a></h3>
+                    <p>{project.summary}</p>
+                    {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
+                    <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </>}
       </section>
 
       {(portfolio.aspirationTitle || portfolio.aspiration) && (

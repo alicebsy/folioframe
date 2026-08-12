@@ -1,4 +1,5 @@
 import type { Portfolio, Project } from "@/lib/models";
+import { orderedProjectMedia } from "@/lib/project-media";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -151,11 +152,7 @@ export default function PublicPortfolio({
         {!!featuredProjects.length && <div className="project-showcase-grid featured-project-grid">
           {featuredProjects.map((project, index) => {
             const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
-            const media = [
-              ...(project.media ?? []),
-              ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
-              ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
-            ].filter((item, mediaIndex, items) => items.findIndex((candidate) => candidate.url === item.url) === mediaIndex);
+            const media = orderedProjectMedia(project);
             const heroMedia = media[0];
             return (
               <article className="project-showcase-card" key={project.id}>
@@ -193,11 +190,7 @@ export default function PublicPortfolio({
             <div className="project-showcase-grid more-project-grid">
               {moreProjects.map((project, index) => {
                 const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
-                const media = [
-                  ...(project.media ?? []),
-                  ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
-                  ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
-                ].filter((item, mediaIndex, items) => items.findIndex((candidate) => candidate.url === item.url) === mediaIndex);
+                const media = orderedProjectMedia(project);
                 const heroMedia = media[0];
                 return (
                   <article className="project-showcase-card" key={project.id}>

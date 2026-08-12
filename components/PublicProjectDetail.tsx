@@ -1,4 +1,6 @@
 import type { Portfolio, Project } from "@/lib/models";
+import ProjectMediaCarousel from "./ProjectMediaCarousel";
+import { orderedProjectMedia } from "@/lib/project-media";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -23,12 +25,7 @@ export default function PublicProjectDetail({
   project: Project;
   backHref: string;
 }) {
-  const media = [
-    ...(project.media ?? []),
-    ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
-    ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
-  ].filter((item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index);
-  const heroMedia = media[0];
+  const media = orderedProjectMedia(project);
 
   return (
     <main className={`public-shell project-detail-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
@@ -50,25 +47,7 @@ export default function PublicProjectDetail({
           {!!project.techStacks.length && <div className="project-showcase-tags detail-tech-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
         </div>
 
-        <div className={`project-detail-media ${heroMedia ? "has-media" : "empty"}`}>
-          {heroMedia?.type === "video" ? (
-            <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} controls playsInline />
-          ) : heroMedia?.type === "image" ? (
-            <span style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
-          ) : (
-            <strong>{project.title.slice(0, 1)}</strong>
-          )}
-        </div>
-        {media.length > 1 && (
-          <div className="project-detail-gallery" aria-label="프로젝트 추가 미디어">
-            {media.slice(1).map((item) => (
-              <figure className={`project-detail-gallery-item ${item.type}`} key={item.id}>
-                {item.type === "video" ? <video src={item.url} controls playsInline /> : <span style={{ backgroundImage: `url("${item.url.replaceAll('"', "%22")}")` }} />}
-                <figcaption>{item.type === "video" ? "프로젝트 영상" : "프로젝트 이미지"}</figcaption>
-              </figure>
-            ))}
-          </div>
-        )}
+        <ProjectMediaCarousel media={media} title={project.title} />
 
         <div className="project-detail-content">
           <div className="case-scan-grid">

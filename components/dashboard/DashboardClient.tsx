@@ -398,7 +398,7 @@ export default function DashboardClient({
           (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
         ).slice(0, 12);
         const firstImage = nextMedia.find((item) => item.type === "image");
-        return { ...current, media: nextMedia, coverImageUrl: firstImage?.url ?? current.coverImageUrl };
+        return { ...current, media: nextMedia, coverImageUrl: current.coverImageUrl || firstImage?.url || "" };
       });
       notify(`${files.length}장의 이미지를 추가했습니다.`);
     } catch (error) {
@@ -428,12 +428,33 @@ export default function DashboardClient({
   const removeProjectMedia = (id: string) => {
     setProjectDraft((current) => {
       const nextMedia = projectMedia(current).filter((item) => item.id !== id);
+      const nextCover = nextMedia.some((item) => item.url === current.coverImageUrl)
+        ? current.coverImageUrl
+        : nextMedia.find((item) => item.type === "image")?.url ?? "";
       return {
         ...current,
         media: nextMedia,
-        coverImageUrl: nextMedia.find((item) => item.type === "image")?.url ?? "",
+        coverImageUrl: nextCover,
         videoUrl: nextMedia.find((item) => item.type === "video")?.url ?? "",
       };
+    });
+  };
+
+  const moveProjectMedia = (id: string, direction: -1 | 1) => {
+    setProjectDraft((current) => {
+      const nextMedia = projectMedia(current);
+      const index = nextMedia.findIndex((item) => item.id === id);
+      const nextIndex = index + direction;
+      if (index < 0 || nextIndex < 0 || nextIndex >= nextMedia.length) return current;
+      [nextMedia[index], nextMedia[nextIndex]] = [nextMedia[nextIndex], nextMedia[index]];
+      return { ...current, media: nextMedia };
+    });
+  };
+
+  const setProjectCover = (id: string) => {
+    setProjectDraft((current) => {
+      const selected = projectMedia(current).find((item) => item.id === id && item.type === "image");
+      return selected ? { ...current, coverImageUrl: selected.url } : current;
     });
   };
 
@@ -1342,8 +1363,13 @@ export default function DashboardClient({
                     {selectedMedia.map((item, index) => (
                       <div className={`media-asset ${item.type}`} key={`${item.id}-${item.url}`}>
                         {item.type === "video" ? <video src={item.url} muted playsInline /> : <span style={{ backgroundImage: `url("${item.url.replaceAll('"', "%22")}")` }} />}
-                        <small>{item.type === "video" ? "영상" : `사진 ${index + 1}`}</small>
-                        <button type="button" onClick={() => removeProjectMedia(item.id)} aria-label="미디어 삭제">×</button>
+                        <small>{item.type === "video" ? "영상" : `사진 ${index + 1}`}{item.url === projectDraft.coverImageUrl && item.type === "image" ? " · 대표" : ""}</small>
+                        <div className="media-asset-actions">
+                          {item.type === "image" && <button type="button" className={item.url === projectDraft.coverImageUrl ? "is-cover" : ""} onClick={() => setProjectCover(item.id)} aria-label={item.url === projectDraft.coverImageUrl ? "대표 사진으로 선택됨" : "대표 사진으로 지정"}>{item.url === projectDraft.coverImageUrl ? "대표" : "대표 지정"}</button>}
+                          <button type="button" onClick={() => moveProjectMedia(item.id, -1)} aria-label="미디어 앞으로 이동" disabled={index === 0}>↑</button>
+                          <button type="button" onClick={() => moveProjectMedia(item.id, 1)} aria-label="미디어 뒤로 이동" disabled={index === selectedMedia.length - 1}>↓</button>
+                          <button type="button" onClick={() => removeProjectMedia(item.id)} aria-label="미디어 삭제">×</button>
+                        </div>
                       </div>
                     ))}
                   </div>

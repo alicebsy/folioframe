@@ -1965,20 +1965,43 @@ label em {
   font-size: 8px;
 }
 
-.media-asset button {
+.media-asset-actions {
   position: absolute;
-  top: 5px;
   right: 5px;
-  width: 22px;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.media-asset-actions button {
+  min-width: 22px;
   height: 22px;
+  padding: 0 5px;
   display: grid;
   place-items: center;
   color: #fff;
   background: rgba(25, 29, 23, 0.72);
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
-  font-size: 15px;
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
+}
+
+.media-asset-actions button:first-child {
+  border-radius: 999px;
+}
+
+.media-asset-actions button.is-cover {
+  color: #273016;
+  background: #d6ff57;
+  border-color: #d6ff57;
+}
+
+.media-asset-actions button:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .media-add-button {
@@ -8008,9 +8031,48 @@ label em {
   width: 100%;
   aspect-ratio: 16 / 8;
   margin: 68px 0 30px;
+  position: relative;
   overflow: hidden;
   background: #20221e;
   border-radius: 3px;
+}
+
+.project-media-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(23, 24, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.project-media-nav:hover {
+  background: rgba(23, 24, 20, 0.92);
+}
+
+.project-media-nav.prev { left: 18px; }
+.project-media-nav.next { right: 18px; }
+
+.project-media-counter {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 2;
+  padding: 6px 9px;
+  color: #fff;
+  background: rgba(23, 24, 20, 0.72);
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
 }
 
 .project-detail-media video,
@@ -9485,6 +9547,16 @@ label em {
   .project-detail-shell .project-detail-media {
     margin-top: 40px;
   }
+
+  .project-media-nav {
+    width: 34px;
+    height: 34px;
+    font-size: 25px;
+  }
+
+  .project-media-nav.prev { left: 10px; }
+  .project-media-nav.next { right: 10px; }
+  .project-media-counter { right: 10px; bottom: 10px; }
 
   .project-detail-shell .case-scan-grid section,
   .project-detail-shell .case-scan-grid section.impact-card,

@@ -1,6 +1,7 @@
 import type { Portfolio, Project } from "@/lib/models";
 import { orderedProjectMedia } from "@/lib/project-media";
 import { projectPeriod } from "@/lib/project-period";
+import { RichText } from "@/lib/rich-text";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -84,11 +85,11 @@ export default function PublicPortfolio({
             <h2>프로젝트 너머의<br className="identity-title-break" />{" "}저를 소개합니다.</h2>
           </div>
           <div className="identity-content">
-            {portfolio.aboutMe && <p className="identity-lead">{portfolio.aboutMe}</p>}
+            {portfolio.aboutMe && <div className="identity-lead"><RichText value={portfolio.aboutMe} /></div>}
             <div className="identity-grid">
-              {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p>{portfolio.workStyle}</p></article>}
-              {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p>{portfolio.values}</p></article>}
-              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p>{portfolio.lookingFor}</p></article>}
+              {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p><RichText value={portfolio.workStyle} /></p></article>}
+              {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p><RichText value={portfolio.values} /></p></article>}
+              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p><RichText value={portfolio.lookingFor} /></p></article>}
             </div>
           </div>
         </section>
@@ -228,7 +229,7 @@ export default function PublicPortfolio({
           <div className="aspiration-inner">
             <span>CLOSING NOTE</span>
             <h2>{portfolio.aspirationTitle || "함께 더 나은 제품을 만들고 싶습니다."}</h2>
-            {portfolio.aspiration && <p>{portfolio.aspiration}</p>}
+            {portfolio.aspiration && <p><RichText value={portfolio.aspiration} /></p>}
           </div>
         </section>
       )}

@@ -7576,6 +7576,81 @@ label em {
   white-space: pre-line;
 }
 
+.rich-text-paragraph {
+  display: block;
+}
+
+.rich-text-paragraph + .rich-text-paragraph {
+  margin-top: 0.9em;
+}
+
+.public-shell .rich-text-paragraph strong {
+  color: #d9ed88;
+  font-weight: 700;
+}
+
+.rich-text-field {
+  display: block;
+}
+
+.rich-text-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rich-text-label-row small {
+  color: #8a917e;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.rich-text-input-wrap {
+  overflow: hidden;
+  margin-top: 7px;
+  border: 1px solid #dfe4d4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.rich-text-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-bottom: 1px solid #edf0e8;
+  color: #8a917e;
+  font-size: 10px;
+}
+
+.rich-text-toolbar button {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #cbd6a5;
+  border-radius: 6px;
+  color: #587018;
+  background: #f2f7e2;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rich-text-toolbar button:hover {
+  background: #e6f0c7;
+}
+
+.rich-text-input-wrap textarea {
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.public-shell:not(.project-detail-shell) .identity-lead .rich-text-paragraph + .rich-text-paragraph {
+  margin-top: 1.1em;
+}
+
 .identity-grid {
   margin-top: 55px;
   display: grid;

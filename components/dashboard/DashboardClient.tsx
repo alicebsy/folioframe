@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import type {
   CareerEntry,
@@ -232,6 +232,62 @@ async function api(path: string, body?: unknown) {
   const result = await response.json();
   if (!response.ok) throw result;
   return result;
+}
+
+function RichTextField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  maxLength,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  maxLength?: number;
+}) {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const emphasizeSelection = () => {
+    const input = inputRef.current;
+    if (!input) return;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const selected = value.slice(start, end);
+    const replacement = selected ? `**${selected}**` : "**강조할 문장**";
+    const nextValue = `${value.slice(0, start)}${replacement}${value.slice(end)}`;
+    onChange(nextValue);
+    requestAnimationFrame(() => {
+      input.focus();
+      const cursor = start + replacement.length;
+      input.setSelectionRange(cursor, cursor);
+    });
+  };
+
+  return (
+    <label className="rich-text-field">
+      <span className="rich-text-label-row">
+        <span>{label}</span>
+        <small>줄을 나누면 문단으로, 선택 후 B를 누르면 강조</small>
+      </span>
+      <div className="rich-text-input-wrap">
+        <div className="rich-text-toolbar" role="toolbar" aria-label={`${label} 서식 도구`}>
+          <button type="button" onClick={emphasizeSelection} aria-label="선택한 문장 굵게">
+            B
+          </button>
+          <span>**강조** · 빈 줄로 문단 구분</span>
+        </div>
+        <textarea
+          ref={inputRef}
+          value={value}
+          maxLength={maxLength}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+        />
+      </div>
+    </label>
+  );
 }
 
 export default function DashboardClient({
@@ -907,14 +963,14 @@ export default function DashboardClient({
               <details className="editor-disclosure profile-disclosure" open>
                 <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향 · 마무리</small></summary>
                 <div className="disclosure-content identity-editor">
-                  <label>나에 대한 소개<textarea value={profileDraft.aboutMe} onChange={(event) => setProfileDraft({ ...profileDraft, aboutMe: event.target.value })} placeholder="어떤 경험을 통해 지금의 내가 되었고, 어떤 문제를 풀 때 가장 몰입하는지 이야기해 주세요." /></label>
+                  <RichTextField label="나에 대한 소개" value={profileDraft.aboutMe} onChange={(value) => setProfileDraft({ ...profileDraft, aboutMe: value })} placeholder="핵심 성향과 경험을 2~3개의 짧은 문단으로 적어 주세요." maxLength={700} />
                   <div className="form-row two">
-                    <label>일하는 방식<textarea value={profileDraft.workStyle} onChange={(event) => setProfileDraft({ ...profileDraft, workStyle: event.target.value })} placeholder="협업하고 판단하며 일을 끝내는 나만의 방식을 적어 주세요." /></label>
-                    <label>중요하게 생각하는 가치<textarea value={profileDraft.values} onChange={(event) => setProfileDraft({ ...profileDraft, values: event.target.value })} placeholder="좋은 제품과 좋은 동료 관계에서 중요하게 보는 기준을 적어 주세요." /></label>
+                    <RichTextField label="일하는 방식" value={profileDraft.workStyle} onChange={(value) => setProfileDraft({ ...profileDraft, workStyle: value })} placeholder="한 문단에 한 가지 방식만 적어 주세요." maxLength={400} />
+                    <RichTextField label="중요하게 생각하는 가치" value={profileDraft.values} onChange={(value) => setProfileDraft({ ...profileDraft, values: value })} placeholder="가장 중요한 기준을 짧고 선명하게 적어 주세요." maxLength={300} />
                   </div>
-                  <label>앞으로의 방향<textarea value={profileDraft.lookingFor} onChange={(event) => setProfileDraft({ ...profileDraft, lookingFor: event.target.value })} placeholder="앞으로 맡고 싶은 역할과 함께 성장하고 싶은 환경을 적어 주세요." /></label>
+                  <RichTextField label="앞으로의 방향" value={profileDraft.lookingFor} onChange={(value) => setProfileDraft({ ...profileDraft, lookingFor: value })} placeholder="앞으로의 방향은 한두 문장으로 정리해 주세요." maxLength={300} />
                   <label>마무리 제목<input value={profileDraft.aspirationTitle ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspirationTitle: event.target.value })} placeholder="예: 오래 쓰이는 제품을 만드는 개발자" /></label>
-                  <label>마무리 문구<textarea value={profileDraft.aspiration ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspiration: event.target.value })} placeholder="마지막으로 어떤 개발자로 기억되고 싶은지, 함께 일할 사람에게 전하고 싶은 말을 적어 주세요." /></label>
+                  <RichTextField label="마무리 문구" value={profileDraft.aspiration ?? ""} onChange={(value) => setProfileDraft({ ...profileDraft, aspiration: value })} placeholder="마지막에 남기고 싶은 말을 짧게 적어 주세요." maxLength={500} />
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">

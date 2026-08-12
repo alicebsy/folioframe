@@ -156,8 +156,7 @@ export default function PublicPortfolio({
         </div>
 
         <div className="project-showcase-grid featured-project-grid">
-          {featuredProjects.map((project) => {
-            const index = projects.findIndex((item) => item.id === project.id);
+          {featuredProjects.map((project, index) => {
             const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
             const media = [
               ...(project.media ?? []),
@@ -199,8 +198,7 @@ export default function PublicPortfolio({
               <strong>더 많은 프로젝트 보기 <i>＋</i></strong>
             </summary>
             <div className="project-showcase-grid more-project-grid">
-              {moreProjects.map((project) => {
-                const index = projects.findIndex((item) => item.id === project.id);
+              {moreProjects.map((project, index) => {
                 const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
                 const media = [
                   ...(project.media ?? []),
@@ -222,7 +220,7 @@ export default function PublicPortfolio({
                     </a>
                     <div className="project-showcase-copy">
                       <div className="project-showcase-meta">
-                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <span>{String(featuredProjects.length + index + 1).padStart(2, "0")}</span>
                         {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
                         {project.contribution && <span>{project.contribution}</span>}
                       </div>

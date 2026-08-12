@@ -8825,6 +8825,28 @@ label em {
   border-color: #cbdba4;
 }
 
+.interactive-project-card .project-delete-button {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #a05d56;
+  background: #fff8f6;
+  border: 1px solid #ecd9d4;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.interactive-project-card .project-delete-button:hover {
+  color: #873d36;
+  background: #fbe9e5;
+  border-color: #dfb9b2;
+}
+
 .interactive-project-card .project-open-cue {
   color: #93988b;
   font-size: 9px;

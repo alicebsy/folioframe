@@ -191,12 +191,13 @@ function formatPeriod(start: string, end: string) {
 function Icon({
   name,
 }: {
-  name: "plus" | "eye" | "edit" | "check" | "link" | "close" | "logout";
+  name: "plus" | "eye" | "edit" | "trash" | "check" | "link" | "close" | "logout";
 }) {
   const paths = {
     plus: "M12 5v14M5 12h14",
     eye: "M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Zm9.5 3.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z",
     edit: "m4 16-.7 4.1L7.4 19 18.7 7.7a2.1 2.1 0 0 0-3-3L4.4 16Z",
+    trash: "M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",
     check: "m5 12 4 4L19 6",
     link: "m9.5 14.5 5-5M7.2 16.8l-1 1a3.5 3.5 0 0 1-5-5l3-3a3.5 3.5 0 0 1 5 0M16.8 7.2l1-1a3.5 3.5 0 0 1 5 5l-3 3a3.5 3.5 0 0 1-5 0",
     close: "m6 6 12 12M18 6 6 18",
@@ -547,6 +548,28 @@ export default function DashboardClient({
       notify(project.isPublic ? "프로젝트를 비공개로 전환했습니다." : "프로젝트를 공개로 전환했습니다.");
     } catch (error) {
       notify((error as { message?: string }).message ?? "상태를 변경하지 못했습니다.");
+    }
+  };
+
+  const deleteProject = async (project: Project) => {
+    if (!window.confirm(`“${project.title}” 프로젝트를 삭제할까요? 삭제한 내용은 복구할 수 없습니다.`)) return;
+    if (previewMode) {
+      setData((current) => ({
+        ...current,
+        projects: current.projects.filter((item) => item.id !== project.id),
+      }));
+      notify("프로젝트를 삭제했습니다.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await api(`/api/projects/${project.id}/delete`, {});
+      await refreshData();
+      notify("프로젝트를 삭제했습니다.");
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "프로젝트를 삭제하지 못했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1133,6 +1156,9 @@ export default function DashboardClient({
                         </span>
                         <button className="project-edit-button" onClick={() => openProject(project)} aria-label={`${project.title} 수정`}>
                           <Icon name="edit" /><span>수정</span>
+                        </button>
+                        <button className="project-delete-button" onClick={() => deleteProject(project)} aria-label={`${project.title} 삭제`}>
+                          <Icon name="trash" /><span>삭제</span>
                         </button>
                       </div>
                       <span className="project-open-cue">카드 열어 상세 보기 <b>↗</b></span>

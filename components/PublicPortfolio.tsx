@@ -14,14 +14,7 @@ export default function PublicPortfolio({
   projectBasePath: string;
 }) {
   const { portfolio, projects } = data;
-  const featuredTitles = [
-    "Folioframe — 직군 맞춤형 웹 포트폴리오 서비스",
-    "CapLog",
-    "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다",
-  ];
-  const featuredProjects = featuredTitles
-    .map((title) => projects.find((project) => project.title === title))
-    .filter((project): project is Project => Boolean(project));
+  const featuredProjects = projects.filter((project) => project.isFeatured);
   const featuredIds = new Set(featuredProjects.map((project) => project.id));
   const moreProjects = projects.filter((project) => !featuredIds.has(project.id));
 

@@ -1695,6 +1695,9 @@ label em {
 .admin-view-link { color: #536d27; font-size: 11px; font-weight: 800; white-space: nowrap; }
 .admin-muted { color: #a4aa9e; }
 .admin-empty { padding: 56px 24px; color: #7b8374; text-align: center; font-size: 13px; }
+.featured-toggle { display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px; color: #8b9284; background: transparent; border: 1px solid #dfe3d8; border-radius: 999px; cursor: pointer; font: inherit; font-size: 10px; font-weight: 750; }
+.featured-toggle.on { color: #6c7e1f; background: #eff8c9; border-color: #d5e99b; }
+.featured-toggle:first-letter { font-size: 13px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .featured-project-grid { margin-bottom: 22px; }
 .more-projects-disclosure { border-top: 1px solid rgba(37,42,33,.2); }

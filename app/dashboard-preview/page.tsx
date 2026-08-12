@@ -76,6 +76,7 @@ const previewData: DashboardData = {
       coverImageUrl: "/og.png",
       videoUrl: "",
       isPublic: true,
+      isFeatured: true,
       displayOrder: 0,
       links: [
         {
@@ -115,6 +116,7 @@ const previewData: DashboardData = {
       coverImageUrl: "/og.png",
       videoUrl: "",
       isPublic: true,
+      isFeatured: false,
       displayOrder: 1,
       links: [
         { label: "GitHub 저장소", url: "https://github.com/" },

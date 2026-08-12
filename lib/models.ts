@@ -64,6 +64,7 @@ export type Project = {
   videoUrl: string;
   media?: ProjectMedia[];
   isPublic: boolean;
+  isFeatured: boolean;
   displayOrder: number;
   links: ProjectLink[];
 };

@@ -60,12 +60,14 @@ type ProjectRow = {
   video_url: string;
   media: ProjectMedia[] | null;
   is_public: boolean;
+  is_featured: boolean;
   display_order: number;
   links: ProjectLink[] | null;
 };
 
 let profileImageColumnReady: Promise<void> | null = null;
 let projectMediaColumnReady: Promise<void> | null = null;
+let featuredColumnsReady: Promise<void> | null = null;
 
 async function ensureProfileImageColumn() {
   if (!profileImageColumnReady) {
@@ -86,6 +88,27 @@ export async function ensureProjectMediaColumn() {
     ).then(() => undefined);
   }
   await projectMediaColumnReady;
+}
+
+export async function ensureFeaturedColumns() {
+  if (!featuredColumnsReady) {
+    featuredColumnsReady = query(
+      `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS featured_configured BOOLEAN NOT NULL DEFAULT FALSE;
+       ALTER TABLE projects ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE;
+       UPDATE projects p
+          SET is_featured = TRUE
+         FROM portfolios f
+        WHERE p.portfolio_id = f.id
+          AND f.featured_configured = FALSE
+          AND p.title IN (
+            'Folioframe — 직군 맞춤형 웹 포트폴리오 서비스',
+            'CapLog',
+            'Love Algorithm — 알고리즘보다 어려운 건 사랑이었다'
+          );
+       UPDATE portfolios SET featured_configured = TRUE WHERE featured_configured = FALSE`,
+    ).then(() => undefined);
+  }
+  await featuredColumnsReady;
 }
 
 function mapPortfolio(row: PortfolioRow): Portfolio {
@@ -156,6 +179,7 @@ function mapProject(row: ProjectRow): Project {
     videoUrl: row.video_url,
     media,
     isPublic: row.is_public,
+    isFeatured: row.is_featured,
     displayOrder: row.display_order,
     links: row.links ?? [],
   };
@@ -168,7 +192,7 @@ const projectSelect = `
          p.evidence, p.period_start, p.period_end,
          p.team_size, p.contribution, p.tech_stacks, p.architecture,
          p.quality_assurance, p.deployment, p.cover_image_url, p.video_url, p.media,
-         p.is_public, p.display_order,
+         p.is_public, p.is_featured, p.display_order,
          COALESCE(
            json_agg(
              json_build_object('id', l.id, 'label', l.label, 'url', l.url)
@@ -185,6 +209,7 @@ export async function getDashboardData(
 ): Promise<DashboardData> {
   await ensureProfileImageColumn();
   await ensureProjectMediaColumn();
+  await ensureFeaturedColumns();
   const portfolioResult = await query<PortfolioRow>(
     `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
@@ -219,6 +244,7 @@ export async function getDashboardData(
 export async function getPublicPortfolio(slug: string) {
   await ensureProfileImageColumn();
   await ensureProjectMediaColumn();
+  await ensureFeaturedColumns();
   const portfolioResult = await query<PortfolioRow & { email: string }>(
     `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,

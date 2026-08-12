@@ -48,6 +48,7 @@ const emptyProject: ProjectDraft = {
   videoUrl: "",
   media: [],
   isPublic: false,
+  isFeatured: false,
   links: [],
 };
 
@@ -492,6 +493,7 @@ export default function DashboardClient({
           videoUrl: projectDraft.videoUrl,
           media: projectMedia(projectDraft),
           isPublic: projectDraft.isPublic,
+          isFeatured: projectDraft.isFeatured,
           links: projectDraft.links,
         };
         const exists = current.projects.some((item) => item.id === project.id);
@@ -548,6 +550,26 @@ export default function DashboardClient({
       notify(project.isPublic ? "프로젝트를 비공개로 전환했습니다." : "프로젝트를 공개로 전환했습니다.");
     } catch (error) {
       notify((error as { message?: string }).message ?? "상태를 변경하지 못했습니다.");
+    }
+  };
+
+  const toggleFeatured = async (project: Project) => {
+    if (previewMode) {
+      setData((current) => ({
+        ...current,
+        projects: current.projects.map((item) =>
+          item.id === project.id ? { ...item, isFeatured: !project.isFeatured } : item,
+        ),
+      }));
+      notify(project.isFeatured ? "대표 프로젝트에서 제외했습니다." : "대표 프로젝트로 설정했습니다.");
+      return;
+    }
+    try {
+      await api(`/api/projects/${project.id}/featured`, { isFeatured: !project.isFeatured });
+      await refreshData();
+      notify(project.isFeatured ? "대표 프로젝트에서 제외했습니다." : "대표 프로젝트로 설정했습니다.");
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "대표 프로젝트를 변경하지 못했습니다.");
     }
   };
 
@@ -1151,6 +1173,12 @@ export default function DashboardClient({
                     </div>
                     <div className="project-controls" onClick={(event) => event.stopPropagation()}>
                       <div className="visibility-row">
+                        <button
+                          className={`featured-toggle ${project.isFeatured ? "on" : ""}`}
+                          onClick={() => toggleFeatured(project)}
+                          aria-label={project.isFeatured ? "대표 프로젝트에서 제외" : "대표 프로젝트로 설정"}
+                          title={project.isFeatured ? "대표 프로젝트에서 제외" : "대표 프로젝트로 설정"}
+                        >★ <span>{project.isFeatured ? "대표" : "대표로 표시"}</span></button>
                         <button
                           className={`visibility-toggle ${project.isPublic ? "on" : ""}`}
                           onClick={() => toggleVisibility(project)}

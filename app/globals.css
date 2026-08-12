@@ -8076,33 +8076,8 @@ label em {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
-.project-media-slide {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
-}
-
-.project-media-slide:has(.project-media-radio:checked) {
-  z-index: 1;
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.project-media-radio {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.project-media-slide video,
-.project-media-slide > span {
+.project-detail-media video,
+.project-detail-media > span {
   width: 100%;
   height: 100%;
   display: block;

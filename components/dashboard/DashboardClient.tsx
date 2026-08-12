@@ -14,6 +14,7 @@ import type {
   ProjectLink,
 } from "@/lib/models";
 import { projectIsComplete, projectQualityChecks } from "@/lib/models";
+import { projectPeriod } from "@/lib/project-period";
 
 type ProjectDraft = Omit<Project, "id" | "displayOrder"> & { id?: string };
 type PublishResult =
@@ -1568,7 +1569,7 @@ export default function DashboardClient({
               <h2>{previewProject.title}</h2>
               <p>{previewProject.summary || "프로젝트 개요가 여기에 표시됩니다."}</p>
               <div className="evidence-meta preview-evidence-meta">
-                {formatPeriod(previewProject.periodStart, previewProject.periodEnd) && <span>{formatPeriod(previewProject.periodStart, previewProject.periodEnd)}</span>}
+                {(() => { const period = projectPeriod(previewProject); return formatPeriod(period.start, period.end) && <span>{formatPeriod(period.start, period.end)}</span>; })()}
                 {previewProject.teamSize && <span>{previewProject.teamSize}</span>}
                 {previewProject.contribution && <span>기여 {previewProject.contribution}</span>}
                 {previewProject.techStacks.filter(Boolean).map((tech) => <b key={tech}>{tech}</b>)}

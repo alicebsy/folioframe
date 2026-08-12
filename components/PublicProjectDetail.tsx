@@ -1,6 +1,7 @@
 import type { Portfolio, Project } from "@/lib/models";
 import ProjectMediaCarousel from "./ProjectMediaCarousel";
 import { orderedProjectMedia } from "@/lib/project-media";
+import { projectPeriod } from "@/lib/project-period";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -30,6 +31,7 @@ export default function PublicProjectDetail({
   mediaBaseHref: string;
 }) {
   const media = orderedProjectMedia(project);
+  const period = projectPeriod(project);
 
   return (
     <main className={`public-shell project-detail-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
@@ -44,7 +46,7 @@ export default function PublicProjectDetail({
           <h1>{project.title}</h1>
           <p>{project.summary}</p>
           <div className="case-facts">
-            {formatPeriod(project.periodStart, project.periodEnd) && <span><b>기간</b>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+            {formatPeriod(period.start, period.end) && <span><b>기간</b>{formatPeriod(period.start, period.end)}</span>}
             {project.teamSize && <span><b>인원</b>{project.teamSize}</span>}
             {project.contribution && <span><b>기여</b>{project.contribution}</span>}
           </div>

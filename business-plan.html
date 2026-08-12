@@ -1,402 +1,841 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Folioframe — 9칸 사업 계획</title>
-    <style>
-      :root {
-        --ink: #171814;
-        --muted: #686b61;
-        --line: #dfe2d7;
-        --paper: #fafaf6;
-        --card: #ffffff;
-        --lime: #c8ff38;
-        --green: #536d16;
-        --soft: #f0f3e8;
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Folioframe 직군 맞춤형 통합 웹 포트폴리오 사업계획서">
+  <title>Folioframe 사업계획서</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
+
+    :root {
+      color-scheme: light;
+      --ink: #171814;
+      --muted: #76786f;
+      --line: #e7e6df;
+      --paper: #f7f7f3;
+      --white: #ffffff;
+      --lime: #d6ff57;
+      --lime-dark: #a8cf2f;
+      --blue: #d8e8ff;
+      --orange: #ffe4cd;
+      --lavender: #e9e0ff;
+      --shadow: 0 16px 50px rgba(29, 32, 23, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 7% 18%, rgba(214, 255, 87, 0.12), transparent 25%),
+        var(--paper);
+      font-family: "DM Sans", "Noto Sans KR", sans-serif;
+      line-height: 1.65;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 72px;
+      padding: 0 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      background: var(--lime);
+      border-radius: 10px 4px 10px 4px;
+      transform: rotate(-2deg);
+    }
+
+    .document-meta {
+      padding: 7px 10px;
+      color: #637b27;
+      background: #eff7da;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    main {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 58px 0 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      display: block;
+      margin: 0 0 10px;
+      color: #839d35;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0 0 14px;
+      font-family: "Gowun Batang", serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.055em;
+    }
+
+    .hero-copy {
+      max-width: 740px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-summary {
+      min-width: 255px;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 11px;
+    }
+
+    .summary-row span {
+      color: var(--muted);
+    }
+
+    .summary-row strong {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .summary-row + .summary-row {
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    article {
+      min-height: 286px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 5px 20px rgba(29, 32, 23, 0.035);
+      transition: 180ms ease;
+    }
+
+    article:hover {
+      border-color: #d3d4ca;
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    article::after {
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      right: -48px;
+      bottom: -48px;
+      background: var(--tone, var(--lime));
+      border-radius: 50%;
+      opacity: 0.34;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: var(--tone, var(--lime));
+      border-radius: 12px 5px 12px 5px;
+      font-family: "Gowun Batang", serif;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status {
+      color: #74766e;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    h2 {
+      margin: 0 0 13px;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0;
+      color: #51534c;
+      font-size: 13px;
+    }
+
+    p + p,
+    p + ul,
+    ul + p {
+      margin-top: 11px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: #51534c;
+      font-size: 13px;
+    }
+
+    li + li {
+      margin-top: 7px;
+    }
+
+    .unknown {
+      display: inline-block;
+      padding: 3px 7px;
+      color: #94693c;
+      background: #fff8ec;
+      border: 1px solid #f6e5c8;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .subnote {
+      color: #999b92;
+      font-size: 11px;
+    }
+
+    .section-label {
+      display: block;
+      margin: 17px 0 7px;
+      color: #839d35;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .fact {
+      padding: 10px 8px;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 10px;
+    }
+
+    .fact strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 15px;
+      letter-spacing: -0.04em;
+    }
+
+    .fact span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.4;
+    }
+
+    .inline-source {
+      color: #6f8a29;
+      font-size: 10px;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: #c9db91;
+      text-underline-offset: 3px;
+    }
+
+    .positioning {
+      margin-top: 13px;
+      padding: 11px 12px;
+      color: #4d4f48;
+      background: #f4f8e8;
+      border: 1px solid #dfe9bd;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .compact-list {
+      font-size: 11px;
+    }
+
+    .competitor-list {
+      display: grid;
+      gap: 7px;
+      margin-top: 13px;
+    }
+
+    .competitor {
+      padding: 9px 10px;
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 10px;
+      align-items: start;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 9px;
+      color: #62645c;
+      font-size: 10px;
+    }
+
+    .competitor strong {
+      color: var(--ink);
+      font-size: 11px;
+    }
+
+    .money-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .money-row {
+      padding: 10px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 10px;
+      color: #51534c;
+      font-size: 12px;
+    }
+
+    .source-list {
+      padding: 0;
+      list-style: none;
+    }
+
+    .source-list li + li {
+      margin-top: 8px;
+    }
+
+    .source-list a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 10px;
+      background: #f6f6f2;
+      border-radius: 9px;
+      font-weight: 600;
+      transition: 150ms ease;
+    }
+
+    .source-list a::after {
+      content: "↗";
+      color: #839d35;
+    }
+
+    .source-list a:hover {
+      background: #f0f7dc;
+    }
+
+    .tone-lime {
+      --tone: var(--lime);
+    }
+
+    .tone-blue {
+      --tone: var(--blue);
+    }
+
+    .tone-orange {
+      --tone: var(--orange);
+    }
+
+    .tone-lavender {
+      --tone: var(--lavender);
+    }
+
+    footer {
+      margin-top: 70px;
+      padding-top: 25px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      color: #999b92;
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+    }
+
+    footer strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .price-plan {
+      margin-bottom: 9px;
+      padding: 12px;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 11px;
+    }
+
+    .price-plan.featured {
+      background: #f4f8e8;
+      border-color: #dce8b5;
+    }
+
+    .price-plan-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 5px;
+    }
+
+    .price-plan-head strong {
+      font-size: 12px;
+    }
+
+    .price-plan-head span {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .price-plan p {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .hypothesis {
+      padding: 9px 10px;
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 8px;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 9px;
+      color: #51534c;
+      font-size: 10px;
+    }
+
+    .hypothesis + .hypothesis {
+      margin-top: 7px;
+    }
+
+    .hypothesis b {
+      color: #839d35;
+    }
+
+    .experiment-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .experiment {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 9px;
+      background: #fafaf6;
+      border: 1px solid #edede6;
+      border-radius: 10px;
+    }
+
+    .experiment > span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      color: #6f8a29;
+      background: #edf6d4;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .experiment strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 11px;
+    }
+
+    .experiment p {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
       }
 
-      * {
-        box-sizing: border-box;
+      .hero-summary {
+        grid-template-columns: repeat(3, 1fr);
       }
 
-      body {
-        margin: 0;
-        color: var(--ink);
-        background:
-          radial-gradient(circle at 92% 4%, rgba(200, 255, 56, 0.22), transparent 22rem),
-          var(--paper);
-        font-family:
-          "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
-        line-height: 1.65;
-        word-break: keep-all;
+      .summary-row {
+        display: grid;
+      }
+
+      .summary-row + .summary-row {
+        padding: 0 0 0 12px;
+        border-top: 0;
+        border-left: 1px solid var(--line);
+      }
+
+      .plan-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar {
+        height: 64px;
+        padding: 0 20px;
       }
 
       main {
-        width: min(1180px, calc(100% - 40px));
-        margin: 0 auto;
-        padding: 72px 0 80px;
+        width: min(100% - 24px, 1160px);
+        padding: 40px 0 56px;
       }
 
-      header {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 32px;
-        align-items: end;
-        padding-bottom: 30px;
-        border-bottom: 1px solid var(--ink);
+      .hero {
+        gap: 24px;
       }
 
-      .kicker,
-      .card-number {
-        color: var(--green);
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.14em;
+      .hero-summary,
+      .plan-grid {
+        grid-template-columns: 1fr;
       }
 
-      h1 {
-        max-width: 760px;
-        margin: 12px 0 10px;
-        font-family: "Gowun Batang", "Noto Serif KR", serif;
-        font-size: clamp(38px, 6vw, 72px);
-        line-height: 1.12;
-        letter-spacing: -0.055em;
+      .summary-row,
+      .summary-row + .summary-row {
+        display: flex;
+        padding: 0;
+        border: 0;
       }
 
-      header p {
-        max-width: 710px;
-        margin: 0;
-        color: var(--muted);
-      }
-
-      .status {
-        padding: 10px 14px;
-        border: 1px solid #b7c983;
-        border-radius: 999px;
-        background: var(--soft);
-        color: #44570f;
-        font-size: 13px;
-        font-weight: 700;
-        white-space: nowrap;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 18px;
+      .summary-row + .summary-row {
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
       }
 
       article {
-        min-height: 310px;
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: var(--card);
-        box-shadow: 0 10px 32px rgba(36, 42, 24, 0.04);
-      }
-
-      article:nth-child(4),
-      article:nth-child(9) {
-        background: linear-gradient(145deg, #f4f8e9, #fff);
-      }
-
-      .card-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        padding-bottom: 17px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      h2 {
-        margin: 0;
-        font-size: 19px;
-        letter-spacing: -0.035em;
-      }
-
-      ul {
-        margin: 18px 0 0;
-        padding-left: 19px;
-      }
-
-      li + li {
-        margin-top: 8px;
-      }
-
-      p {
-        margin: 18px 0 0;
-      }
-
-      strong {
-        font-weight: 750;
-      }
-
-      .unknown {
-        display: inline-block;
-        padding: 2px 7px;
-        border-radius: 5px;
-        background: #fff1c7;
-        color: #795800;
-        font-size: 0.92em;
-        font-weight: 750;
-      }
-
-      .evidence-list {
-        list-style: none;
-        padding: 0;
-      }
-
-      .evidence-list li {
-        padding-bottom: 9px;
-        border-bottom: 1px dashed var(--line);
-      }
-
-      a {
-        color: #405e00;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 3px;
-      }
-
-      small {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 12px;
+        min-height: auto;
       }
 
       footer {
-        display: flex;
-        justify-content: space-between;
-        gap: 24px;
-        margin-top: 22px;
-        padding: 18px 4px 0;
-        color: var(--muted);
-        font-size: 12px;
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
       }
 
-      @media (max-width: 900px) {
-        header {
-          grid-template-columns: 1fr;
-        }
-
-        .status {
-          justify-self: start;
-        }
-
-        .grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+      .topbar {
+        position: static;
       }
 
-      @media (max-width: 620px) {
-        main {
-          width: min(100% - 24px, 1180px);
-          padding-top: 42px;
-        }
-
-        .grid {
-          grid-template-columns: 1fr;
-        }
-
-        article {
-          min-height: 0;
-        }
-
-        footer {
-          flex-direction: column;
-        }
+      main {
+        width: 100%;
+        padding: 28px 0 0;
       }
 
-      @media print {
-        body {
-          background: #fff;
-        }
-
-        main {
-          width: 100%;
-          padding: 20px;
-        }
-
-        article {
-          break-inside: avoid;
-          box-shadow: none;
-        }
+      article {
+        min-height: 0;
+        break-inside: avoid;
+        box-shadow: none;
       }
-    </style>
-  </head>
-  <body>
-    <main>
-      <header>
-        <div>
-          <span class="kicker">FOLIOFRAME · BUSINESS MODEL DRAFT</span>
-          <h1>경험이 증거가 되는<br />포트폴리오</h1>
-          <p>
-            프로젝트 경험을 역할·문제·해결 과정·성과 순서로 정리하고,
-            고유 주소로 공개하는 취업 준비생용 웹 포트폴리오 서비스.
-          </p>
+
+      article:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="문서 정보">
+    <a class="brand" href="https://folioframe-lake.vercel.app/dashboard" target="_blank" rel="noopener noreferrer">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span>Folioframe</span>
+    </a>
+    <span class="document-meta">BUSINESS PLAN · 2026.07.29</span>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <span class="eyebrow">직군 맞춤형 통합 웹 포트폴리오</span>
+        <h1>경험을 증거로 바꾸는<br>포트폴리오</h1>
+        <p class="hero-copy">
+          취업 준비생의 프로젝트 경험을 담당 역할·문제 상황·해결 과정·구체적 성과 중심으로 구조화하고,
+          흩어진 자료를 하나의 웹 포트폴리오로 발행하는 서비스
+        </p>
+      </div>
+      <aside class="hero-summary" aria-label="사업 개요">
+        <div class="summary-row"><span>핵심 고객</span><strong>신입·주니어 지원자</strong></div>
+        <div class="summary-row"><span>핵심 제품</span><strong>웹 포트폴리오</strong></div>
+        <div class="summary-row"><span>제품 상태</span><strong>핵심 흐름 구현</strong></div>
+      </aside>
+    </header>
+
+    <section class="plan-grid" aria-label="9개 사업계획 항목">
+      <article class="tone-lime">
+        <div class="card-head">
+          <span class="number">01</span>
+          <span class="status">CUSTOMER</span>
         </div>
-        <span class="status">검증 전 초안 · 2026. 07. 27.</span>
-      </header>
+        <h2>첫 손님</h2>
+        <p>
+          프로젝트 경험이 2개 이상이지만 포트폴리오 작성법과 구성 방식에 어려움을 겪는 취업 준비생
+        </p>
+        <span class="section-label">초기 세분시장</span>
+        <p class="subnote">기획·마케팅·디자인·개발 직군의 신입·주니어 지원자</p>
+        <div class="fact-grid" aria-label="2025년 5월 청년층 시장 참고 지표">
+          <div class="fact"><strong>797.4만</strong><span>15~29세 청년층</span></div>
+          <div class="fact"><strong>417.5만</strong><span>졸업 청년</span></div>
+          <div class="fact"><strong>121.2만</strong><span>졸업 후 미취업</span></div>
+        </div>
+        <p class="subnote">
+          시장 상한 참고값이며 포트폴리오 유료 수요를 뜻하지 않음 ·
+          <a class="inline-source" href="https://www.kostat.go.kr/boardDownload.es?bid=210&amp;list_no=437676&amp;seq=9" target="_blank" rel="noopener noreferrer">국가데이터처</a>
+        </p>
+      </article>
 
-      <section class="grid" aria-label="9칸 사업 계획">
-        <article>
-          <div class="card-head">
-            <h2>첫 손님</h2>
-            <span class="card-number">01</span>
-          </div>
-          <ul>
-            <li>프로젝트 경험이 2개 이상인 신입·주니어 취업 준비생</li>
-            <li>기획·마케팅·디자인·개발 직군 중 포트폴리오 구성이 어려운 사람</li>
-            <li>문서·링크·저장소에 흩어진 경험을 하나로 정리하려는 사람</li>
-          </ul>
-          <p><span class="unknown">실제 첫 유료 고객군 확인 필요</span></p>
-        </article>
+      <article class="tone-blue">
+        <div class="card-head">
+          <span class="number">02</span>
+          <span class="status">PROBLEM</span>
+        </div>
+        <h2>어떤 불편</h2>
+        <ul>
+          <li>결과물 중심 포트폴리오만으로는 실제 역할과 기여도를 전달하기 어렵다.</li>
+          <li>문제 상황에서 내린 판단과 트러블슈팅 과정이 충분히 드러나지 않는다.</li>
+          <li>문서·이미지·링크·GitHub 자료를 하나의 포트폴리오로 통합하는 데 시간이 소요된다.</li>
+        </ul>
+        <span class="section-label">수요 신호</span>
+        <div class="fact-grid">
+          <div class="fact"><strong>11.3개월</strong><span>청년 평균 첫 취업 소요</span></div>
+          <div class="fact"><strong>52.8%</strong><span>채용 시 전문성 우선</span></div>
+          <div class="fact"><strong>396개</strong><span>기업 인사담당자 조사</span></div>
+        </div>
+        <p class="subnote">
+          기업은 전문성 판단 시 전공·일경험·직무 교육을 주요하게 평가함 ·
+          <a class="inline-source" href="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18595" target="_blank" rel="noopener noreferrer">고용노동부</a>
+        </p>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>어떤 불편</h2>
-            <span class="card-number">02</span>
-          </div>
-          <ul>
-            <li>프로젝트 결과는 보여도 본인의 역할과 기여 범위가 선명하지 않다.</li>
-            <li>문제 상황에서 무엇을 판단하고 시도했는지 정리하기 어렵다.</li>
-            <li>자료 형식이 달라 하나의 공유 가능한 화면으로 모으는 데 손이 많이 간다.</li>
-          </ul>
-          <p><span class="unknown">고객 인터뷰로 빈도·강도 확인 필요</span></p>
-        </article>
+      <article class="tone-orange">
+        <div class="card-head">
+          <span class="number">03</span>
+          <span class="status">ALTERNATIVE</span>
+        </div>
+        <h2>지금 방법</h2>
+        <p>
+          프로젝트 설명은 문서, 결과물은 이미지와 외부 링크, 개발 기록은 GitHub 저장소에 각각 보관한 뒤
+          지원 시점에 수작업으로 재구성한다.
+        </p>
+        <span class="section-label">경쟁 대안과 공개 가격</span>
+        <div class="competitor-list">
+          <a class="competitor" href="https://carrd.co/docs/pro/plans" target="_blank" rel="noopener noreferrer"><strong>Carrd</strong><span>Pro Standard US$19/년 · 범용 단일 페이지</span></a>
+          <a class="competitor" href="https://www.framer.com/pricing" target="_blank" rel="noopener noreferrer"><strong>Framer</strong><span>Basic US$10/월 · 개인 사이트 제작</span></a>
+          <a class="competitor" href="https://www.notion.com/ko/help/notion-sites-availability-and-pricing" target="_blank" rel="noopener noreferrer"><strong>Notion</strong><span>사이트 발행 · 커스텀 도메인 추가 US$10/월</span></a>
+          <a class="competitor" href="https://www.behance.net/pro?locale=en_US" target="_blank" rel="noopener noreferrer"><strong>Behance</strong><span>Pro US$9.99/월 · 창작자 노출·Adobe Portfolio</span></a>
+        </div>
+        <p class="positioning">차별화 초점: 사이트 디자인 도구가 아니라 ‘역할·문제·해결·성과’ 중심의 취업용 서사 구조</p>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>지금 방법</h2>
-            <span class="card-number">03</span>
-          </div>
-          <ul>
-            <li>PPT·PDF를 직접 구성해 파일이나 링크로 전달한다.</li>
-            <li>Notion 페이지를 웹에 발행해 포트폴리오로 공유한다.</li>
-            <li>개발자는 GitHub 저장소나 GitHub Pages를 함께 제시한다.</li>
-            <li>Canva 같은 범용 편집기로 웹 페이지를 직접 디자인한다.</li>
-          </ul>
-          <p><span class="unknown">대안별 실제 사용 비중 확인 필요</span></p>
-        </article>
+      <article class="tone-lavender">
+        <div class="card-head">
+          <span class="number">04</span>
+          <span class="status">VALUE</span>
+        </div>
+        <h2>우리가 바꿀 점</h2>
+        <ul>
+          <li>담당 역할 → 문제 상황 → 해결 과정 → 구체적 성과 순서의 작성 구조를 제공한다.</li>
+          <li>프로젝트 자료와 링크를 한곳에서 등록하고 공개 여부를 관리한다.</li>
+          <li>완성된 프로젝트를 반응형 단일 페이지에 배치해 고유 URL로 발행한다.</li>
+        </ul>
+        <span class="section-label">핵심 가치</span>
+        <p class="positioning">“무엇을 만들었는가”에서 “어떤 문제를 어떻게 해결했는가”로 포트폴리오의 평가 단위를 전환</p>
+        <span class="section-label">제품 성공 지표</span>
+        <ul class="compact-list">
+          <li>가입 → 첫 프로젝트 완성률</li>
+          <li>첫 프로젝트 → 포트폴리오 발행률</li>
+          <li>작성 시작 → 공개 URL 생성 시간</li>
+          <li>발행 후 공유·재방문·수정률</li>
+        </ul>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>우리가 바꿀 점</h2>
-            <span class="card-number">04</span>
-          </div>
-          <ul>
-            <li><strong>역할 → 문제 → 해결 → 성과</strong> 질문에 답하면 프로젝트 이야기가 완성된다.</li>
-            <li>프로젝트와 텍스트 링크를 한곳에서 작성·수정·공개한다.</li>
-            <li>공개할 프로젝트만 골라 로그인 없는 단일 페이지와 고유 주소로 발행한다.</li>
-            <li>현재 MVP는 이미지 업로드·GitHub 연동·AI 작성 기능을 포함하지 않는다.</li>
-          </ul>
-        </article>
+      <article class="tone-lime">
+        <div class="card-head">
+          <span class="number">05</span>
+          <span class="status">CHANNEL</span>
+        </div>
+        <h2>알리는 길</h2>
+        <p>
+          발행된 고유 URL을 이력서·지원서 등 채용 과정에서 공유해 채용 담당자가 로그인 없이 확인하도록 한다.
+        </p>
+        <span class="section-label">초기 고객 확보</span>
+        <ul>
+          <li>대학일자리플러스센터·취업지원 부서와 포트폴리오 워크숍 제휴</li>
+          <li>부트캠프·청년 일경험·프로젝트 교육 수료자의 결과물 발행 도구로 공급</li>
+          <li>직군별 취업 커뮤니티에 실제 포트폴리오 개선 사례를 콘텐츠로 배포</li>
+          <li>무료 포트폴리오 하단 Folioframe 표기로 자연 유입 연결</li>
+        </ul>
+        <p class="subnote">
+          고용24는 대학 취업지원 프로그램에 포트폴리오 경진대회·구성 지원을 포함함 ·
+          <a class="inline-source" href="https://www.work24.go.kr/cm/c/f/1100/selecSystInfo.do?currentPageNo=1&amp;recordCountPerPage=10&amp;systId=SI00000337" target="_blank" rel="noopener noreferrer">고용24</a>
+        </p>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>알리는 길</h2>
-            <span class="card-number">05</span>
-          </div>
-          <ul>
-            <li>직군별 취업 스터디와 취업 준비 커뮤니티에서 데모 사용자를 모집한다.</li>
-            <li>대학 취업지원 조직·부트캠프·교육 과정에 테스트 사용을 제안한다.</li>
-            <li>완성된 공개 포트폴리오 링크 자체가 서비스 유입 경로가 되는지 확인한다.</li>
-          </ul>
-          <p><span class="unknown">효율이 가장 높은 채널 확인 필요</span></p>
-        </article>
+      <article class="tone-blue">
+        <div class="card-head">
+          <span class="number">06</span>
+          <span class="status">REVENUE</span>
+        </div>
+        <h2>돈이 들어오는 길</h2>
+        <div class="price-plan">
+          <div class="price-plan-head"><strong>무료</strong><span>0원</span></div>
+          <p>프로젝트 작성, 기본 템플릿, Folioframe 주소 1개, 서비스 표기</p>
+        </div>
+        <div class="price-plan featured">
+          <div class="price-plan-head"><strong>Pro 가격 검증안</strong><span>월 5,500원</span></div>
+          <p>또는 연 49,500원 · 부가세 포함 · 추가 템플릿, 서비스 표기 제거, 분석·PDF·도메인 기능 후보</p>
+        </div>
+        <div class="price-plan">
+          <div class="price-plan-head"><strong>기관용</strong><span>별도 견적</span></div>
+          <p>대학·부트캠프 단체 계정, 수료자 관리, 템플릿·브랜딩 제공</p>
+        </div>
+        <p class="subnote">가격은 경쟁 대안의 공개 가격 사이에서 설정한 결제 의향 실험값이며 확정 가격이 아님</p>
+        <span class="section-label">주요 비용</span>
+        <p class="subnote">호스팅·DB·파일 저장·결제 수수료·고객지원·기관 영업. 사용자당 원가와 결제전환율 측정 후 손익분기점 산정.</p>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>돈이 들어오는 길</h2>
-            <span class="card-number">06</span>
-          </div>
-          <ul>
-            <li>검증 단계: 핵심 작성·발행 경험은 무료 테스트</li>
-            <li>개인 유료 요금: <span class="unknown">확인 필요 원</span></li>
-            <li>결제 주기: <span class="unknown">확인 필요</span></li>
-            <li>표시 가격의 부가가치세 포함 여부: <span class="unknown">확인 필요</span></li>
-            <li>교육기관·부트캠프용 단체 계약: <span class="unknown">수요 확인 필요</span></li>
-          </ul>
-        </article>
+      <article class="tone-orange">
+        <div class="card-head">
+          <span class="number">07</span>
+          <span class="status">ASSUMPTION</span>
+        </div>
+        <h2>위험한 가정</h2>
+        <div class="hypothesis"><b>01</b><span>취업 준비생은 구조화된 질문이 있으면 프로젝트 서사를 끝까지 작성한다.</span></div>
+        <div class="hypothesis"><b>02</b><span>작성·통합·발행 과정이 기존 문서 조합 방식보다 빠르다.</span></div>
+        <div class="hypothesis"><b>03</b><span>채용 담당자는 고유 URL에서 지원자의 역할과 기여도를 더 쉽게 파악한다.</span></div>
+        <div class="hypothesis"><b>04</b><span>일반 사이트 제작 도구보다 취업 특화 구조가 선택 이유가 된다.</span></div>
+        <div class="hypothesis"><b>05</b><span>무료 발행 이후 브랜딩 제거·분석·PDF·도메인 기능에 지불 의사가 있다.</span></div>
+        <div class="hypothesis"><b>06</b><span>대학·교육기관이 수료자의 결과물 관리 도구를 구매한다.</span></div>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>위험한 가정</h2>
-            <span class="card-number">07</span>
-          </div>
-          <ul>
-            <li>취업 준비생이 네 단계의 서술을 끝까지 직접 작성할 것이다.</li>
-            <li>채용 담당자가 이 구조에서 지원자의 실제 기여와 판단을 더 쉽게 이해할 것이다.</li>
-            <li>여러 직군에 같은 기본 구조가 유효할 것이다.</li>
-            <li>기존 무료 도구보다 작성 편의와 결과물 품질에 비용을 낼 것이다.</li>
-            <li>고유 주소 공개에 대한 개인정보·검색 노출 우려를 관리할 수 있다.</li>
-          </ul>
-        </article>
+      <article class="tone-lavender">
+        <div class="card-head">
+          <span class="number">08</span>
+          <span class="status">EVIDENCE</span>
+        </div>
+        <h2>근거와 확인 날짜</h2>
+        <ul class="source-list">
+          <li><a href="https://github.com/alicebsy/folioframe/blob/main/PRD.md" target="_blank" rel="noopener noreferrer">PRD · 고객과 문제</a></li>
+          <li><a href="https://folioframe-lake.vercel.app/dashboard" target="_blank" rel="noopener noreferrer">배포 화면 · 작동 확인</a></li>
+          <li><a href="https://www.kostat.go.kr/boardDownload.es?bid=210&amp;list_no=437676&amp;seq=9" target="_blank" rel="noopener noreferrer">국가데이터처 · 청년층 통계</a></li>
+          <li><a href="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18595" target="_blank" rel="noopener noreferrer">고용노동부 · 기업 채용동향</a></li>
+          <li><a href="https://www.work24.go.kr/cm/c/f/1100/selecSystInfo.do?currentPageNo=1&amp;recordCountPerPage=10&amp;systId=SI00000337" target="_blank" rel="noopener noreferrer">고용24 · 취업지원 프로그램</a></li>
+          <li><a href="https://carrd.co/docs/pro/plans" target="_blank" rel="noopener noreferrer">Carrd · 요금제</a></li>
+          <li><a href="https://www.framer.com/pricing" target="_blank" rel="noopener noreferrer">Framer · 요금제</a></li>
+          <li><a href="https://www.notion.com/ko/help/notion-sites-availability-and-pricing" target="_blank" rel="noopener noreferrer">Notion Sites · 요금제</a></li>
+          <li><a href="https://www.behance.net/pro?locale=en_US" target="_blank" rel="noopener noreferrer">Behance Pro · 요금제</a></li>
+        </ul>
+        <p class="subnote">확인일 2026.07.29 · 고객 인터뷰와 실제 결제 데이터는 아직 없음</p>
+      </article>
 
-        <article>
-          <div class="card-head">
-            <h2>근거와 확인 날짜</h2>
-            <span class="card-number">08</span>
-          </div>
-          <ul class="evidence-list">
-            <li>
-              <a href="./PRD.md">제품 문제·초기 고객 가설 — PRD.md</a>
-              <small>확인: 2026. 07. 27. · 내부 가설이며 고객 검증 전</small>
-            </li>
-            <li>
-              <a href="./docs/SPEC.md">현재 MVP 범위 — docs/SPEC.md</a>
-              <small>확인: 2026. 07. 27.</small>
-            </li>
-            <li>
-              <a href="http://127.0.0.1:3000/dashboard-preview">작성 대시보드 화면</a>
-              <small>확인: 2026. 07. 27. · 로컬 서버 실행 필요</small>
-            </li>
-            <li>
-              <a href="http://127.0.0.1:3000/portfolio-preview">공개 포트폴리오 화면</a>
-              <small>확인: 2026. 07. 27. · 로컬 서버 실행 필요</small>
-            </li>
-            <li>
-              <a href="https://ncs.go.kr/ve/guide/ncsEduGuide.pdf">NCS 직업기초능력 가이드</a>
-              <small>확인: 2026. 07. 27. · 문제해결능력을 직업기초능력으로 정의</small>
-            </li>
-            <li>
-              <a href="https://www.notion.com/help/public-pages-and-web-publishing">Notion Sites 공식 도움말</a>
-              <small>확인: 2026. 07. 27. · 페이지 웹 발행과 링크 공유 지원</small>
-            </li>
-            <li>
-              <a href="https://docs.github.com/en/pages/quickstart">GitHub Pages 공식 빠른 시작</a>
-              <small>확인: 2026. 07. 27. · 프로젝트·이력서용 사이트 사용 안내</small>
-            </li>
-            <li>
-              <a href="https://www.canva.com/ko_kr/create/landing-pages/">Canva 웹 페이지 제작 안내</a>
-              <small>확인: 2026. 07. 27. · 범용 드래그 앤 드롭 제작 대안</small>
-            </li>
-          </ul>
-        </article>
+      <article class="tone-lime">
+        <div class="card-head">
+          <span class="number">09</span>
+          <span class="status">EXPERIMENT</span>
+        </div>
+        <h2>다음 실험</h2>
+        <div class="experiment-list">
+          <div class="experiment"><span>01</span><div><strong>문제 인터뷰</strong><p>취업 준비생 12명·채용 담당자 5명. 기존 작성 시간, 포기 지점, 평가 기준 확인.</p></div></div>
+          <div class="experiment"><span>02</span><div><strong>작성 사용성</strong><p>초기 고객 10명에게 프로젝트 1개 발행 과제 제공. 45분 내 무도움 발행률 70%를 1차 기준으로 설정.</p></div></div>
+          <div class="experiment"><span>03</span><div><strong>전달력 평가</strong><p>채용 담당자가 3분 안에 역할·문제·해결·성과를 정확히 요약하는지 확인.</p></div></div>
+          <div class="experiment"><span>04</span><div><strong>가격 스모크 테스트</strong><p>월 5,500원과 연 49,500원 안내 후 결제 직전 사전등록 전환을 비교. 실제 결제 전 가격 확정 금지.</p></div></div>
+          <div class="experiment"><span>05</span><div><strong>기관 판매</strong><p>대학·부트캠프 담당자 인터뷰로 수료자 관리 문제, 구매 절차, 예산 단위를 확인.</p></div></div>
+        </div>
+      </article>
+    </section>
 
-        <article>
-          <div class="card-head">
-            <h2>다음 실험</h2>
-            <span class="card-number">09</span>
-          </div>
-          <ul>
-            <li>타겟 취업 준비생에게 현재 데모로 실제 프로젝트 하나를 작성하게 한다.</li>
-            <li>중단 지점, 작성 완료 여부, 걸린 시간과 막힌 질문을 관찰해 기록한다.</li>
-            <li>채용 경험자에게 기존 포트폴리오와 구조화 화면을 비교해 역할·판단 이해 여부를 묻는다.</li>
-            <li>무료 사용 후 지불 의향과 원하는 결제 방식을 질문한다.</li>
-            <li>실험 인원·기간·통과 기준은 <span class="unknown">확인 필요</span></li>
-          </ul>
-        </article>
-      </section>
-
-      <footer>
-        <span>확인된 사실과 검증 전 가설을 구분한 사업 계획 초안</span>
-        <span>시장 규모·가격·전환율 수치는 근거 확보 전까지 기재하지 않음</span>
-      </footer>
-    </main>
-  </body>
+    <footer>
+      <strong>✦ Folioframe</strong>
+      <span>직군 맞춤형 통합 웹 포트폴리오</span>
+      <span>Business Plan · 2026.07.29</span>
+    </footer>
+  </main>
+</body>
 </html>

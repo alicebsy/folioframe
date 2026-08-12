@@ -1,5 +1,6 @@
 import type { Portfolio, Project } from "@/lib/models";
 import { orderedProjectMedia } from "@/lib/project-media";
+import { projectPeriod } from "@/lib/project-period";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -169,7 +170,7 @@ export default function PublicPortfolio({
                 <div className="project-showcase-copy">
                   <div className="project-showcase-meta">
                     <span>{String(index + 1).padStart(2, "0")}</span>
-                    {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                    {(() => { const period = projectPeriod(project); return formatPeriod(period.start, period.end) && <span>{formatPeriod(period.start, period.end)}</span>; })()}
                     {project.contribution && <span>{project.contribution}</span>}
                   </div>
                   <h3><a href={href}>{project.title}</a></h3>
@@ -207,7 +208,7 @@ export default function PublicPortfolio({
                   <div className="project-showcase-copy">
                     <div className="project-showcase-meta">
                       <span>{String(featuredProjects.length + index + 1).padStart(2, "0")}</span>
-                      {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                      {(() => { const period = projectPeriod(project); return formatPeriod(period.start, period.end) && <span>{formatPeriod(period.start, period.end)}</span>; })()}
                       {project.contribution && <span>{project.contribution}</span>}
                     </div>
                     <h3><a href={href}>{project.title}</a></h3>

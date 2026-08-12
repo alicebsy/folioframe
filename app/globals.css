@@ -8053,6 +8053,7 @@ label em {
   font-weight: 300;
   line-height: 1;
   transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .project-media-nav:hover {

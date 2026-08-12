@@ -8,12 +8,14 @@ export default async function PreviewProjectPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ theme?: string }>;
+  searchParams: Promise<{ theme?: string; media?: string }>;
 }) {
   const { id } = await params;
-  const requestedTheme = (await searchParams).theme as PortfolioTheme | undefined;
+  const query = await searchParams;
+  const requestedTheme = query.theme as PortfolioTheme | undefined;
+  const mediaIndex = Number.parseInt(query.media ?? "0", 10);
   const theme = requestedTheme && previewThemes.has(requestedTheme) ? requestedTheme : portfolio.theme;
   const project = projects.find((item) => item.id === id);
   if (!project) notFound();
-  return <PublicProjectDetail portfolio={{ ...portfolio, theme }} project={project} backHref={`/portfolio-preview?theme=${theme}`} />;
+  return <PublicProjectDetail portfolio={{ ...portfolio, theme }} project={project} backHref={`/portfolio-preview?theme=${theme}`} mediaIndex={Number.isFinite(mediaIndex) ? mediaIndex : 0} mediaBaseHref={`/portfolio-preview/project/${id}?theme=${theme}`} />;
 }

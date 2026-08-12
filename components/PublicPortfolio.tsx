@@ -183,7 +183,7 @@ export default function PublicPortfolio({
               </article>
             );
           })}
-        </div>
+        </div>}
         {!!moreProjects.length && (
           <details className="more-projects-disclosure">
             <summary>

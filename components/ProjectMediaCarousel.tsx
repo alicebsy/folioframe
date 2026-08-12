@@ -7,7 +7,6 @@ export default function ProjectMediaCarousel({
   media,
   title,
   activeIndex = 0,
-  mediaBaseHref,
 }: {
   media: ProjectMedia[];
   title: string;

@@ -5,6 +5,7 @@ const previewData: DashboardData = {
   user: {
     id: "preview-user",
     email: "preview@folioframe.kr",
+    isAdmin: false,
   },
   portfolio: {
     id: "preview-portfolio",

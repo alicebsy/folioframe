@@ -17,5 +17,5 @@ export default async function PublicProjectPage({
   if (!data) notFound();
   const project = data.projects.find((item) => item.id === id);
   if (!project) notFound();
-  return <PublicProjectDetail portfolio={data.portfolio} project={project} backHref={`/p/${slug}`} mediaIndex={Number.isFinite(mediaIndex) ? mediaIndex : 0} mediaBaseHref={`/p/${slug}/projects/${id}`} />;
+  return <PublicProjectDetail portfolio={data.portfolio} project={project} backHref={`/p/${slug}`} mediaIndex={Number.isFinite(mediaIndex) ? mediaIndex : 0} />;
 }

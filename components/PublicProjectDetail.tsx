@@ -27,7 +27,6 @@ export default function PublicProjectDetail({
   project: Project;
   backHref: string;
   mediaIndex?: number;
-  mediaBaseHref: string;
 }) {
   const media = orderedProjectMedia(project);
 
@@ -51,7 +50,7 @@ export default function PublicProjectDetail({
           {!!project.techStacks.length && <div className="project-showcase-tags detail-tech-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
         </div>
 
-        <ProjectMediaCarousel media={media} title={project.title} activeIndex={mediaIndex} mediaBaseHref={mediaBaseHref} />
+        <ProjectMediaCarousel media={media} title={project.title} activeIndex={mediaIndex} />
 
         <div className="project-detail-content">
           <div className="case-scan-grid">

@@ -14,6 +14,16 @@ export default function PublicPortfolio({
   projectBasePath: string;
 }) {
   const { portfolio, projects } = data;
+  const featuredTitles = [
+    "Folioframe — 직군 맞춤형 웹 포트폴리오 서비스",
+    "CapLog",
+    "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다",
+  ];
+  const featuredProjects = featuredTitles
+    .map((title) => projects.find((project) => project.title === title))
+    .filter((project): project is Project => Boolean(project));
+  const featuredIds = new Set(featuredProjects.map((project) => project.id));
+  const moreProjects = projects.filter((project) => !featuredIds.has(project.id));
 
   return (
     <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
@@ -145,8 +155,9 @@ export default function PublicPortfolio({
           <p>{String(projects.length).padStart(2, "0")} PROJECTS</p>
         </div>
 
-        <div className="project-showcase-grid">
-          {projects.map((project, index) => {
+        <div className="project-showcase-grid featured-project-grid">
+          {featuredProjects.map((project) => {
+            const index = projects.findIndex((item) => item.id === project.id);
             const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
             const media = [
               ...(project.media ?? []),
@@ -181,6 +192,51 @@ export default function PublicPortfolio({
             );
           })}
         </div>
+        {!!moreProjects.length && (
+          <details className="more-projects-disclosure">
+            <summary>
+              <span><b>MORE PROJECTS</b> 대표 프로젝트 외 경험</span>
+              <strong>더 많은 프로젝트 보기 <i>＋</i></strong>
+            </summary>
+            <div className="project-showcase-grid more-project-grid">
+              {moreProjects.map((project) => {
+                const index = projects.findIndex((item) => item.id === project.id);
+                const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
+                const media = [
+                  ...(project.media ?? []),
+                  ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
+                  ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
+                ].filter((item, mediaIndex, items) => items.findIndex((candidate) => candidate.url === item.url) === mediaIndex);
+                const heroMedia = media[0];
+                return (
+                  <article className="project-showcase-card" key={project.id}>
+                    <a className="project-showcase-media" href={href} aria-label={`${project.title} 상세 보기`}>
+                      {heroMedia?.type === "video" ? (
+                        <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
+                      ) : heroMedia?.type === "image" ? (
+                        <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
+                      ) : (
+                        <span className="project-showcase-placeholder">{project.title.slice(0, 1)}</span>
+                      )}
+                      <span className="project-showcase-action">PROJECT DETAIL <b>↗</b></span>
+                    </a>
+                    <div className="project-showcase-copy">
+                      <div className="project-showcase-meta">
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        {formatPeriod(project.periodStart, project.periodEnd) && <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>}
+                        {project.contribution && <span>{project.contribution}</span>}
+                      </div>
+                      <h3><a href={href}>{project.title}</a></h3>
+                      <p>{project.summary}</p>
+                      {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
+                      <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </details>
+        )}
       </section>
 
       {(portfolio.aspirationTitle || portfolio.aspiration) && (

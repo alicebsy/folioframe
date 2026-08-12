@@ -1696,6 +1696,16 @@ label em {
 .admin-muted { color: #a4aa9e; }
 .admin-empty { padding: 56px 24px; color: #7b8374; text-align: center; font-size: 13px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.featured-project-grid { margin-bottom: 22px; }
+.more-projects-disclosure { border-top: 1px solid rgba(37,42,33,.2); }
+.more-projects-disclosure summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; color: #252a21; cursor: pointer; list-style: none; }
+.more-projects-disclosure summary::-webkit-details-marker { display: none; }
+.more-projects-disclosure summary > span { display: flex; flex-direction: column; gap: 5px; color: #72796d; font-size: 12px; }
+.more-projects-disclosure summary > span b { color: #8a9281; font-size: 9px; letter-spacing: .13em; }
+.more-projects-disclosure summary strong { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+.more-projects-disclosure summary i { display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid #aeb7a0; border-radius: 50%; font-size: 18px; font-style: normal; font-weight: 400; transition: transform .2s ease; }
+.more-projects-disclosure[open] summary i { transform: rotate(45deg); }
+.more-project-grid { padding: 8px 0 30px; }
 @media (max-width: 700px) {
   .admin-content { width: min(100% - 28px, 1180px); padding-top: 48px; }
   .admin-heading { display: block; }
@@ -1706,6 +1716,7 @@ label em {
   .admin-panel-heading { display: block; }
   .admin-search { display: block; margin-top: 20px; }
   .admin-search input { width: 100%; }
+  .more-projects-disclosure summary { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 760px) {

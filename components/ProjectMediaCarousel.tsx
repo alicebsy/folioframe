@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import type { ProjectMedia } from "@/lib/models";
 
 export default function ProjectMediaCarousel({
@@ -11,9 +14,20 @@ export default function ProjectMediaCarousel({
   activeIndex?: number;
   mediaBaseHref: string;
 }) {
-  const safeIndex = media.length ? Math.min(Math.max(activeIndex, 0), media.length - 1) : 0;
+  const clampIndex = (index: number) => media.length ? Math.min(Math.max(index, 0), media.length - 1) : 0;
+  const [selectedIndex, setSelectedIndex] = useState(() => clampIndex(activeIndex));
+  const safeIndex = clampIndex(selectedIndex);
   const activeMedia = media[safeIndex];
   const mediaHref = (index: number) => `${mediaBaseHref}${mediaBaseHref.includes("?") ? "&" : "?"}media=${index}`;
+  const selectMedia = (index: number) => {
+    const nextIndex = media.length ? (index + media.length) % media.length : 0;
+    setSelectedIndex(nextIndex);
+    window.history.replaceState(null, "", mediaHref(nextIndex));
+  };
+
+  useEffect(() => {
+    setSelectedIndex(clampIndex(activeIndex));
+  }, [activeIndex]);
 
   return (
     <div className={`project-detail-media ${activeMedia ? "has-media" : "empty"}`}>
@@ -25,8 +39,8 @@ export default function ProjectMediaCarousel({
         <strong>{title.slice(0, 1)}</strong>
       )}
       {media.length > 1 && <>
-        <a className="project-media-nav prev" href={mediaHref((safeIndex - 1 + media.length) % media.length)} aria-label="이전 사진">‹</a>
-        <a className="project-media-nav next" href={mediaHref((safeIndex + 1) % media.length)} aria-label="다음 사진">›</a>
+        <button type="button" className="project-media-nav prev" onClick={() => selectMedia(safeIndex - 1)} aria-label="이전 사진">‹</button>
+        <button type="button" className="project-media-nav next" onClick={() => selectMedia(safeIndex + 1)} aria-label="다음 사진">›</button>
         <span className="project-media-counter" aria-live="polite">{String(safeIndex + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
       </>}
     </div>

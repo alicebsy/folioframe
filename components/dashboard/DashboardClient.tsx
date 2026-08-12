@@ -1284,8 +1284,8 @@ export default function DashboardClient({
                 />
               </label>
               <div className="project-facts">
-                <label>시작 월<input type="month" value={projectDraft.periodStart} onChange={(event) => setProjectDraft({ ...projectDraft, periodStart: event.target.value })} /></label>
-                <label>종료 월<input type="month" value={projectDraft.periodEnd} onChange={(event) => setProjectDraft({ ...projectDraft, periodEnd: event.target.value })} /></label>
+                <label>시작 월<input type="month" value={projectDraft.periodStart} onInput={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} /></label>
+                <label>종료 월<input type="month" value={projectDraft.periodEnd} onInput={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} /></label>
                 <label>참여 인원<input maxLength={40} value={projectDraft.teamSize} onChange={(event) => setProjectDraft({ ...projectDraft, teamSize: event.target.value })} placeholder="예: 4명" /></label>
                 <div className="picker-field">
                   <span className="picker-label">기여 범위</span>

@@ -104,7 +104,7 @@ export type Portfolio = {
 };
 
 export type DashboardData = {
-  user: { id: string; email: string };
+  user: { id: string; email: string; isAdmin: boolean };
   portfolio: Portfolio;
   projects: Project[];
 };

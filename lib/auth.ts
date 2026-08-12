@@ -10,7 +10,24 @@ const SESSION_DAYS = 30;
 export type AuthUser = {
   id: string;
   email: string;
+  isAdmin: boolean;
 };
+
+let adminColumnReady: Promise<void> | null = null;
+
+async function ensureAdminColumn() {
+  if (!adminColumnReady) {
+    adminColumnReady = query(
+      "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE",
+    ).then(() => undefined);
+  }
+  await adminColumnReady;
+}
+
+function isConfiguredAdmin(email: string) {
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  return Boolean(adminEmail && email.toLowerCase() === adminEmail);
+}
 
 function hashToken(token: string) {
   const secret = process.env.SESSION_SECRET;
@@ -44,12 +61,13 @@ export async function createSession(userId: string) {
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
+  await ensureAdminColumn();
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
 
-  const result = await query<AuthUser>(
-    `SELECT u.id, u.email
+  const result = await query<{ id: string; email: string; is_admin: boolean }>(
+    `SELECT u.id, u.email, u.is_admin
        FROM sessions s
        JOIN users u ON u.id = s.user_id
       WHERE s.token_hash = $1
@@ -58,12 +76,24 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     [hashToken(token)],
   );
 
-  return result.rows[0] ?? null;
+  const user = result.rows[0];
+  if (!user) return null;
+  return {
+    id: user.id,
+    email: user.email,
+    isAdmin: Boolean(user.is_admin) || isConfiguredAdmin(user.email),
+  };
 }
 
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
+  return user;
+}
+
+export async function requireAdmin() {
+  const user = await requireUser();
+  if (!user.isAdmin) redirect("/dashboard");
   return user;
 }
 

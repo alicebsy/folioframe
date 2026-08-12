@@ -753,6 +753,11 @@ export default function DashboardClient({
               공개 페이지
             </a>
           )}
+          {!previewMode && data.user.isAdmin && (
+            <a className="button secondary" href="/admin">
+              관리자
+            </a>
+          )}
           {!data.portfolio.isPublished && (
             <button
               className="button primary"

@@ -8039,29 +8039,29 @@ label em {
 
 .project-media-nav {
   position: absolute;
-  top: 50%;
+  top: 0;
   z-index: 2;
-  width: 42px;
-  height: 42px;
+  width: 72px;
+  height: 100%;
   display: grid;
   place-items: center;
   color: #fff;
-  background: rgba(23, 24, 20, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 50%;
-  font-size: 30px;
-  font-weight: 300;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 54px;
+  font-weight: 200;
   line-height: 1;
-  transform: translateY(-50%);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
   cursor: pointer;
 }
 
 .project-media-nav:hover {
-  background: rgba(23, 24, 20, 0.92);
+  color: #d6ff57;
 }
 
-.project-media-nav.prev { left: 18px; }
-.project-media-nav.next { right: 18px; }
+.project-media-nav.prev { left: 0; }
+.project-media-nav.next { right: 0; }
 
 .project-media-counter {
   position: absolute;
@@ -9559,13 +9559,13 @@ label em {
   }
 
   .project-media-nav {
-    width: 34px;
-    height: 34px;
-    font-size: 25px;
+    width: 58px;
+    height: 100%;
+    font-size: 42px;
   }
 
-  .project-media-nav.prev { left: 10px; }
-  .project-media-nav.next { right: 10px; }
+  .project-media-nav.prev { left: 0; }
+  .project-media-nav.next { right: 0; }
   .project-media-counter { right: 10px; bottom: 10px; }
 
   .project-detail-shell .case-scan-grid section,

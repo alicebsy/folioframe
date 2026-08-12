@@ -40,23 +40,6 @@ export default function ProjectMediaCarousel({
         <button type="button" className="project-media-nav next" onClick={() => selectMedia(safeIndex + 1)} aria-label="다음 사진">›</button>
         <span className="project-media-counter" aria-live="polite">{String(safeIndex + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
       </>}
-      {media.length > 1 && (
-        <div className="project-media-thumbnails" aria-label="프로젝트 미디어 목록">
-          {media.map((item, index) => (
-            <button
-              type="button"
-              key={item.id}
-              className={`project-media-thumbnail ${index === safeIndex ? "is-active" : ""}`}
-              onClick={() => selectMedia(index)}
-              aria-label={`${index + 1}번째 ${item.type === "video" ? "영상" : "사진"} 보기`}
-              aria-pressed={index === safeIndex}
-            >
-              {item.type === "video" ? <video src={item.url} muted playsInline aria-hidden="true" /> : <span style={{ backgroundImage: `url("${item.url.replaceAll('"', "%22")}")` }} aria-hidden="true" />}
-              <small>{String(index + 1).padStart(2, "0")}</small>
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

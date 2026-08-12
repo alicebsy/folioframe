@@ -77,7 +77,7 @@ export async function POST(request: Request) {
           input.deployment,
           input.coverImageUrl,
           input.videoUrl,
-          input.media,
+          JSON.stringify(input.media),
           input.isPublic,
           orderResult.rows[0].next_order,
         ],

@@ -58,7 +58,7 @@ export async function POST(
           input.deployment,
           input.coverImageUrl,
           input.videoUrl,
-          input.media,
+          JSON.stringify(input.media),
           input.isPublic,
           id,
           user.id,

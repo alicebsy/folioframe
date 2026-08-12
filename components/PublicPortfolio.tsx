@@ -142,13 +142,13 @@ export default function PublicPortfolio({
       )}
 
       <section className="portfolio-projects project-showcase-section">
-        <div className="portfolio-section-title">
+        {!!featuredProjects.length && <div className="portfolio-section-title">
           <span>SELECTED WORK</span>
           <h2>대표 프로젝트</h2>
-          <p>{String(projects.length).padStart(2, "0")} PROJECTS</p>
-        </div>
+          <p>{String(featuredProjects.length).padStart(2, "0")} FEATURED</p>
+        </div>}
 
-        <div className="project-showcase-grid featured-project-grid">
+        {!!featuredProjects.length && <div className="project-showcase-grid featured-project-grid">
           {featuredProjects.map((project, index) => {
             const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
             const media = [
@@ -187,8 +187,8 @@ export default function PublicPortfolio({
         {!!moreProjects.length && (
           <details className="more-projects-disclosure">
             <summary>
-              <span><b>MORE PROJECTS</b> 대표 프로젝트 외 경험</span>
-              <strong>더 많은 프로젝트 보기 <i>＋</i></strong>
+              <span><b>ADDITIONAL WORK</b> 대표로 선택하지 않은 프로젝트</span>
+              <strong>추가 프로젝트 보기 <i>＋</i></strong>
             </summary>
             <div className="project-showcase-grid more-project-grid">
               {moreProjects.map((project, index) => {

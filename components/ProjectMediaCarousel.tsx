@@ -1,30 +1,19 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import type { ProjectMedia } from "@/lib/models";
 
 export default function ProjectMediaCarousel({
   media,
   title,
   activeIndex = 0,
+  mediaBaseHref,
 }: {
   media: ProjectMedia[];
   title: string;
   activeIndex?: number;
+  mediaBaseHref: string;
 }) {
-  const initialIndex = media.length ? Math.min(Math.max(activeIndex, 0), media.length - 1) : 0;
-  const [selectedIndex, setSelectedIndex] = useState(initialIndex);
-
-  useEffect(() => {
-    setSelectedIndex(initialIndex);
-  }, [initialIndex]);
-
-  const safeIndex = media.length ? Math.min(Math.max(selectedIndex, 0), media.length - 1) : 0;
+  const safeIndex = media.length ? Math.min(Math.max(activeIndex, 0), media.length - 1) : 0;
   const activeMedia = media[safeIndex];
-  const selectMedia = (index: number) => {
-    if (!media.length) return;
-    setSelectedIndex((index + media.length) % media.length);
-  };
+  const mediaHref = (index: number) => `${mediaBaseHref}${mediaBaseHref.includes("?") ? "&" : "?"}media=${index}`;
 
   return (
     <div className={`project-detail-media ${activeMedia ? "has-media" : "empty"}`}>
@@ -36,8 +25,8 @@ export default function ProjectMediaCarousel({
         <strong>{title.slice(0, 1)}</strong>
       )}
       {media.length > 1 && <>
-        <button type="button" className="project-media-nav prev" onClick={() => selectMedia(safeIndex - 1)} aria-label="이전 사진">‹</button>
-        <button type="button" className="project-media-nav next" onClick={() => selectMedia(safeIndex + 1)} aria-label="다음 사진">›</button>
+        <a className="project-media-nav prev" href={mediaHref((safeIndex - 1 + media.length) % media.length)} aria-label="이전 사진">‹</a>
+        <a className="project-media-nav next" href={mediaHref((safeIndex + 1) % media.length)} aria-label="다음 사진">›</a>
         <span className="project-media-counter" aria-live="polite">{String(safeIndex + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
       </>}
     </div>

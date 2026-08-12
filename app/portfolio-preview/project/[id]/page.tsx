@@ -17,5 +17,5 @@ export default async function PreviewProjectPage({
   const theme = requestedTheme && previewThemes.has(requestedTheme) ? requestedTheme : portfolio.theme;
   const project = projects.find((item) => item.id === id);
   if (!project) notFound();
-  return <PublicProjectDetail portfolio={{ ...portfolio, theme }} project={project} backHref={`/portfolio-preview?theme=${theme}`} mediaIndex={Number.isFinite(mediaIndex) ? mediaIndex : 0} />;
+  return <PublicProjectDetail portfolio={{ ...portfolio, theme }} project={project} backHref={`/portfolio-preview?theme=${theme}`} mediaIndex={Number.isFinite(mediaIndex) ? mediaIndex : 0} mediaBaseHref={`/portfolio-preview/project/${id}?theme=${theme}`} />;
 }

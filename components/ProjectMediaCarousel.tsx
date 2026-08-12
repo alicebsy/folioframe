@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, type MouseEvent } from "react";
 import type { ProjectMedia } from "@/lib/models";
 
 export default function ProjectMediaCarousel({
@@ -14,31 +11,49 @@ export default function ProjectMediaCarousel({
   activeIndex?: number;
   mediaBaseHref: string;
 }) {
+  void mediaBaseHref;
   const safeInitialIndex = media.length ? Math.min(Math.max(activeIndex, 0), media.length - 1) : 0;
-  const [selectedIndex, setSelectedIndex] = useState(safeInitialIndex);
-  const safeIndex = media.length ? Math.min(Math.max(selectedIndex, 0), media.length - 1) : 0;
-  const activeMedia = media[safeIndex];
-  const mediaHref = (index: number) => `${mediaBaseHref}${mediaBaseHref.includes("?") ? "&" : "?"}media=${index}`;
-  const changeMedia = (event: MouseEvent<HTMLAnchorElement>, index: number) => {
-    event.preventDefault();
-    setSelectedIndex((index + media.length) % media.length);
-    window.history.replaceState(null, "", mediaHref((index + media.length) % media.length));
-  };
+  const radioName = `project-media-${title.replace(/[^a-zA-Z0-9가-힣]+/g, "-")}`;
+
+  if (!media.length) {
+    return (
+      <div className="project-detail-media empty">
+        <strong>{title.slice(0, 1)}</strong>
+      </div>
+    );
+  }
 
   return (
-    <div className={`project-detail-media ${activeMedia ? "has-media" : "empty"}`}>
-      {activeMedia?.type === "video" ? (
-        <video key={activeMedia.id} src={activeMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} controls playsInline />
-      ) : activeMedia?.type === "image" ? (
-        <span role="img" aria-label={`${title} ${safeIndex + 1}번째 미디어`} style={{ backgroundImage: `url("${activeMedia.url.replaceAll('"', "%22")}")` }} />
-      ) : (
-        <strong>{title.slice(0, 1)}</strong>
-      )}
-      {media.length > 1 && <>
-        <a className="project-media-nav prev" href={mediaHref((safeIndex - 1 + media.length) % media.length)} onClick={(event) => changeMedia(event, safeIndex - 1)} aria-label="이전 사진">‹</a>
-        <a className="project-media-nav next" href={mediaHref((safeIndex + 1) % media.length)} onClick={(event) => changeMedia(event, safeIndex + 1)} aria-label="다음 사진">›</a>
-        <span className="project-media-counter" aria-live="polite">{String(safeIndex + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
-      </>}
+    <div className="project-detail-media-carousel">
+      {media.map((item, index) => {
+        const previousIndex = (index - 1 + media.length) % media.length;
+        const nextIndex = (index + 1) % media.length;
+        const inputId = `${radioName}-${index}`;
+
+        return (
+          <div className="project-media-frame" key={item.id || `${item.url}-${index}`}>
+            <input
+              className="project-media-radio"
+              type="radio"
+              name={radioName}
+              id={inputId}
+              defaultChecked={index === safeInitialIndex}
+            />
+            <div className="project-detail-media">
+              {item.type === "video" ? (
+                <video src={item.url} poster={media.find((entry) => entry.type === "image")?.url || undefined} controls playsInline />
+              ) : item.type === "image" ? (
+                <img src={item.url} alt={`${title} ${index + 1}번째 미디어`} />
+              ) : (
+                <strong>{title.slice(0, 1)}</strong>
+              )}
+              <label className="project-media-nav prev" htmlFor={`${radioName}-${previousIndex}`} aria-label="이전 사진">‹</label>
+              <label className="project-media-nav next" htmlFor={`${radioName}-${nextIndex}`} aria-label="다음 사진">›</label>
+              <span className="project-media-counter" aria-live="polite">{String(index + 1).padStart(2, "0")} / {String(media.length).padStart(2, "0")}</span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

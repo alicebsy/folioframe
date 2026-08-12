@@ -1177,8 +1177,12 @@ export default function DashboardClient({
                           className={`featured-toggle ${project.isFeatured ? "on" : ""}`}
                           onClick={() => toggleFeatured(project)}
                           aria-label={project.isFeatured ? "대표 프로젝트에서 제외" : "대표 프로젝트로 설정"}
+                          aria-pressed={project.isFeatured}
                           title={project.isFeatured ? "대표 프로젝트에서 제외" : "대표 프로젝트로 설정"}
-                        >★ <span>{project.isFeatured ? "대표" : "대표로 표시"}</span></button>
+                        >
+                          <span className="featured-toggle-icon" aria-hidden="true">★</span>
+                          <span className="featured-toggle-label">대표</span>
+                        </button>
                         <button
                           className={`visibility-toggle ${project.isPublic ? "on" : ""}`}
                           onClick={() => toggleVisibility(project)}

@@ -21,7 +21,6 @@ export default function PublicProjectDetail({
   project,
   backHref,
   mediaIndex,
-  mediaBaseHref,
 }: {
   portfolio: Portfolio;
   project: Project;

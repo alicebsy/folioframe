@@ -17,6 +17,33 @@ function linkHost(url: string) {
   }
 }
 
+function linkKind(url: string) {
+  const host = linkHost(url);
+  if (host.includes("github.com")) return { label: "GitHub", icon: "GH", className: "github" };
+  if (host.includes("notion.site") || host.includes("notion.so") || host.includes("notion.com")) return { label: "Notion", icon: "N", className: "notion" };
+  return { label: "서비스·자료", icon: "↗", className: "external" };
+}
+
+function ResourceLinks({ links }: { links: Project["links"] }) {
+  return (
+    <div className="case-resources-wrap case-resources-top">
+      <div><span>QUICK LINKS</span><h4>바로 확인하기</h4><small>코드·소개·서비스</small></div>
+      <div className="case-resources">
+        {links.map((link) => {
+          const kind = linkKind(link.url);
+          return (
+            <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className={`resource-link ${kind.className}`}>
+              <i className="resource-icon" aria-hidden="true">{kind.icon}</i>
+              <span><strong>{link.label}</strong><small>{kind.label} · {linkHost(link.url)}</small></span>
+              <b>↗</b>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function PublicProjectDetail({
   portfolio,
   project,
@@ -51,6 +78,7 @@ export default function PublicProjectDetail({
             {project.contribution && <span><b>기여</b>{project.contribution}</span>}
           </div>
           {!!project.techStacks.length && <div className="project-showcase-tags detail-tech-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
+          {!!project.links.length && <ResourceLinks links={project.links} />}
         </div>
 
         <ProjectMediaCarousel media={media} title={project.title} activeIndex={mediaIndex} mediaBaseHref={mediaBaseHref} />
@@ -89,12 +117,6 @@ export default function PublicProjectDetail({
           {project.evidence && <div className="case-evidence"><span>EVIDENCE</span><div><h4>성과 근거</h4><p>{project.evidence}</p></div></div>}
           {(project.learnings || project.nextTime) && (
             <div className="case-reflection"><span>RETROSPECTIVE</span><div>{project.learnings && <section><h4>배운 점</h4><p>{project.learnings}</p></section>}{project.nextTime && <section><h4>다시 한다면</h4><p>{project.nextTime}</p></section>}</div></div>
-          )}
-          {!!project.links.length && (
-            <div className="case-resources-wrap">
-              <div><span>PROJECT RESOURCES</span><h4>직접 확인할 수 있는 자료</h4></div>
-              <div className="case-resources">{project.links.map((link) => <a key={link.url} href={link.url} target="_blank" rel="noreferrer"><span><strong>{link.label}</strong><small>{linkHost(link.url)}</small></span><b>↗</b></a>)}</div>
-            </div>
           )}
         </div>
       </section>

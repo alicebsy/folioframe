@@ -9452,6 +9452,78 @@ label em {
   font-size: 10px;
 }
 
+.project-detail-shell .case-resources-top {
+  margin-top: 26px;
+  max-width: 900px;
+  padding: 16px 18px;
+  grid-template-columns: 170px 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.project-detail-shell .case-resources-top > div:first-child h4 {
+  margin: 6px 0 2px;
+  font-size: 16px;
+}
+
+.project-detail-shell .case-resources-top > div:first-child small {
+  color: var(--detail-muted);
+  font-size: 10px;
+}
+
+.project-detail-shell .case-resources-top .case-resources {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.project-detail-shell .case-resources-top .resource-link {
+  min-height: 58px;
+  padding: 10px 11px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+}
+
+.project-detail-shell .resource-icon {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: #fff;
+  background: #30352d;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.project-detail-shell .resource-link.notion .resource-icon {
+  color: #252922;
+  background: #fff;
+  border: 1px solid #cfd2c8;
+  font-family: Georgia, serif;
+  font-size: 17px;
+}
+
+.project-detail-shell .resource-link.external .resource-icon {
+  color: #536d1e;
+  background: #edf5d9;
+  font-size: 15px;
+}
+
+.project-detail-shell .resource-link > span {
+  gap: 2px;
+}
+
+.project-detail-shell .resource-link strong {
+  font-size: 11px;
+}
+
+.project-detail-shell .resource-link small {
+  font-size: 9px;
+}
+
 .project-detail-shell .project-detail-media {
   margin: 56px 0 26px;
   border-radius: 0;

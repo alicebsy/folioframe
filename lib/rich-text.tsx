@@ -11,7 +11,14 @@ function renderInline(value: string): ReactNode[] {
 }
 
 /** 소개글의 줄바꿈과 **강조** 표기만 안전하게 화면 요소로 바꿉니다. */
-export function RichText({ value }: { value: string }) {
+export function RichText({ value, autoEmphasis = false }: { value: string; autoEmphasis?: boolean }) {
+  const emphasizeLine = (line: string) => {
+    if (!autoEmphasis || value.includes("**")) return line;
+    const sentence = line.match(/^(.+?[.!?])(?:\s|$)/);
+    if (!sentence) return line;
+    return `**${sentence[1]}**${line.slice(sentence[1].length)}`;
+  };
+
   return (
     <>
       {value.split(/\n{2,}/).map((paragraph, index) => (
@@ -19,7 +26,7 @@ export function RichText({ value }: { value: string }) {
           {paragraph.split("\n").map((line, lineIndex) => (
             <span key={lineIndex}>
               {lineIndex > 0 && <br />}
-              {renderInline(line)}
+              {renderInline(emphasizeLine(line))}
             </span>
           ))}
         </span>

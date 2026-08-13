@@ -149,7 +149,7 @@ function mapProject(row: ProjectRow): Project {
     "Ticker — Human Stock Market": "/assets/project-covers/ticker-cover.png",
     "EGGO — 농꾸하고 작심삼일 타파하자": "/assets/project-covers/eggo-cover.png",
     "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": "/assets/project-covers/love-algorithm-cover.png",
-    "Localhost — 멀티플레이어 뮤직 퀴즈 게임": "/assets/project-covers/localhost-cover.svg",
+    "Localhost — 멀티플레이어 뮤직 퀴즈 게임": "/assets/project-covers/localhost-cover.png",
   };
   const coverImageUrl = coverOverrides[row.title] ?? row.cover_image_url;
   const legacyMedia: ProjectMedia[] = [

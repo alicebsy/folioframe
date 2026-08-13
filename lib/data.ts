@@ -144,8 +144,16 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
 }
 
 function mapProject(row: ProjectRow): Project {
+  const coverOverrides: Record<string, string> = {
+    "Folioframe — 직군 맞춤형 웹 포트폴리오 서비스": "/assets/project-covers/folioframe-cover.png",
+    "Ticker — Human Stock Market": "/assets/project-covers/ticker-cover.png",
+    "EGGO — 농꾸하고 작심삼일 타파하자": "/assets/project-covers/eggo-cover.png",
+    "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": "/assets/project-covers/love-algorithm-cover.png",
+    "Localhost — 멀티플레이어 뮤직 퀴즈 게임": "/assets/project-covers/localhost-cover.svg",
+  };
+  const coverImageUrl = coverOverrides[row.title] ?? row.cover_image_url;
   const legacyMedia: ProjectMedia[] = [
-    ...(row.cover_image_url ? [{ id: "legacy-cover", type: "image" as const, url: row.cover_image_url }] : []),
+    ...(coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: coverImageUrl }] : []),
     ...(row.video_url ? [{ id: "legacy-video", type: "video" as const, url: row.video_url }] : []),
   ];
   const media = [...(Array.isArray(row.media) ? row.media : []), ...legacyMedia].filter(
@@ -175,7 +183,7 @@ function mapProject(row: ProjectRow): Project {
     architecture: row.architecture,
     qualityAssurance: row.quality_assurance,
     deployment: row.deployment,
-    coverImageUrl: row.cover_image_url,
+    coverImageUrl,
     videoUrl: row.video_url,
     media,
     isPublic: row.is_public,

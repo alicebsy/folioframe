@@ -10237,6 +10237,41 @@ label em {
   color: var(--bold-yellow);
 }
 
+/* Make author-selected emphasis in the closing statement visible against
+   each theme's background instead of letting it inherit the muted body copy. */
+.aspiration-inner p strong {
+  color: #314b0d;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: #c4d76a;
+  text-decoration-thickness: .18em;
+  text-underline-offset: .16em;
+  text-decoration-skip-ink: none;
+}
+
+.theme-editorial .aspiration-inner p strong {
+  color: #263d08;
+}
+
+.theme-minimal .aspiration-inner p strong {
+  color: #1745b5;
+  text-decoration-color: #8eabff;
+}
+
+.theme-bold .aspiration-inner p strong {
+  color: #fff;
+  background: var(--bold-black);
+  padding: .04em .16em .08em;
+  text-decoration: none;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.theme-noir .aspiration-inner p strong {
+  color: var(--noir-lime);
+  text-decoration-color: var(--noir-lime);
+}
+
 @media (max-width: 620px) {
   .theme-minimal .aspiration-inner {
     padding: 24px 0 0;

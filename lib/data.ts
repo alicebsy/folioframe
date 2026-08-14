@@ -163,7 +163,7 @@ function mapProject(row: ProjectRow): Project {
   };
   const isCapLog = row.title === "CapLog";
   const role = isCapLog
-    ? row.role.replace(/2025년 7월부터/g, "2025년 8월부터")
+    ? "iOS 앱에서 Photos·PhotoKit의 스크린샷을 읽고 Apple Vision OCR·이미지 분류로 분석하는 흐름과 Spring Boot API 연동을 담당했습니다. 개인정보 패턴 마스킹, AI 카드 생성, 폴더·검색·위치 기반 추천·알림, 친구·채팅·카드 공유, JWT 인증과 사용자별 데이터 격리를 구현했습니다. 이후에는 SwiftUI 화면 구조와 UI/UX를 재설계하고 Mock 기능을 실제 서버 데이터 흐름으로 전환했으며, 로컬 이미지 보호 저장과 AI 실패 시 대체 카드 처리까지 보완했습니다."
     : row.role;
   const contribution = isCapLog
     ? "풀스택 개발 · 프론트엔드 개발 · 백엔드 개발 · 기획 · 테스트·QA"

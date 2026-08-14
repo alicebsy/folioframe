@@ -154,7 +154,7 @@ function mapProject(row: ProjectRow): Project {
   };
   const coverImageUrl = coverOverrides[row.title] ?? row.cover_image_url;
   const collaborationDefaults: Record<string, string> = {
-    CapLog: "2인 팀으로 졸업 프로젝트를 진행한 뒤, 2025년 8월부터는 혼자 개발을 이어가며 현재까지 고도화하고 있습니다.",
+    CapLog: "2024년 9월부터 2025년 8월까지 2인 팀으로 졸업 프로젝트를 진행했고, 이후에는 혼자 개발을 이어가며 현재까지 고도화하고 있습니다.",
     "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": "팀원들과 함께 스토리텔링과 분기 구조를 설계하고 백엔드를 구현했습니다.",
     "Ticker — Human Stock Market": "팀원들과 함께 개발한 협업 프로젝트에서 백엔드를 담당했습니다.",
     "EGGO — 농꾸하고 작심삼일 타파하자": "팀원과 기획·디자인을 함께 정리하고 프론트엔드를 담당했습니다.",
@@ -162,6 +162,9 @@ function mapProject(row: ProjectRow): Project {
     "도다(DODA) — 정보 장벽을 낮추는 콘텐츠 플랫폼": "3일 해커톤에서 기획자·디자이너·프론트엔드·백엔드 팀원들과 협업했습니다.",
   };
   const isCapLog = row.title === "CapLog";
+  const role = isCapLog
+    ? row.role.replace(/2025년 7월부터/g, "2025년 8월부터")
+    : row.role;
   const contribution = isCapLog
     ? "풀스택 개발 · 프론트엔드 개발 · 백엔드 개발 · 기획 · 테스트·QA"
     : row.contribution;
@@ -180,7 +183,7 @@ function mapProject(row: ProjectRow): Project {
     id: row.id,
     title: row.title,
     summary: row.summary,
-    role: row.role,
+    role,
     problem: row.problem,
     troubleshooting: row.troubleshooting,
     result: row.result,

@@ -138,6 +138,12 @@ const techChoices: Array<{ label: string; kind: ChoiceKind }> = [
   { label: "Jest", kind: "general" },
   { label: "Playwright", kind: "general" },
   { label: "AI", kind: "general" },
+  { label: "Android", kind: "general" },
+  { label: "Android Studio", kind: "general" },
+  { label: "Flutter", kind: "frontend" },
+  { label: "Dart", kind: "frontend" },
+  { label: "Google ML Kit", kind: "general" },
+  { label: "Gemini", kind: "general" },
 ];
 
 function getChoiceKind(value: string, choices: Array<{ label: string; kind: ChoiceKind }>): ChoiceKind {

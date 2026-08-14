@@ -171,6 +171,8 @@ function mapProject(row: ProjectRow): Project {
   const teamSize = isCapLog ? "2인 팀 개발 → 1인 고도화·진행 중" : row.team_size;
   const techStacks = isCapLog
     ? Array.from(new Set([...(row.tech_stacks ?? []), "AI"]))
+    : row.title === "EGGO — 농꾸하고 작심삼일 타파하자"
+      ? ["Android", "Android Studio", "Flutter", "Dart", "Google ML Kit", "Gemini", "Git"]
     : row.tech_stacks ?? [];
   const legacyMedia: ProjectMedia[] = [
     ...(coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: coverImageUrl }] : []),

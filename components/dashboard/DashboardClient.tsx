@@ -1002,7 +1002,7 @@ export default function DashboardClient({
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
-                <summary><span>학력</span><small>{profileDraft.educations.length}개 등록</small></summary>
+                <summary><span>학력과 배움</span><small>{profileDraft.educations.length}개 등록</small></summary>
                 <div className="disclosure-content career-editor-list">
                   {profileDraft.educations.map((entry) => (
                     <div className="career-editor-row" key={entry.id}>
@@ -1015,7 +1015,7 @@ export default function DashboardClient({
                       <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, educations: profileDraft.educations.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
                     </div>
                   ))}
-                  <button type="button" className="button secondary career-add" onClick={addEducation}><Icon name="plus" />학력 추가</button>
+                  <button type="button" className="button secondary career-add" onClick={addEducation}><Icon name="plus" />학력·교육 추가</button>
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
@@ -1061,7 +1061,7 @@ export default function DashboardClient({
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}
                   {data.portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
                   {!!data.portfolio.careers.length && <span>경력·활동 {data.portfolio.careers.length}</span>}
-                  {!!data.portfolio.educations.length && <span>학력 {data.portfolio.educations.length}</span>}
+                  {!!data.portfolio.educations.length && <span>학력·교육 {data.portfolio.educations.length}</span>}
                   {!!data.portfolio.certificates.length && <span>자격증 {data.portfolio.certificates.length}</span>}
                 </div>
               )}

@@ -6,7 +6,7 @@ import type { Project } from "./models";
 const knownPeriods: Record<string, [string, string]> = {
   // 2024년 9월 팀 프로젝트로 시작해 2025년 6월 졸업프로젝트를
   // 마무리했고, 2025년 7월부터 개인 고도화를 이어간 프로젝트입니다.
-  CapLog: ["2024-09", "2025-06"],
+  CapLog: ["2024-09", ""],
   "Ticker — Human Stock Market": ["2026-01", "2026-02"],
   "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": ["2026-01", "2026-01"],
   "EGGO — 농꾸하고 작심삼일 타파하자": ["2026-01", "2026-01"],

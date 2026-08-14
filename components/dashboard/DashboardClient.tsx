@@ -137,6 +137,7 @@ const techChoices: Array<{ label: string; kind: ChoiceKind }> = [
   { label: "Figma", kind: "general" },
   { label: "Jest", kind: "general" },
   { label: "Playwright", kind: "general" },
+  { label: "AI", kind: "general" },
 ];
 
 function getChoiceKind(value: string, choices: Array<{ label: string; kind: ChoiceKind }>): ChoiceKind {

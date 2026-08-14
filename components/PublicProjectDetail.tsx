@@ -100,7 +100,7 @@ export default function PublicProjectDetail({
             <section><span>01 · CONTEXT</span><h4>대상과 목표</h4><p>{project.targetAudience || project.summary}</p>{project.goal && <small>{project.goal}</small>}</section>
             <section><span>02 · CHALLENGE</span><h4>문제와 제약</h4><p>{project.problem}</p>{project.constraints && <small>{project.constraints}</small>}</section>
             <section><span>03 · DECISION</span><h4>판단과 실행</h4><p>{project.keyDecision || project.troubleshooting}</p>{project.keyDecision && <small>{project.troubleshooting}</small>}</section>
-            <section><span>04 · COLLABORATION</span><h4>협업 방식</h4><p>{project.collaboration || "개인 프로젝트"}</p></section>
+            <section><span>04 · COLLABORATION</span><h4>협업 방식</h4><p>{project.collaboration || "1인 프로젝트"}</p></section>
           </div>
 
           {(project.architecture || project.qualityAssurance || project.deployment) && (

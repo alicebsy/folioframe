@@ -153,6 +153,22 @@ function mapProject(row: ProjectRow): Project {
     "도다(DODA) — 정보 장벽을 낮추는 콘텐츠 플랫폼": "/generated/doda-cover.svg",
   };
   const coverImageUrl = coverOverrides[row.title] ?? row.cover_image_url;
+  const collaborationDefaults: Record<string, string> = {
+    CapLog: "2인 팀으로 졸업 프로젝트를 진행한 뒤, 2025년 8월부터는 혼자 개발을 이어가며 현재까지 고도화하고 있습니다.",
+    "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": "팀원들과 함께 스토리텔링과 분기 구조를 설계하고 백엔드를 구현했습니다.",
+    "Ticker — Human Stock Market": "팀원들과 함께 개발한 협업 프로젝트에서 백엔드를 담당했습니다.",
+    "EGGO — 농꾸하고 작심삼일 타파하자": "팀원과 기획·디자인을 함께 정리하고 프론트엔드를 담당했습니다.",
+    "Localhost — 멀티플레이어 뮤직 퀴즈 게임": "팀원과 기획·디자인을 함께 정리하고 프론트엔드를 담당했습니다.",
+    "도다(DODA) — 정보 장벽을 낮추는 콘텐츠 플랫폼": "3일 해커톤에서 기획자·디자이너·프론트엔드·백엔드 팀원들과 협업했습니다.",
+  };
+  const isCapLog = row.title === "CapLog";
+  const contribution = isCapLog
+    ? "풀스택 개발 · 프론트엔드 개발 · 백엔드 개발 · 기획 · 테스트·QA"
+    : row.contribution;
+  const teamSize = isCapLog ? "2인 팀 개발 → 1인 고도화·진행 중" : row.team_size;
+  const techStacks = isCapLog
+    ? Array.from(new Set([...(row.tech_stacks ?? []), "AI"]))
+    : row.tech_stacks ?? [];
   const legacyMedia: ProjectMedia[] = [
     ...(coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: coverImageUrl }] : []),
     ...(row.video_url ? [{ id: "legacy-video", type: "video" as const, url: row.video_url }] : []),
@@ -172,15 +188,15 @@ function mapProject(row: ProjectRow): Project {
     goal: row.goal,
     constraints: row.constraints,
     keyDecision: row.key_decision,
-    collaboration: row.collaboration,
+    collaboration: row.collaboration || collaborationDefaults[row.title] || "",
     learnings: row.learnings,
     nextTime: row.next_time,
     evidence: row.evidence,
     periodStart: row.period_start,
     periodEnd: row.period_end,
-    teamSize: row.team_size,
-    contribution: row.contribution,
-    techStacks: row.tech_stacks ?? [],
+    teamSize,
+    contribution,
+    techStacks,
     architecture: row.architecture,
     qualityAssurance: row.quality_assurance,
     deployment: row.deployment,

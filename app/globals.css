@@ -322,7 +322,9 @@ a {
 
 .profile-avatar.has-image {
   background-position: center;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #f3f5ef;
 }
 
 .profile-avatar-upload {
@@ -1295,14 +1297,17 @@ label em {
 .large-avatar.has-image {
   overflow: hidden;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #f3f5ef;
 }
 
 .large-avatar-image {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .hero-side strong {
@@ -1903,10 +1908,11 @@ label em {
   height: 156px;
   margin-bottom: 24px;
   flex: 0 0 auto;
+  border-radius: 16px;
 }
 
 .public-shell .hero-side .large-avatar-image {
-  object-position: center 28%;
+  object-position: center;
 }
 
 @media (max-width: 900px) {
@@ -10411,4 +10417,26 @@ label em {
   .public-shell:not(.project-detail-shell) .identity-grid {
     grid-column: 1;
   }
+}
+
+/* Profile photos stay fully visible inside a clean square frame. */
+.profile-avatar.has-image {
+  border-radius: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f3f5ef;
+}
+
+.public-shell .hero-side .large-avatar.has-image {
+  border-radius: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f3f5ef;
+}
+
+.public-shell .hero-side .large-avatar-image {
+  object-fit: contain;
+  object-position: center;
 }

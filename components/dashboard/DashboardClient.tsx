@@ -1305,30 +1305,8 @@ export default function DashboardClient({
                 <h2>{data.portfolio.name || "프로필을 완성해 주세요"}</h2>
                 <span>{data.portfolio.jobTitle || "희망 직무 미입력"}</span>
               </div>
-              <p>{data.portfolio.bio ? <RichText value={data.portfolio.bio} /> : "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
-              {data.portfolio.aboutMe && <div className="profile-about-preview"><RichText value={data.portfolio.aboutMe} /></div>}
-              {(data.portfolio.workStyle || data.portfolio.values || data.portfolio.lookingFor) && (
-                <div className="profile-details-preview">
-                  {data.portfolio.workStyle && (
-                    <article className="profile-preview-item">
-                      <b>일하는 방식</b>
-                      <p><RichText value={data.portfolio.workStyle} /></p>
-                    </article>
-                  )}
-                  {data.portfolio.values && (
-                    <article className="profile-preview-item">
-                      <b>중요하게 생각하는 가치</b>
-                      <p><RichText value={data.portfolio.values} /></p>
-                    </article>
-                  )}
-                  {data.portfolio.lookingFor && (
-                    <article className="profile-preview-item">
-                      <b>앞으로의 방향</b>
-                      <p><RichText value={data.portfolio.lookingFor} /></p>
-                    </article>
-                  )}
-                </div>
-              )}
+              <p>{data.portfolio.bio || "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
+              {data.portfolio.aboutMe && <p className="profile-about-preview">{data.portfolio.aboutMe}</p>}
               {(data.portfolio.experienceLevel || data.portfolio.strengths.length > 0) && (
                 <div className="profile-summary-chips">
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}

@@ -319,14 +319,11 @@ function RichTextField({
   maxLength?: number;
 }) {
   return (
-    <label className="rich-text-field">
-      <span className="rich-text-label-row">
-        <span>{label}</span>
-        <small>줄을 나누면 문단으로, 선택 후 형광펜 버튼을 누르면 하이라이트</small>
-      </span>
-      <RichTextEditor
+    <label>
+      <span>{label}</span>
+      <textarea
         value={value}
-        onChange={onChange}
+        onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         maxLength={maxLength}
       />
@@ -345,86 +342,13 @@ function RichTextEditor({
   placeholder: string;
   maxLength?: number;
 }) {
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [showLivePreview, setShowLivePreview] = useState(false);
-
-  const emphasizeSelection = () => {
-    const input = inputRef.current;
-    if (!input) return;
-    const start = input.selectionStart;
-    const end = input.selectionEnd;
-    const selected = value.slice(start, end);
-
-    if (selected.startsWith("**") && selected.endsWith("**") && selected.length >= 4) {
-      const unwrapped = selected.slice(2, -2);
-      const nextValue = `${value.slice(0, start)}${unwrapped}${value.slice(end)}`;
-      onChange(nextValue);
-      requestAnimationFrame(() => {
-        input.focus();
-        input.setSelectionRange(start, start + unwrapped.length);
-      });
-      return;
-    }
-
-    const replacement = selected ? `**${selected}**` : "**강조할 문구**";
-    const nextValue = `${value.slice(0, start)}${replacement}${value.slice(end)}`;
-    onChange(nextValue);
-    requestAnimationFrame(() => {
-      input.focus();
-      const cursorStart = selected ? start : start + 2;
-      const cursorEnd = selected ? start + replacement.length : start + 2 + "강조할 문구".length;
-      input.setSelectionRange(cursorStart, cursorEnd);
-    });
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.metaKey || e.ctrlKey) && (e.key === "b" || e.key === "B" || e.key === "h" || e.key === "H")) {
-      e.preventDefault();
-      emphasizeSelection();
-    }
-  };
-
   return (
-    <div className="rich-text-input-wrap">
-      <div className="rich-text-toolbar" role="toolbar" aria-label="본문 서식 도구">
-        <div className="rich-text-toolbar-actions">
-          <button
-            type="button"
-            className="highlight-toolbar-btn"
-            onClick={emphasizeSelection}
-            aria-label="선택한 문장 형광펜 하이라이트"
-            title="선택한 단어/문장을 드래그 후 누르면 초록색 형광펜 하이라이트가 적용됩니다 (단축키: Cmd+B)"
-          >
-            <span className="marker-icon" aria-hidden="true">✦</span> 형광펜 하이라이트
-          </button>
-          <span className="rich-text-hint">드래그 후 버튼 클릭(또는 Cmd+B) · **문구** 입력 시 밑줄 하이라이트</span>
-        </div>
-        {value ? (
-          <button
-            type="button"
-            className="highlight-preview-toggle"
-            onClick={() => setShowLivePreview((prev) => !prev)}
-            title="하이라이트 적용 결과 미리보기"
-          >
-            {showLivePreview ? "편집기로 돌아가기" : "미리보기"}
-          </button>
-        ) : null}
-      </div>
-      {showLivePreview ? (
-        <div className="rich-text-live-preview">
-          <RichText value={value} />
-        </div>
-      ) : (
-        <textarea
-          ref={inputRef}
-          value={value}
-          maxLength={maxLength}
-          onChange={(event) => onChange(event.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-        />
-      )}
-    </div>
+    <textarea
+      value={value}
+      maxLength={maxLength}
+      onChange={(event) => onChange(event.target.value)}
+      placeholder={placeholder}
+    />
   );
 }
 
@@ -1196,13 +1120,16 @@ export default function DashboardClient({
                   </div>
                 </label>
               </div>
-              <RichTextField
-                label="한 줄 소개"
-                value={profileDraft.bio}
-                onChange={(value) => setProfileDraft({ ...profileDraft, bio: value })}
-                placeholder="나를 설명하는 한 문장을 입력하세요. (단어를 드래그하고 형광펜 버튼을 누르면 밑줄 하이라이트됩니다)"
-                maxLength={150}
-              />
+              <label>
+                한 줄 소개
+                <input
+                  value={profileDraft.bio}
+                  onChange={(event) =>
+                    setProfileDraft({ ...profileDraft, bio: event.target.value })
+                  }
+                  placeholder="나를 설명하는 한 문장을 입력하세요."
+                />
+              </label>
               <details className="editor-disclosure profile-disclosure" open>
                 <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향 · 마무리</small></summary>
                 <div className="disclosure-content identity-editor">

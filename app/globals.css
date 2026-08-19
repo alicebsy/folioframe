@@ -10685,7 +10685,15 @@ label em {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 15mm;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    text-rendering: geometricPrecision !important;
+    -webkit-font-smoothing: antialiased !important;
   }
 
   /* Hide web-only elements */
@@ -10699,14 +10707,16 @@ label em {
     display: none !important;
   }
 
-  body, .public-shell {
+  html, body, .public-shell {
     background: #ffffff !important;
-    color: #000000 !important;
+    color: #0f172a !important;
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
     box-shadow: none !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
   }
 
   .portfolio-hero,
@@ -10724,39 +10734,137 @@ label em {
   }
 
   .portfolio-hero {
-    padding-top: 10px !important;
+    padding-top: 0 !important;
     padding-bottom: 24px !important;
     background: none !important;
-    border-bottom: 2px solid #333333 !important;
+    border-bottom: 2px solid #0f172a !important;
+  }
+
+  .portfolio-hero h1 {
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    line-height: 1.3 !important;
+  }
+
+  .portfolio-hero p {
+    font-size: 15px !important;
+    color: #334155 !important;
+    line-height: 1.6 !important;
+  }
+
+  .candidate-summary span,
+  .candidate-summary b {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    font-weight: 700 !important;
+  }
+
+  .developer-stack b {
+    background: #e2e8f0 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
   }
 
   .hero-grid {
     display: grid !important;
-    grid-template-columns: 2fr 1fr !important;
-    gap: 20px !important;
+    grid-template-columns: 2.2fr 1fr !important;
+    gap: 24px !important;
   }
 
+  .hero-side {
+    border-left: 1px solid #e2e8f0 !important;
+    padding-left: 20px !important;
+  }
+
+  .large-avatar {
+    width: 90px !important;
+    height: 90px !important;
+    border: 2px solid #0f172a !important;
+  }
+
+  .identity-lead {
+    font-size: 14px !important;
+    color: #1e293b !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .identity-grid article,
+  .career-timeline article,
+  .education-section article,
   .project-showcase-card {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-bottom: 24px !important;
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    box-shadow: none !important;
+  }
+
+  .project-showcase-card {
+    margin-bottom: 20px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  .project-showcase-card h3 {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+  }
+
+  .project-showcase-card p {
+    font-size: 13.5px !important;
+    color: #334155 !important;
+  }
+
+  .project-showcase-tags span {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
   }
 
   .career-timeline article,
-  .identity-grid article {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+  .education-section article {
+    border: none !important;
+    border-left: 2px solid #cbd5e1 !important;
+    padding-left: 16px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .career-entry-heading h3,
+  .education-section h3 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+  }
+
+  .career-entry-heading strong,
+  .education-section strong {
+    color: #475569 !important;
+    font-size: 13px !important;
+  }
+
+  .career-timeline p,
+  .education-section p {
+    font-size: 13px !important;
+    color: #334155 !important;
+  }
+
+  .rich-text-highlight {
+    background: transparent !important;
+    box-shadow: inset 0 -0.45em 0 rgba(34, 197, 94, 0.45) !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
   }
 
   a {
     text-decoration: none !important;
-    color: inherit !important;
-  }
-
-  .rich-text-highlight {
-    background: #f1f5f9 !important;
-    border-bottom: 2px solid #22c55e !important;
+    color: #0f172a !important;
   }
 }

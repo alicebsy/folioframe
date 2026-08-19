@@ -7590,90 +7590,14 @@ label em {
   margin-top: 0.9em;
 }
 
-/* Underline-style Marker Highlight (글자색은 그대로 유지하고, 글자 하단 38%에만 은은한 마커 밑줄) */
+/* Typography & Bold emphasis (하이라이트 배경 없이 깔끔한 폰트 굵기만 적용) */
 .rich-text-highlight,
-.identity-section strong,
-.career-timeline p strong,
-.public-footer strong,
-.hero-grid p strong {
+strong {
   display: inline;
-  font-weight: 750;
-  color: inherit !important;
-  padding: 0 0.04em;
-  margin: 0;
-  border-radius: 0;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  line-height: inherit;
-  text-decoration: none;
-}
-
-/* Theme 01: Editorial (프로필·경력·소개에만 세이지/올리브 마커 밑줄 적용) */
-.theme-editorial .hero-grid p strong,
-.theme-editorial .career-timeline p strong {
-  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
-  color: inherit !important;
-}
-
-.theme-editorial .identity-section .rich-text-highlight,
-.theme-editorial .identity-section strong,
-.theme-editorial .public-footer .rich-text-highlight,
-.theme-editorial .public-footer strong {
-  background: linear-gradient(to top, rgba(205, 239, 85, 0.35) 0%, rgba(205, 239, 85, 0.35) 38%, transparent 38%);
-  color: inherit !important;
-}
-
-/* Theme 02: Minimal (따뜻한 옐로우 하단 마커 밑줄) */
-.theme-minimal .hero-grid p strong,
-.theme-minimal .career-timeline p strong {
-  background: linear-gradient(to top, rgba(254, 240, 138, 0.85) 0%, rgba(254, 240, 138, 0.85) 42%, transparent 42%);
-  color: inherit;
-}
-
-.theme-minimal .identity-section .rich-text-highlight,
-.theme-minimal .identity-section strong {
-  background: linear-gradient(to top, rgba(147, 197, 253, 0.5) 0%, rgba(147, 197, 253, 0.5) 40%, transparent 40%);
-  color: #1e3a8a;
-}
-
-/* Theme 03: Bold */
-.theme-bold .hero-grid p strong,
-.theme-bold .identity-section strong,
-.theme-bold .career-timeline p strong {
-  background: linear-gradient(to top, #ffe600 0%, #ffe600 48%, transparent 48%);
-  color: inherit;
-  font-weight: 850;
-}
-
-/* Theme 04: Noir */
-.theme-noir .hero-grid p strong,
-.theme-noir .identity-section strong,
-.theme-noir .career-timeline p strong {
-  background: linear-gradient(to top, rgba(218, 255, 1, 0.35) 0%, rgba(218, 255, 1, 0.35) 40%, transparent 40%);
-  color: #daff01;
-}
-
-/* 프로젝트 영역 내에서는 모든 하이라이트 배경 미적용 (일반 볼드/기본 텍스트 스타일) */
-.project-showcase-copy strong,
-.project-showcase-copy p strong,
-.project-detail-shell strong,
-.project-detail-content strong,
-.project-detail-intro strong,
-.case-story strong,
-.case-story p strong,
-.focused-case-story strong,
-.focused-case-story p strong,
-.engineering-notes strong,
-.engineering-notes p strong,
-.case-evidence strong,
-.case-evidence p strong,
-.case-reflection strong,
-.case-reflection p strong,
-.project-scan strong,
-.mini-story-grid strong {
-  background: none !important;
-  color: inherit !important;
   font-weight: 650;
+  color: inherit !important;
+  background: none !important;
+  text-decoration: none;
 }
 
 .rich-text-field {
@@ -10479,26 +10403,7 @@ label em {
   text-decoration: none;
 }
 
-.theme-editorial .aspiration-inner p strong {
-  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
-  color: inherit !important;
-}
 
-.theme-minimal .aspiration-inner p strong {
-  background: linear-gradient(to top, rgba(254, 240, 138, 0.85) 0%, rgba(254, 240, 138, 0.85) 42%, transparent 42%);
-  color: inherit;
-}
-
-.theme-bold .aspiration-inner p strong {
-  background: linear-gradient(to top, #ffe600 0%, #ffe600 48%, transparent 48%);
-  color: inherit;
-  font-weight: 850;
-}
-
-.theme-noir .aspiration-inner p strong {
-  background: linear-gradient(to top, rgba(218, 255, 1, 0.35) 0%, rgba(218, 255, 1, 0.35) 40%, transparent 40%);
-  color: #daff01;
-}
 
 @media (max-width: 620px) {
   .theme-minimal .aspiration-inner {

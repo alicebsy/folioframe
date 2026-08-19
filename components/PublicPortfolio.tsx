@@ -174,16 +174,24 @@ export default function PublicPortfolio({
             const heroMedia = media[0];
             return (
               <article className="project-showcase-card" key={project.id}>
-                <a className="project-showcase-media" href={href} aria-label={`${project.title} 상세 보기`}>
+                <div className="project-showcase-media">
                   {heroMedia?.type === "video" ? (
-                    <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
+                    <>
+                      <video className="web-only-video" src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline />
+                      {media.find((item) => item.type === "image") ? (
+                        <img className="pdf-print-image" src={media.find((item) => item.type === "image")?.url} alt={`${project.title} 대표 이미지`} />
+                      ) : null}
+                    </>
                   ) : heroMedia?.type === "image" ? (
-                    <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
+                    <>
+                      <span className="project-showcase-image web-only-bg" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} />
+                      <img className="pdf-print-image" src={heroMedia.url} alt={`${project.title} 대표 이미지`} />
+                    </>
                   ) : (
                     <span className="project-showcase-placeholder">{project.title.slice(0, 1)}</span>
                   )}
-                  <span className="project-showcase-action">PROJECT DETAIL <b>↗</b></span>
-                </a>
+                  <a className="project-showcase-action" href={href}>PROJECT DETAIL <b>↗</b></a>
+                </div>
                 <div className="project-showcase-copy">
                   <div className="project-showcase-meta">
                     <span>{String(index + 1).padStart(2, "0")}</span>

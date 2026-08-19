@@ -10656,6 +10656,10 @@ label em {
 }
 
 /* --- Print & PDF Export Styles --- */
+.pdf-print-image {
+  display: none;
+}
+
 .pdf-export-btn {
   display: inline-flex;
   align-items: center;
@@ -11055,7 +11059,28 @@ label em {
   }
 
   .project-showcase-media {
+    display: block !important;
+    width: 100% !important;
+    max-height: 220px !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    margin-bottom: 12px !important;
+    border: 1px solid #dcdacb !important;
+    background: #f0eee4 !important;
+  }
+
+  .web-only-bg,
+  .web-only-video {
     display: none !important;
+  }
+
+  .pdf-print-image {
+    display: block !important;
+    width: 100% !important;
+    height: 220px !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+    image-rendering: -webkit-optimize-contrast !important;
   }
 
   .project-showcase-meta {

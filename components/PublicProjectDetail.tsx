@@ -2,6 +2,7 @@ import type { Portfolio, Project } from "@/lib/models";
 import ProjectMediaCarousel from "./ProjectMediaCarousel";
 import { orderedProjectMedia } from "@/lib/project-media";
 import { projectPeriod } from "@/lib/project-period";
+import { RichText } from "@/lib/rich-text";
 
 function formatPeriod(start: string, end: string) {
   const format = (value: string) => value.replace("-", ".");
@@ -44,6 +45,30 @@ function ResourceLinks({ links }: { links: Project["links"] }) {
   );
 }
 
+function formatFileSize(size: number) {
+  if (size < 1024) return `${size}B`;
+  if (size < 1024 * 1024) return `${Math.round(size / 1024)}KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)}MB`;
+}
+
+function ProjectFiles({ files }: { files: NonNullable<Project["attachments"]> }) {
+  if (!files.length) return null;
+  return (
+    <section className="project-files" aria-label="프로젝트 첨부 자료">
+      <div className="project-files-heading"><span>PROJECT FILES</span><h4>프로젝트 자료</h4><small>문서·발표 자료·첨부 파일</small></div>
+      <div className="project-file-list">
+        {files.map((file) => (
+          <a key={file.id} href={file.url} download={file.name} className="project-file-link">
+            <span className="project-file-icon">{file.type.includes("pdf") ? "PDF" : "FILE"}</span>
+            <span className="project-file-copy"><strong>{file.name}</strong><small>{formatFileSize(file.size)}</small></span>
+            <b aria-hidden="true">↓</b>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function PublicProjectDetail({
   portfolio,
   project,
@@ -71,7 +96,7 @@ export default function PublicProjectDetail({
         <div className="project-detail-intro">
           <span>PROJECT CASE STUDY</span>
           <h1>{project.title}</h1>
-          <p>{project.summary}</p>
+          <p><RichText value={project.summary} /></p>
           <div className="case-facts">
             {formatPeriod(period.start, period.end) && <span><b>기간</b>{formatPeriod(period.start, period.end)}</span>}
             {project.teamSize && <span><b>인원</b>{project.teamSize}</span>}
@@ -79,6 +104,7 @@ export default function PublicProjectDetail({
           </div>
           {!!project.techStacks.length && <div className="project-showcase-tags detail-tech-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
           {!!project.links.length && <ResourceLinks links={project.links} />}
+          {!!project.attachments?.length && <ProjectFiles files={project.attachments} />}
         </div>
 
         <ProjectMediaCarousel media={media} title={project.title} activeIndex={mediaIndex} mediaBaseHref={mediaBaseHref} />
@@ -87,36 +113,36 @@ export default function PublicProjectDetail({
           <div className="case-scan-grid">
             <section>
               <span>MY CONTRIBUTION</span><h4>내가 맡은 일</h4>
-              <strong>{project.contribution || project.role}</strong>
-              {project.contribution && <p>{project.role}</p>}
+              <strong>{project.contribution || <RichText value={project.role} />}</strong>
+              {project.contribution && <p><RichText value={project.role} /></p>}
             </section>
             <section className="impact-card">
-              <span>KEY RESULT</span><h4>대표 성과</h4><strong>{project.result}</strong>
+              <span>KEY RESULT</span><h4>대표 성과</h4><strong><RichText value={project.result} /></strong>
             </section>
           </div>
 
           <div className="case-detail-heading"><span>HOW I WORKED</span><h4>문제에서 해결까지</h4></div>
           <div className="case-story focused-case-story">
-            <section><span>01 · CONTEXT</span><h4>대상과 목표</h4><p>{project.targetAudience || project.summary}</p>{project.goal && <small>{project.goal}</small>}</section>
-            <section><span>02 · CHALLENGE</span><h4>문제와 제약</h4><p>{project.problem}</p>{project.constraints && <small>{project.constraints}</small>}</section>
-            <section><span>03 · DECISION</span><h4>판단과 실행</h4><p>{project.keyDecision || project.troubleshooting}</p>{project.keyDecision && <small>{project.troubleshooting}</small>}</section>
-            <section><span>04 · COLLABORATION</span><h4>협업 방식</h4><p>{project.collaboration || "1인 프로젝트"}</p></section>
+            <section><span>01 · CONTEXT</span><h4>대상과 목표</h4><p><RichText value={project.targetAudience || project.summary} /></p>{project.goal && <small><RichText value={project.goal} /></small>}</section>
+            <section><span>02 · CHALLENGE</span><h4>문제와 제약</h4><p><RichText value={project.problem} /></p>{project.constraints && <small><RichText value={project.constraints} /></small>}</section>
+            <section><span>03 · DECISION</span><h4>판단과 실행</h4><p><RichText value={project.keyDecision || project.troubleshooting} /></p>{project.keyDecision && <small><RichText value={project.troubleshooting} /></small>}</section>
+            <section><span>04 · COLLABORATION</span><h4>협업 방식</h4><p><RichText value={project.collaboration || "1인 프로젝트"} /></p></section>
           </div>
 
           {(project.architecture || project.qualityAssurance || project.deployment) && (
             <section className="engineering-notes">
               <div className="engineering-notes-heading"><span>ENGINEERING NOTES</span><h4>구현부터 운영까지</h4></div>
               <div className="engineering-notes-grid">
-                {project.architecture && <article><span>01</span><h5>아키텍처와 기술 선택</h5><p>{project.architecture}</p></article>}
-                {project.qualityAssurance && <article><span>02</span><h5>테스트와 품질</h5><p>{project.qualityAssurance}</p></article>}
-                {project.deployment && <article><span>03</span><h5>배포와 운영</h5><p>{project.deployment}</p></article>}
+                {project.architecture && <article><span>01</span><h5>아키텍처와 기술 선택</h5><p><RichText value={project.architecture} /></p></article>}
+                {project.qualityAssurance && <article><span>02</span><h5>테스트와 품질</h5><p><RichText value={project.qualityAssurance} /></p></article>}
+                {project.deployment && <article><span>03</span><h5>배포와 운영</h5><p><RichText value={project.deployment} /></p></article>}
               </div>
             </section>
           )}
 
-          {project.evidence && <div className="case-evidence"><span>EVIDENCE</span><div><h4>성과 근거</h4><p>{project.evidence}</p></div></div>}
+          {project.evidence && <div className="case-evidence"><span>EVIDENCE</span><div><h4>성과 근거</h4><p><RichText value={project.evidence} /></p></div></div>}
           {(project.learnings || project.nextTime) && (
-            <div className="case-reflection"><span>RETROSPECTIVE</span><div>{project.learnings && <section><h4>배운 점</h4><p>{project.learnings}</p></section>}{project.nextTime && <section><h4>다시 한다면</h4><p>{project.nextTime}</p></section>}</div></div>
+            <div className="case-reflection"><span>RETROSPECTIVE</span><div>{project.learnings && <section><h4>배운 점</h4><p><RichText value={project.learnings} /></p></section>}{project.nextTime && <section><h4>다시 한다면</h4><p><RichText value={project.nextTime} /></p></section>}</div></div>
           )}
         </div>
       </section>

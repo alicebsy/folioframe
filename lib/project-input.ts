@@ -1,4 +1,4 @@
-import type { ProjectLink, ProjectMedia } from "./models";
+import type { ProjectAttachment, ProjectLink, ProjectMedia } from "./models";
 
 export type ProjectInput = {
   title: string;
@@ -26,6 +26,7 @@ export type ProjectInput = {
   coverImageUrl: string;
   videoUrl: string;
   media: ProjectMedia[];
+  attachments: ProjectAttachment[];
   isPublic: boolean;
   links: ProjectLink[];
 };
@@ -57,9 +58,42 @@ export function parseProjectInput(body: Record<string, unknown>): ProjectInput {
     coverImageUrl: normalizeImageUrl(body.coverImageUrl),
     videoUrl: normalizeUrl(body.videoUrl),
     media: normalizeMedia(body.media),
+    attachments: normalizeAttachments(body.attachments),
     isPublic: Boolean(body.isPublic),
     links: normalizeLinks(body.links),
   };
+}
+
+function normalizeAttachments(value: unknown): ProjectAttachment[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .slice(0, 8)
+    .map((rawItem, index) => {
+      const item = rawItem && typeof rawItem === "object" ? rawItem as Record<string, unknown> : {};
+      const url = String(item.url ?? "").trim();
+      if (!url) return null;
+      const isDataUrl = /^data:[^;]+;base64,[a-z0-9+/=\s]+$/i.test(url);
+      const isRelative = url.startsWith("/");
+      let isValidHttp = false;
+      if (!isDataUrl && !isRelative) {
+        try {
+          const parsed = new URL(url);
+          isValidHttp = parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch {
+          isValidHttp = false;
+        }
+      }
+      if (!isDataUrl && !isRelative && !isValidHttp) return null;
+      if (url.length > 35_000_000) return null;
+      return {
+        id: String(item.id ?? `attachment-${index}`),
+        name: String(item.name ?? "첨부 파일").trim().slice(0, 120),
+        type: String(item.type ?? "application/octet-stream").slice(0, 120),
+        size: Math.max(0, Number(item.size ?? 0)),
+        url,
+      } satisfies ProjectAttachment;
+    })
+    .filter((item): item is ProjectAttachment => Boolean(item));
 }
 
 function normalizeMonth(value: unknown) {
@@ -70,6 +104,7 @@ function normalizeMonth(value: unknown) {
 function normalizeUrl(value: unknown) {
   const url = String(value ?? "").trim().slice(0, 500);
   if (!url) return "";
+  if (url.startsWith("/")) return url;
   try {
     const parsed = new URL(url);
     return parsed.protocol === "http:" || parsed.protocol === "https:" ? url : "";
@@ -82,6 +117,7 @@ function normalizeImageUrl(value: unknown) {
   const url = String(value ?? "").trim();
   if (!url) return "";
   if (url.length <= 900_000 && /^data:image\/(jpeg|jpg|png|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(url)) return url;
+  if (url.startsWith("/")) return url;
   return normalizeUrl(url);
 }
 
@@ -95,7 +131,8 @@ function normalizeMedia(value: unknown): ProjectMedia[] {
       const url = String(item.url ?? "").trim();
       if (url.length > 900_000) return null;
       const validDataImage = type === "image" && /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(url);
-      if (!validDataImage) {
+      const isRelativePath = url.startsWith("/");
+      if (!validDataImage && !isRelativePath) {
         try {
           const parsed = new URL(url);
           if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;

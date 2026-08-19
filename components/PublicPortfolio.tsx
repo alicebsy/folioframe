@@ -36,7 +36,7 @@ export default function PublicPortfolio({
         <div className="hero-grid">
           <div>
             <h1>안녕하세요,<br /><span>{portfolio.name}</span>입니다.</h1>
-            <p>{portfolio.bio}</p>
+            <p><RichText value={portfolio.bio} autoEmphasis /></p>
             <div className="candidate-summary">
               {portfolio.experienceLevel && <span>{portfolio.experienceLevel}</span>}
               {portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
@@ -102,7 +102,7 @@ export default function PublicPortfolio({
             {portfolio.careers.map((entry) => (
               <article key={entry.id}>
                 <span>{entry.period || "기간 미입력"}</span>
-                <div><h3>{entry.organization}</h3><strong>{entry.role}</strong><p>{entry.description}</p></div>
+                <div><h3>{entry.organization}</h3><strong>{entry.role}</strong><p><RichText value={entry.description} /></p></div>
               </article>
             ))}
           </div>
@@ -116,7 +116,7 @@ export default function PublicPortfolio({
             {portfolio.educations.map((entry) => (
               <article key={entry.id}>
                 <span>{entry.period || "기간 미입력"}</span>
-                <div><h3>{entry.school}</h3><strong>{entry.major}</strong><p>{entry.description}</p></div>
+                <div><h3>{entry.school}</h3><strong>{entry.major}</strong><p><RichText value={entry.description} /></p></div>
               </article>
             ))}
           </div>
@@ -175,7 +175,7 @@ export default function PublicPortfolio({
                     {project.contribution && <span>{project.contribution}</span>}
                   </div>
                   <h3><a href={href}>{project.title}</a></h3>
-                  <p>{project.summary}</p>
+                  <p><RichText value={project.summary} /></p>
                   {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
                   <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
                 </div>
@@ -213,7 +213,7 @@ export default function PublicPortfolio({
                       {project.contribution && <span>{project.contribution}</span>}
                     </div>
                     <h3><a href={href}>{project.title}</a></h3>
-                    <p>{project.summary}</p>
+                  <p><RichText value={project.summary} /></p>
                     {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
                     <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
                   </div>

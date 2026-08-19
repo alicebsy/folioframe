@@ -10,6 +10,14 @@ export type ProjectMedia = {
   url: string;
 };
 
+export type ProjectAttachment = {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  url: string;
+};
+
 export type CareerEntry = {
   id: string;
   organization: string;
@@ -63,6 +71,7 @@ export type Project = {
   coverImageUrl: string;
   videoUrl: string;
   media?: ProjectMedia[];
+  attachments?: ProjectAttachment[];
   isPublic: boolean;
   isFeatured: boolean;
   displayOrder: number;

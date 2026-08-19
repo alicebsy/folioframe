@@ -12,3 +12,4 @@ node_modules
 .SPEC.md.swp
 .vercel
 .openai
+.env*.local

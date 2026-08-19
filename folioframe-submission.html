@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Folioframe 제출용 소개</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 48px 20px;
+        color: #242424;
+        background: #f4f5f2;
+        font-family:
+          Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+          "Noto Sans KR", sans-serif;
+        line-height: 1.72;
+      }
+
+      .page {
+        width: min(760px, 100%);
+        margin: 0 auto;
+      }
+
+      .guide {
+        margin-bottom: 20px;
+        padding: 18px 20px;
+        border: 1px solid #d7ded8;
+        border-radius: 14px;
+        background: #eef5ef;
+        font-size: 14px;
+      }
+
+      .copy-button {
+        margin-top: 12px;
+        padding: 11px 18px;
+        border: 0;
+        border-radius: 10px;
+        color: #fff;
+        background: #087a49;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .document {
+        padding: 46px;
+        border: 1px solid #e2e2de;
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 14px 40px rgb(35 45 37 / 8%);
+      }
+
+      h1 {
+        margin: 0 0 22px;
+        font-size: 28px;
+        line-height: 1.3;
+      }
+
+      h2 {
+        margin: 32px 0 12px;
+        font-size: 20px;
+        line-height: 1.4;
+      }
+
+      p,
+      li {
+        font-size: 16px;
+      }
+
+      p {
+        margin: 0 0 16px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 24px;
+      }
+
+      li {
+        margin: 7px 0;
+      }
+
+      a {
+        color: #087a49;
+        font-weight: 700;
+      }
+
+      .flow {
+        padding: 14px 16px;
+        border-radius: 10px;
+        background: #f5f7f5;
+        font-weight: 700;
+      }
+
+      .success {
+        display: none;
+        margin-left: 10px;
+        color: #087a49;
+        font-weight: 700;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 24px 12px;
+        }
+
+        .document {
+          padding: 28px 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="guide">
+        아래 버튼을 누른 뒤 EarnLearning 지원서 입력창에 붙여넣으세요.
+        제목 크기, 굵은 글씨, 목록과 링크가 함께 복사됩니다.
+        <div>
+          <button class="copy-button" id="copy-button" type="button">
+            서식 포함 복사
+          </button>
+          <span class="success" id="success">복사되었습니다.</span>
+        </div>
+      </section>
+
+      <article class="document" id="submission">
+        <h1>Folioframe</h1>
+
+        <p>
+          프로젝트 경험을 <strong>담당 역할 → 문제 상황 → 해결 과정 → 구체적인 성과</strong>
+          순서로 정리하고, 하나의 웹 포트폴리오로 발행하는 서비스입니다.
+        </p>
+
+        <h2>첫 번째 MVP에서 구현한 기능</h2>
+
+        <ul>
+          <li><strong>이메일·비밀번호 회원가입 및 로그인</strong></li>
+          <li>이름, 희망 직무, 한 줄 소개 등 <strong>개인 프로필 작성</strong></li>
+          <li>프로젝트 개요, 담당 역할, 문제, 해결 과정, 성과 입력</li>
+          <li>프로젝트 관련 텍스트 링크 등록</li>
+          <li>완성한 프로젝트의 공개·비공개 설정</li>
+          <li>고유 주소를 가진 웹 포트폴리오 발행</li>
+          <li>로그인하지 않은 방문자의 공개 포트폴리오 열람</li>
+          <li>사용자별 데이터를 PostgreSQL에 저장</li>
+        </ul>
+
+        <h2>개발 및 확인</h2>
+
+        <p>
+          <strong>Next.js + PostgreSQL + Vercel</strong>을 기반으로 개발하고,
+          Neon 데이터베이스를 연결해 실제 서비스로 배포했습니다.
+        </p>
+
+        <p class="flow">
+          회원가입 → 프로필 작성 → 프로젝트 등록 → 공개 설정 →
+          포트폴리오 발행 → 고유 주소 접속
+        </p>
+
+        <p>
+          위 흐름을 직접 실행해 데이터 저장과 공개 페이지 노출 여부를 확인했습니다.
+        </p>
+
+        <p>
+          🔗 <a href="https://folioframe-lake.vercel.app/">Folioframe 사용하기</a><br />
+          🔗 <a href="https://github.com/alicebsy/folioframe">GitHub 저장소</a>
+        </p>
+
+        <h2>앞으로 추가할 기능</h2>
+
+        <ul>
+          <li>GitHub 연동 및 README·기술 스택 자동 불러오기</li>
+          <li>이미지와 PDF 등 프로젝트 자료 업로드</li>
+          <li>프로젝트 순서 변경과 자유 배치</li>
+          <li>직군별 포트폴리오 템플릿</li>
+          <li>색상·폰트·레이아웃 등 디자인 변경</li>
+          <li>다양한 테마와 애니메이션</li>
+          <li>커스텀 도메인 연결</li>
+          <li>AI 작성 가이드와 문장 개선</li>
+          <li>이력서·자기소개서 생성</li>
+          <li>Notion·Figma·Jira 연동</li>
+          <li>방문자 분석과 댓글</li>
+          <li>실시간 공동 편집</li>
+          <li>채용 공고 추천과 지원 현황 관리</li>
+          <li>채용 담당자용 지원자 평가 기능</li>
+        </ul>
+
+        <p style="margin-top: 28px">
+          현재는 핵심인 <strong>작성 → 공개 → 발행 → 공유</strong> 흐름을
+          검증한 단계입니다. 앞으로 자료 수집과 디자인 편집 기능을 확장해
+          다양한 직군의 취업 준비생을 위한
+          <strong>통합 웹 포트폴리오 서비스</strong>로 발전시킬 예정입니다.
+        </p>
+      </article>
+    </main>
+
+    <script>
+      const button = document.getElementById("copy-button");
+      const success = document.getElementById("success");
+      const submission = document.getElementById("submission");
+
+      button.addEventListener("click", () => {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(submission);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        const copied = document.execCommand("copy");
+        selection.removeAllRanges();
+
+        if (copied) {
+          success.style.display = "inline";
+          setTimeout(() => {
+            success.style.display = "none";
+          }, 2200);
+        } else {
+          alert("문서 전체를 직접 선택한 뒤 복사해 주세요.");
+        }
+      });
+    </script>
+  </body>
+</html>

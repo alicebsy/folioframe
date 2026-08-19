@@ -10,11 +10,13 @@ import type {
   Portfolio,
   PortfolioTheme,
   Project,
+  ProjectAttachment,
   ProjectMedia,
   ProjectLink,
 } from "@/lib/models";
 import { projectIsComplete, projectQualityChecks } from "@/lib/models";
 import { projectPeriod } from "@/lib/project-period";
+import { RichText } from "@/lib/rich-text";
 
 type ProjectDraft = Omit<Project, "id" | "displayOrder"> & { id?: string };
 type PublishResult =
@@ -48,6 +50,7 @@ const emptyProject: ProjectDraft = {
   coverImageUrl: "",
   videoUrl: "",
   media: [],
+  attachments: [],
   isPublic: false,
   isFeatured: false,
   links: [],
@@ -187,14 +190,33 @@ function compressImageFile(file: File): Promise<string> {
   });
 }
 
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(new Error("파일을 읽지 못했습니다."));
+    reader.readAsDataURL(file);
+  });
+}
+
+function formatFileSize(size: number) {
+  if (size < 1024) return `${size}B`;
+  if (size < 1024 * 1024) return `${Math.round(size / 1024)}KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)}MB`;
+}
+
 function projectMedia(project: Pick<Project, "media" | "coverImageUrl" | "videoUrl">): ProjectMedia[] {
   const legacy: ProjectMedia[] = [
     ...(project.coverImageUrl ? [{ id: "legacy-cover", type: "image" as const, url: project.coverImageUrl }] : []),
     ...(project.videoUrl ? [{ id: "legacy-video", type: "video" as const, url: project.videoUrl }] : []),
   ];
-  return [...(project.media ?? []), ...legacy].filter(
+  const media = [...(project.media ?? []), ...legacy].filter(
     (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
   );
+  if (!project.coverImageUrl) return media;
+  const coverIndex = media.findIndex((item) => item.url === project.coverImageUrl);
+  if (coverIndex <= 0) return media;
+  return [media[coverIndex], ...media.slice(0, coverIndex), ...media.slice(coverIndex + 1)];
 }
 
 function formatPeriod(start: string, end: string) {
@@ -236,13 +258,49 @@ function Icon({
   );
 }
 
+async function uploadFile(file: File): Promise<{ url: string; name: string; size: number; type: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+  const contentType = response.headers.get("content-type") || "";
+  let result: any;
+  if (contentType.includes("application/json")) {
+    try {
+      result = await response.json();
+    } catch {
+      result = { message: `서버 응답을 처리할 수 없습니다. (상태 코드: ${response.status})` };
+    }
+  } else {
+    const text = await response.text();
+    result = { message: text || `서버 오류가 발생했습니다. (상태 코드: ${response.status})` };
+  }
+  if (!response.ok || !result?.ok) {
+    throw new Error(result?.message || "파일 업로드에 실패했습니다.");
+  }
+  return result;
+}
+
 async function api(path: string, body?: unknown) {
   const response = await fetch(path, {
     method: body === undefined ? "GET" : "POST",
     headers: body === undefined ? undefined : { "Content-Type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  const result = await response.json();
+  const contentType = response.headers.get("content-type") || "";
+  let result: any;
+  if (contentType.includes("application/json")) {
+    try {
+      result = await response.json();
+    } catch {
+      result = { message: `서버 응답을 처리할 수 없습니다. (상태 코드: ${response.status})` };
+    }
+  } else {
+    const text = await response.text();
+    result = { message: text || `서버 오류가 발생했습니다. (상태 코드: ${response.status})` };
+  }
   if (!response.ok) throw result;
   return result;
 }
@@ -255,6 +313,33 @@ function RichTextField({
   maxLength,
 }: {
   label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  maxLength?: number;
+}) {
+  return (
+    <label className="rich-text-field">
+      <span className="rich-text-label-row">
+        <span>{label}</span>
+        <small>줄을 나누면 문단으로, 선택 후 형광펜 버튼을 누르면 하이라이트</small>
+      </span>
+      <RichTextEditor
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        maxLength={maxLength}
+      />
+    </label>
+  );
+}
+
+function RichTextEditor({
+  value,
+  onChange,
+  placeholder,
+  maxLength,
+}: {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
@@ -279,27 +364,21 @@ function RichTextField({
   };
 
   return (
-    <label className="rich-text-field">
-      <span className="rich-text-label-row">
-        <span>{label}</span>
-        <small>줄을 나누면 문단으로, 선택 후 B를 누르면 강조</small>
-      </span>
-      <div className="rich-text-input-wrap">
-        <div className="rich-text-toolbar" role="toolbar" aria-label={`${label} 서식 도구`}>
-          <button type="button" onClick={emphasizeSelection} aria-label="선택한 문장 굵게">
-            B
+    <div className="rich-text-input-wrap">
+      <div className="rich-text-toolbar" role="toolbar" aria-label="본문 서식 도구">
+          <button type="button" className="highlight-toolbar-btn" onClick={emphasizeSelection} aria-label="선택한 문장 하이라이트" title="선택한 영역에 형광펜 하이라이트를 적용합니다">
+            <span className="marker-icon">H</span> 형광펜 하이라이트
           </button>
-          <span>**강조** · 빈 줄로 문단 구분</span>
-        </div>
-        <textarea
-          ref={inputRef}
-          value={value}
-          maxLength={maxLength}
-          onChange={(event) => onChange(event.target.value)}
-          placeholder={placeholder}
-        />
+          <span>**하이라이트** 또는 ==하이라이트== · 빈 줄로 문단 구분</span>
       </div>
-    </label>
+      <textarea
+        ref={inputRef}
+        value={value}
+        maxLength={maxLength}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+      />
+    </div>
   );
 }
 
@@ -421,7 +500,13 @@ export default function DashboardClient({
   };
 
   const openProject = (project?: Project) => {
-    setProjectDraft(project ? { ...project, media: projectMedia(project) } : { ...emptyProject, links: [] });
+    if (project) {
+      const media = projectMedia(project);
+      const coverImageUrl = project.coverImageUrl || media.find((item) => item.type === "image")?.url || "";
+      setProjectDraft({ ...project, coverImageUrl, media });
+    } else {
+      setProjectDraft({ ...emptyProject, links: [] });
+    }
     setOpenPicker(null);
     setProjectModal(true);
   };
@@ -457,23 +542,105 @@ export default function DashboardClient({
       notify("이미지 파일만 여러 장 선택할 수 있어요. 영상은 URL로 추가해 주세요.");
       return;
     }
+    setLoading(true);
     try {
-      const uploaded = await Promise.all(files.map(async (file, index) => ({
-        id: `image-${Date.now()}-${index}`,
-        type: "image" as const,
-        url: await compressImageFile(file),
-      })));
+      const uploaded = await Promise.all(
+        files.map(async (file, index) => {
+          let url: string;
+          if (!previewMode) {
+            try {
+              const res = await uploadFile(file);
+              url = res.url;
+            } catch {
+              url = await compressImageFile(file);
+            }
+          } else {
+            url = await compressImageFile(file);
+          }
+          return {
+            id: `image-${Date.now()}-${index}`,
+            type: "image" as const,
+            url,
+          };
+        }),
+      );
       setProjectDraft((current) => {
         const nextMedia = [...projectMedia(current), ...uploaded].filter(
           (item, index, items) => items.findIndex((candidate) => candidate.url === item.url) === index,
         ).slice(0, 12);
-        const firstImage = nextMedia.find((item) => item.type === "image");
-        return { ...current, media: nextMedia, coverImageUrl: current.coverImageUrl || firstImage?.url || "" };
+        // 새로 올린 사진을 대표 이미지로 바로 반영합니다. 기존 사진을 대표로
+        // 유지하고 싶다면 미디어 목록의 "대표 지정" 버튼으로 되돌릴 수 있어요.
+        const uploadedCover = uploaded.find((item) => item.type === "image");
+        return { ...current, media: nextMedia, coverImageUrl: uploadedCover?.url || current.coverImageUrl || "" };
       });
-      notify(`${files.length}장의 이미지를 추가했습니다.`);
+      notify(`${files.length}장의 이미지를 추가하고 첫 사진을 대표로 지정했습니다.`);
     } catch (error) {
       notify((error as { message?: string }).message ?? "이미지를 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleAttachmentUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    event.target.value = "";
+    if (!files.length) return;
+    const maxBytes = 25_000_000;
+    const oversized = files.find((file) => file.size > maxBytes);
+    if (oversized) {
+      notify(`${oversized.name}은(는) 25MB 이하 파일만 추가할 수 있어요.`);
+      return;
+    }
+    setLoading(true);
+    try {
+      const uploaded = await Promise.all(
+        files.slice(0, 8).map(async (file, index): Promise<ProjectAttachment> => {
+          if (previewMode) {
+            return {
+              id: `attachment-${Date.now()}-${index}`,
+              name: file.name,
+              type: file.type || "application/octet-stream",
+              size: file.size,
+              url: await readFileAsDataUrl(file),
+            };
+          }
+          try {
+            const serverFile = await uploadFile(file);
+            return {
+              id: `attachment-${Date.now()}-${index}`,
+              name: serverFile.name,
+              type: serverFile.type,
+              size: serverFile.size,
+              url: serverFile.url,
+            };
+          } catch {
+            return {
+              id: `attachment-${Date.now()}-${index}`,
+              name: file.name,
+              type: file.type || "application/octet-stream",
+              size: file.size,
+              url: await readFileAsDataUrl(file),
+            };
+          }
+        }),
+      );
+      setProjectDraft((current) => ({
+        ...current,
+        attachments: [...(current.attachments ?? []), ...uploaded].slice(0, 8),
+      }));
+      notify(`${uploaded.length}개의 파일을 추가했습니다.`);
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "파일을 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeProjectAttachment = (id: string) => {
+    setProjectDraft((current) => ({
+      ...current,
+      attachments: (current.attachments ?? []).filter((item) => item.id !== id),
+    }));
   };
 
   const addVideoMedia = () => {
@@ -512,19 +679,25 @@ export default function DashboardClient({
 
   const moveProjectMedia = (id: string, direction: -1 | 1) => {
     setProjectDraft((current) => {
-      const nextMedia = projectMedia(current);
+      const nextMedia = [...projectMedia(current)];
       const index = nextMedia.findIndex((item) => item.id === id);
       const nextIndex = index + direction;
       if (index < 0 || nextIndex < 0 || nextIndex >= nextMedia.length) return current;
       [nextMedia[index], nextMedia[nextIndex]] = [nextMedia[nextIndex], nextMedia[index]];
-      return { ...current, media: nextMedia };
+      const firstImage = nextMedia.find((item) => item.type === "image");
+      const cover = nextMedia[0]?.type === "image" ? nextMedia[0].url : (current.coverImageUrl || firstImage?.url || "");
+      return { ...current, media: nextMedia, coverImageUrl: cover };
     });
   };
 
   const setProjectCover = (id: string) => {
     setProjectDraft((current) => {
-      const selected = projectMedia(current).find((item) => item.id === id && item.type === "image");
-      return selected ? { ...current, coverImageUrl: selected.url } : current;
+      const allMedia = projectMedia(current);
+      const selected = allMedia.find((item) => item.id === id && item.type === "image");
+      if (!selected) return current;
+      const restMedia = allMedia.filter((item) => item.id !== id);
+      const nextMedia = [selected, ...restMedia];
+      return { ...current, coverImageUrl: selected.url, media: nextMedia };
     });
   };
 
@@ -536,12 +709,25 @@ export default function DashboardClient({
       notify("이미지 파일만 업로드할 수 있어요.");
       return;
     }
+    setLoading(true);
     try {
-      const profileImageUrl = await compressImageFile(file);
+      let profileImageUrl: string;
+      if (!previewMode) {
+        try {
+          const res = await uploadFile(file);
+          profileImageUrl = res.url;
+        } catch {
+          profileImageUrl = await compressImageFile(file);
+        }
+      } else {
+        profileImageUrl = await compressImageFile(file);
+      }
       setProfileDraft((current) => ({ ...current, profileImageUrl }));
-      notify("프로필 사진을 불러왔습니다.");
+      notify("프로필 사진을 변경했습니다.");
     } catch (error) {
       notify((error as { message?: string }).message ?? "프로필 사진을 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -583,6 +769,7 @@ export default function DashboardClient({
           coverImageUrl: projectDraft.coverImageUrl,
           videoUrl: projectDraft.videoUrl,
           media: projectMedia(projectDraft),
+          attachments: projectDraft.attachments ?? [],
           isPublic: projectDraft.isPublic,
           isFeatured: projectDraft.isFeatured,
           links: projectDraft.links,
@@ -1259,7 +1446,7 @@ export default function DashboardClient({
                       </div>
                       <div className={`project-highlight ${project.result ? "has-result" : "empty"}`}>
                         <span>KEY RESULT</span>
-                        <strong>{project.result || "대표 성과를 입력하면 여기에 보여요."}</strong>
+                        <strong>{project.result ? <RichText value={project.result} /> : "대표 성과를 입력하면 여기에 보여요."}</strong>
                       </div>
                     </div>
                     <div className="project-controls" onClick={(event) => event.stopPropagation()}>
@@ -1342,17 +1529,13 @@ export default function DashboardClient({
                   placeholder="프로젝트 이름"
                 />
               </label>
-              <label>
-                프로젝트 개요
-                <textarea
-                  maxLength={500}
-                  value={projectDraft.summary}
-                  onChange={(event) =>
-                    setProjectDraft({ ...projectDraft, summary: event.target.value })
-                  }
-                  placeholder="프로젝트의 목적과 배경을 설명해 주세요."
-                />
-              </label>
+              <RichTextField
+                label="프로젝트 개요"
+                value={projectDraft.summary}
+                onChange={(value) => setProjectDraft({ ...projectDraft, summary: value })}
+                placeholder="프로젝트의 목적과 배경을 설명해 주세요."
+                maxLength={500}
+              />
               <div className="project-facts">
                 <label>시작 월<input type="month" value={projectDraft.periodStart} onInput={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} /></label>
                 <label>종료 월<input type="month" value={projectDraft.periodEnd} onInput={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} /></label>
@@ -1458,6 +1641,25 @@ export default function DashboardClient({
                   <button type="button" className="media-add-button" onClick={addVideoMedia}>영상 추가</button>
                   <small>브라우저에서 직접 재생할 수 있는 MP4·WebM 주소를 입력하고 추가하세요. 추가된 영상도 위에서 삭제할 수 있습니다.</small>
                 </label>
+                <div className="attachment-editor">
+                  <span className="upload-label">프로젝트 파일 <em>최대 8개</em></span>
+                  <small>PDF, 발표자료, 문서처럼 프로젝트를 더 설명해 줄 자료를 첨부할 수 있어요. 파일당 25MB 이하입니다.</small>
+                  {(projectDraft.attachments ?? []).length > 0 && (
+                    <div className="attachment-list">
+                      {(projectDraft.attachments ?? []).map((file) => (
+                        <div className="attachment-item" key={file.id}>
+                          <span className="attachment-type">{file.type.includes("pdf") ? "PDF" : "FILE"}</span>
+                          <span className="attachment-copy"><strong>{file.name}</strong><small>{formatFileSize(file.size)}</small></span>
+                          <button type="button" onClick={() => removeProjectAttachment(file.id)} aria-label={`${file.name} 삭제`}>×</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <label className="file-upload-button">
+                    <input type="file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip,application/pdf" onChange={handleAttachmentUpload} />
+                    <span>파일 추가</span>
+                  </label>
+                </div>
               </div>
               <div className="story-fields">
                 {[
@@ -1470,13 +1672,13 @@ export default function DashboardClient({
                     <span className="step-number">{number}</span>
                     <span className="field-copy">
                       <b>{label}</b>
-                      <textarea
+                      <RichTextEditor
                         maxLength={key === "troubleshooting" ? 1000 : 500}
                         value={String(projectDraft[key as keyof ProjectDraft] ?? "")}
-                        onChange={(event) =>
+                        onChange={(value) =>
                           setProjectDraft({
                             ...projectDraft,
-                            [key]: event.target.value,
+                            [key]: value,
                           })
                         }
                         placeholder={placeholder}
@@ -1489,33 +1691,30 @@ export default function DashboardClient({
                 <summary><span>프로젝트 맥락과 핵심 판단</span><small>대상 · 목표 · 제약 · 의사결정 · 협업</small></summary>
                 <div className="disclosure-content">
                   <div className="form-row two">
-                    <label>대상 사용자<textarea value={projectDraft.targetAudience} onChange={(event) => setProjectDraft({ ...projectDraft, targetAudience: event.target.value })} placeholder="누구의 어떤 상황을 위한 프로젝트였나요?" /></label>
-                    <label>프로젝트 목표<textarea value={projectDraft.goal} onChange={(event) => setProjectDraft({ ...projectDraft, goal: event.target.value })} placeholder="달성하려던 사용자·사업 목표는 무엇이었나요?" /></label>
+                    <RichTextField label="대상 사용자" value={projectDraft.targetAudience} onChange={(value) => setProjectDraft({ ...projectDraft, targetAudience: value })} placeholder="누구의 어떤 상황을 위한 프로젝트였나요?" />
+                    <RichTextField label="프로젝트 목표" value={projectDraft.goal} onChange={(value) => setProjectDraft({ ...projectDraft, goal: value })} placeholder="달성하려던 사용자·사업 목표는 무엇이었나요?" />
                   </div>
-                  <label>제약 조건<textarea value={projectDraft.constraints} onChange={(event) => setProjectDraft({ ...projectDraft, constraints: event.target.value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." /></label>
-                  <label>가장 중요한 결정<textarea value={projectDraft.keyDecision} onChange={(event) => setProjectDraft({ ...projectDraft, keyDecision: event.target.value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" /></label>
-                  <label>협업 방식<textarea value={projectDraft.collaboration} onChange={(event) => setProjectDraft({ ...projectDraft, collaboration: event.target.value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" /></label>
+                  <RichTextField label="제약 조건" value={projectDraft.constraints} onChange={(value) => setProjectDraft({ ...projectDraft, constraints: value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." />
+                  <RichTextField label="가장 중요한 결정" value={projectDraft.keyDecision} onChange={(value) => setProjectDraft({ ...projectDraft, keyDecision: value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" />
+                  <RichTextField label="협업 방식" value={projectDraft.collaboration} onChange={(value) => setProjectDraft({ ...projectDraft, collaboration: value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" />
                 </div>
               </details>
               <details className="editor-disclosure project-disclosure" open>
                 <summary><span>개발 구현과 운영</span><small>아키텍처 · 테스트와 품질 · 배포와 운영</small></summary>
                 <div className="disclosure-content">
-                  <label>아키텍처와 기술 선택<textarea maxLength={700} value={projectDraft.architecture} onChange={(event) => setProjectDraft({ ...projectDraft, architecture: event.target.value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" /></label>
+                  <RichTextField label="아키텍처와 기술 선택" value={projectDraft.architecture} onChange={(value) => setProjectDraft({ ...projectDraft, architecture: value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" maxLength={700} />
                   <div className="form-row two">
-                    <label>테스트와 품질<textarea maxLength={700} value={projectDraft.qualityAssurance} onChange={(event) => setProjectDraft({ ...projectDraft, qualityAssurance: event.target.value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" /></label>
-                    <label>배포와 운영<textarea maxLength={700} value={projectDraft.deployment} onChange={(event) => setProjectDraft({ ...projectDraft, deployment: event.target.value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." /></label>
+                    <RichTextField label="테스트와 품질" value={projectDraft.qualityAssurance} onChange={(value) => setProjectDraft({ ...projectDraft, qualityAssurance: value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" maxLength={700} />
+                    <RichTextField label="배포와 운영" value={projectDraft.deployment} onChange={(value) => setProjectDraft({ ...projectDraft, deployment: value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." maxLength={700} />
                   </div>
                 </div>
               </details>
-              <label>
-                성과 근거
-                <textarea maxLength={500} value={projectDraft.evidence} onChange={(event) => setProjectDraft({ ...projectDraft, evidence: event.target.value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." />
-              </label>
+              <RichTextField label="성과 근거" value={projectDraft.evidence} onChange={(value) => setProjectDraft({ ...projectDraft, evidence: value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." maxLength={500} />
               <details className="editor-disclosure project-disclosure">
                 <summary><span>회고와 다음 단계</span><small>배운 점 · 다시 한다면 바꿀 점</small></summary>
                 <div className="disclosure-content form-row two">
-                  <label>배운 점<textarea value={projectDraft.learnings} onChange={(event) => setProjectDraft({ ...projectDraft, learnings: event.target.value })} placeholder="이 경험을 통해 무엇을 새롭게 알게 되었나요?" /></label>
-                  <label>다시 한다면<textarea value={projectDraft.nextTime} onChange={(event) => setProjectDraft({ ...projectDraft, nextTime: event.target.value })} placeholder="다음에는 무엇을 다르게 시도하고 싶나요?" /></label>
+                  <RichTextField label="배운 점" value={projectDraft.learnings} onChange={(value) => setProjectDraft({ ...projectDraft, learnings: value })} placeholder="이 경험을 통해 무엇을 새롭게 알게 되었나요?" />
+                  <RichTextField label="다시 한다면" value={projectDraft.nextTime} onChange={(value) => setProjectDraft({ ...projectDraft, nextTime: value })} placeholder="다음에는 무엇을 다르게 시도하고 싶나요?" />
                 </div>
               </details>
               <div className="quality-checklist">
@@ -1636,7 +1835,7 @@ export default function DashboardClient({
             <div className="mini-public-preview">
               <span className="portfolio-kicker">CASE STUDY · PREVIEW</span>
               <h2>{previewProject.title}</h2>
-              <p>{previewProject.summary || "프로젝트 개요가 여기에 표시됩니다."}</p>
+              <p>{previewProject.summary ? <RichText value={previewProject.summary} /> : "프로젝트 개요가 여기에 표시됩니다."}</p>
               <div className="evidence-meta preview-evidence-meta">
                 {(() => { const period = projectPeriod(previewProject); return formatPeriod(period.start, period.end) && <span>{formatPeriod(period.start, period.end)}</span>; })()}
                 {previewProject.teamSize && <span>{previewProject.teamSize}</span>}

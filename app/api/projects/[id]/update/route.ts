@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { transaction } from "@/lib/db";
-import { ensureProjectMediaColumn } from "@/lib/data";
+import { ensureProjectAttachmentsColumn, ensureProjectMediaColumn } from "@/lib/data";
 import { apiUser, badRequest, serverError } from "@/lib/http";
 import { missingProjectFields, parseProjectInput } from "@/lib/project-input";
 
@@ -15,6 +15,7 @@ export async function POST(
     const { id } = await params;
     const input = parseProjectInput(await request.json());
     await ensureProjectMediaColumn();
+    await ensureProjectAttachmentsColumn();
     if (!input.title) return badRequest("프로젝트명을 입력해 주세요.");
     if (input.isPublic && missingProjectFields(input).length) {
       return badRequest("미완성 프로젝트는 공개할 수 없습니다.");
@@ -29,9 +30,9 @@ export async function POST(
                 learnings=$12, next_time=$13, evidence=$14, period_start=$15,
                 period_end=$16, team_size=$17, contribution=$18, tech_stacks=$19,
                 architecture=$20, quality_assurance=$21, deployment=$22,
-                cover_image_url=$23, video_url=$24, media=$25, is_public=$26, updated_at=NOW()
+                cover_image_url=$23, video_url=$24, media=$25, attachments=$26, is_public=$27, updated_at=NOW()
            FROM portfolios f
-          WHERE p.id=$27 AND p.portfolio_id=f.id AND f.owner_id=$28
+          WHERE p.id=$28 AND p.portfolio_id=f.id AND f.owner_id=$29
           RETURNING p.id`,
         [
           input.title,
@@ -59,6 +60,7 @@ export async function POST(
           input.coverImageUrl,
           input.videoUrl,
           JSON.stringify(input.media),
+          JSON.stringify(input.attachments),
           input.isPublic,
           id,
           user.id,

@@ -1,10 +1,17 @@
 import type { ReactNode } from "react";
 
 function renderInline(value: string): ReactNode[] {
-  const parts = value.split(/(\*\*[^*]+\*\*)/g);
+  const parts = value.split(/(\*{2}[^*]+?\*{2}|==[^=]+?==)/g);
   return parts.map((part, index) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    if (
+      (part.startsWith("**") && part.endsWith("**") && part.length > 4) ||
+      (part.startsWith("==") && part.endsWith("==") && part.length > 4)
+    ) {
+      return (
+        <strong key={index} className="rich-text-highlight">
+          {part.slice(2, -2)}
+        </strong>
+      );
     }
     return <span key={index}>{part}</span>;
   });
@@ -12,11 +19,16 @@ function renderInline(value: string): ReactNode[] {
 
 /** 소개글의 줄바꿈과 **강조** 표기만 안전하게 화면 요소로 바꿉니다. */
 export function RichText({ value, autoEmphasis = false }: { value: string; autoEmphasis?: boolean }) {
+  if (!value || typeof value !== "string") return null;
   const emphasizeLine = (line: string) => {
-    if (!autoEmphasis || value.includes("**")) return line;
-    const sentence = line.match(/^(.+?[.!?])(?:\s|$)/);
+    if (!autoEmphasis || value.includes("**") || value.includes("==")) return line;
+    const trimmed = line.trim();
+    if (!trimmed) return line;
+    const sentence = trimmed.match(/^([^.!?\n]{4,}[.!?])(?:\s|$)/);
     if (!sentence) return line;
-    return `**${sentence[1]}**${line.slice(sentence[1].length)}`;
+    const prefixIndex = line.indexOf(trimmed);
+    const leadingSpaces = line.slice(0, prefixIndex);
+    return `${leadingSpaces}**${sentence[1]}**${trimmed.slice(sentence[1].length)}`;
   };
 
   return (

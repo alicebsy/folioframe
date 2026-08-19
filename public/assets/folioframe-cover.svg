@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Folioframe project cover</title>
+  <desc id="desc">A dark green Folioframe portfolio interface with lime accents and project story cards.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f7f2"/>
+      <stop offset="1" stop-color="#e6edce"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#242b22"/>
+      <stop offset="1" stop-color="#111612"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="20" flood-color="#192019" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#paper)"/>
+  <circle cx="1450" cy="110" r="260" fill="#d6ff57" opacity=".24"/>
+  <circle cx="130" cy="820" r="220" fill="#d6ff57" opacity=".14"/>
+
+  <g transform="translate(110 92)">
+    <rect width="1380" height="716" rx="28" fill="url(#ink)" filter="url(#shadow)"/>
+    <rect x="1" y="1" width="1378" height="714" rx="27" fill="none" stroke="#4b5545" stroke-width="2"/>
+
+    <g transform="translate(56 48)">
+      <rect width="48" height="48" rx="13" fill="#d6ff57"/>
+      <path d="M24 12l4.2 7.8L36 24l-7.8 4.2L24 36l-4.2-7.8L12 24l7.8-4.2L24 12z" fill="#1a2118"/>
+      <text x="66" y="31" fill="#f6f7ee" font-family="Arial, sans-serif" font-size="22" font-weight="700">Folioframe</text>
+      <text x="1050" y="29" fill="#9eae82" font-family="Arial, sans-serif" font-size="12" letter-spacing="3">PROJECT STORY / 2026</text>
+    </g>
+
+    <line x1="56" y1="126" x2="1324" y2="126" stroke="#3d473b"/>
+
+    <g transform="translate(56 190)">
+      <text x="0" y="0" fill="#d6ff57" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="4">BUILD WITH INTENT</text>
+      <text x="0" y="75" fill="#f7f8f1" font-family="Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="-2">개발 과정이</text>
+      <text x="0" y="147" fill="#f7f8f1" font-family="Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="-2">증거가 되는 포트폴리오</text>
+      <rect x="0" y="174" width="385" height="8" rx="4" fill="#d6ff57"/>
+      <text x="0" y="225" fill="#aeb8a5" font-family="Arial, sans-serif" font-size="18">기술 선택 · 문제 해결 · 테스트 · 배포</text>
+    </g>
+
+    <g transform="translate(770 178)">
+      <rect x="0" y="0" width="526" height="390" rx="18" fill="#f4f5ed"/>
+      <rect x="0" y="0" width="526" height="58" rx="18" fill="#e9eddf"/>
+      <circle cx="27" cy="29" r="6" fill="#bdc8ad"/>
+      <circle cx="49" cy="29" r="6" fill="#bdc8ad"/>
+      <circle cx="71" cy="29" r="6" fill="#bdc8ad"/>
+      <text x="30" y="105" fill="#788365" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="2">PROJECT DETAIL</text>
+      <text x="30" y="151" fill="#20261f" font-family="Arial, sans-serif" font-size="31" font-weight="700">Folioframe</text>
+      <text x="30" y="181" fill="#65705f" font-family="Arial, sans-serif" font-size="15">직군 맞춤형 웹 포트폴리오 서비스</text>
+
+      <g transform="translate(30 222)">
+        <rect width="142" height="102" rx="12" fill="#20271f"/>
+        <text x="18" y="30" fill="#d6ff57" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1">01 / PROBLEM</text>
+        <rect x="18" y="49" width="90" height="7" rx="3" fill="#899979"/>
+        <rect x="18" y="66" width="68" height="7" rx="3" fill="#53634c"/>
+        <rect x="18" y="83" width="105" height="7" rx="3" fill="#53634c"/>
+      </g>
+      <g transform="translate(190 222)">
+        <rect width="142" height="102" rx="12" fill="#d6ff57"/>
+        <text x="18" y="30" fill="#34411f" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1">02 / DECISION</text>
+        <path d="M24 70h92M24 83h67" stroke="#51652c" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(350 222)">
+        <rect width="146" height="102" rx="12" fill="#e4ead7"/>
+        <text x="18" y="30" fill="#788365" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1">03 / RESULT</text>
+        <circle cx="72" cy="68" r="25" fill="#20271f"/>
+        <path d="M61 68l8 8 15-18" fill="none" stroke="#d6ff57" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <g transform="translate(56 650)">
+      <text x="0" y="0" fill="#8f9c85" font-family="Arial, sans-serif" font-size="12" letter-spacing="3">THINK · MAKE · VERIFY · SHIP</text>
+      <text x="1240" y="0" text-anchor="end" fill="#d6ff57" font-family="Arial, sans-serif" font-size="18" font-weight="700">↗</text>
+    </g>
+  </g>
+</svg>

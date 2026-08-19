@@ -26,8 +26,10 @@ function normalizeUrl(value: unknown) {
 function normalizeProfileImage(value: unknown) {
   const image = String(value ?? "").trim();
   if (!image) return "";
+  if (image.startsWith("/")) return image;
   if (image.length > 2_000_000) return "";
-  return /^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(image) ? image : "";
+  if (/^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(image)) return image;
+  return normalizeUrl(image);
 }
 
 function normalizeCareers(value: unknown): CareerEntry[] {

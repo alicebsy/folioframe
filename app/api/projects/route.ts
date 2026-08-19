@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { query, transaction } from "@/lib/db";
-import { ensureProjectMediaColumn, getDashboardData } from "@/lib/data";
+import { ensureProjectAttachmentsColumn, ensureProjectMediaColumn, getDashboardData } from "@/lib/data";
 import { apiUser, badRequest, serverError } from "@/lib/http";
 import { missingProjectFields, parseProjectInput } from "@/lib/project-input";
 
@@ -24,6 +24,7 @@ export async function POST(request: Request) {
 
     const input = parseProjectInput(await request.json());
     await ensureProjectMediaColumn();
+    await ensureProjectAttachmentsColumn();
     if (!input.title) return badRequest("프로젝트명을 입력해 주세요.");
     if (input.isPublic && missingProjectFields(input).length) {
       return badRequest("미완성 프로젝트는 공개할 수 없습니다.");
@@ -48,8 +49,8 @@ export async function POST(request: Request) {
            result, target_audience, goal, constraints, key_decision, collaboration,
            learnings, next_time, evidence, period_start, period_end, team_size,
            contribution, tech_stacks, architecture, quality_assurance, deployment,
-           cover_image_url, video_url, media, is_public, display_order
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28)
+           cover_image_url, video_url, media, attachments, is_public, display_order
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29)
          RETURNING id`,
         [
           portfolioId,
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
           input.coverImageUrl,
           input.videoUrl,
           JSON.stringify(input.media),
+          JSON.stringify(input.attachments),
           input.isPublic,
           orderResult.rows[0].next_order,
         ],

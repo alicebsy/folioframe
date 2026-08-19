@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Folioframe — 9칸 사업 계획</title>
+    <style>
+      :root {
+        --ink: #171814;
+        --muted: #686b61;
+        --line: #dfe2d7;
+        --paper: #fafaf6;
+        --card: #ffffff;
+        --lime: #c8ff38;
+        --green: #536d16;
+        --soft: #f0f3e8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 92% 4%, rgba(200, 255, 56, 0.22), transparent 22rem),
+          var(--paper);
+        font-family:
+          "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.65;
+        word-break: keep-all;
+      }
+
+      main {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 72px 0 80px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 32px;
+        align-items: end;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .kicker,
+      .card-number {
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 12px 0 10px;
+        font-family: "Gowun Batang", "Noto Serif KR", serif;
+        font-size: clamp(38px, 6vw, 72px);
+        line-height: 1.12;
+        letter-spacing: -0.055em;
+      }
+
+      header p {
+        max-width: 710px;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .status {
+        padding: 10px 14px;
+        border: 1px solid #b7c983;
+        border-radius: 999px;
+        background: var(--soft);
+        color: #44570f;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      article {
+        min-height: 310px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--card);
+        box-shadow: 0 10px 32px rgba(36, 42, 24, 0.04);
+      }
+
+      article:nth-child(4),
+      article:nth-child(9) {
+        background: linear-gradient(145deg, #f4f8e9, #fff);
+      }
+
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 19px;
+        letter-spacing: -0.035em;
+      }
+
+      ul {
+        margin: 18px 0 0;
+        padding-left: 19px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      p {
+        margin: 18px 0 0;
+      }
+
+      strong {
+        font-weight: 750;
+      }
+
+      .unknown {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 5px;
+        background: #fff1c7;
+        color: #795800;
+        font-size: 0.92em;
+        font-weight: 750;
+      }
+
+      .evidence-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .evidence-list li {
+        padding-bottom: 9px;
+        border-bottom: 1px dashed var(--line);
+      }
+
+      a {
+        color: #405e00;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+
+      small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: 22px;
+        padding: 18px 4px 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 900px) {
+        header {
+          grid-template-columns: 1fr;
+        }
+
+        .status {
+          justify-self: start;
+        }
+
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        main {
+          width: min(100% - 24px, 1180px);
+          padding-top: 42px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        article {
+          min-height: 0;
+        }
+
+        footer {
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        main {
+          width: 100%;
+          padding: 20px;
+        }
+
+        article {
+          break-inside: avoid;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <span class="kicker">FOLIOFRAME · BUSINESS MODEL DRAFT</span>
+          <h1>경험이 증거가 되는<br />포트폴리오</h1>
+          <p>
+            프로젝트 경험을 역할·문제·해결 과정·성과 순서로 정리하고,
+            고유 주소로 공개하는 취업 준비생용 웹 포트폴리오 서비스.
+          </p>
+        </div>
+        <span class="status">검증 전 초안 · 2026. 07. 27.</span>
+      </header>
+
+      <section class="grid" aria-label="9칸 사업 계획">
+        <article>
+          <div class="card-head">
+            <h2>첫 손님</h2>
+            <span class="card-number">01</span>
+          </div>
+          <ul>
+            <li>프로젝트 경험이 2개 이상인 신입·주니어 취업 준비생</li>
+            <li>기획·마케팅·디자인·개발 직군 중 포트폴리오 구성이 어려운 사람</li>
+            <li>문서·링크·저장소에 흩어진 경험을 하나로 정리하려는 사람</li>
+          </ul>
+          <p><span class="unknown">실제 첫 유료 고객군 확인 필요</span></p>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>어떤 불편</h2>
+            <span class="card-number">02</span>
+          </div>
+          <ul>
+            <li>프로젝트 결과는 보여도 본인의 역할과 기여 범위가 선명하지 않다.</li>
+            <li>문제 상황에서 무엇을 판단하고 시도했는지 정리하기 어렵다.</li>
+            <li>자료 형식이 달라 하나의 공유 가능한 화면으로 모으는 데 손이 많이 간다.</li>
+          </ul>
+          <p><span class="unknown">고객 인터뷰로 빈도·강도 확인 필요</span></p>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>지금 방법</h2>
+            <span class="card-number">03</span>
+          </div>
+          <ul>
+            <li>PPT·PDF를 직접 구성해 파일이나 링크로 전달한다.</li>
+            <li>Notion 페이지를 웹에 발행해 포트폴리오로 공유한다.</li>
+            <li>개발자는 GitHub 저장소나 GitHub Pages를 함께 제시한다.</li>
+            <li>Canva 같은 범용 편집기로 웹 페이지를 직접 디자인한다.</li>
+          </ul>
+          <p><span class="unknown">대안별 실제 사용 비중 확인 필요</span></p>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>우리가 바꿀 점</h2>
+            <span class="card-number">04</span>
+          </div>
+          <ul>
+            <li><strong>역할 → 문제 → 해결 → 성과</strong> 질문에 답하면 프로젝트 이야기가 완성된다.</li>
+            <li>프로젝트와 텍스트 링크를 한곳에서 작성·수정·공개한다.</li>
+            <li>공개할 프로젝트만 골라 로그인 없는 단일 페이지와 고유 주소로 발행한다.</li>
+            <li>현재 MVP는 이미지 업로드·GitHub 연동·AI 작성 기능을 포함하지 않는다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>알리는 길</h2>
+            <span class="card-number">05</span>
+          </div>
+          <ul>
+            <li>직군별 취업 스터디와 취업 준비 커뮤니티에서 데모 사용자를 모집한다.</li>
+            <li>대학 취업지원 조직·부트캠프·교육 과정에 테스트 사용을 제안한다.</li>
+            <li>완성된 공개 포트폴리오 링크 자체가 서비스 유입 경로가 되는지 확인한다.</li>
+          </ul>
+          <p><span class="unknown">효율이 가장 높은 채널 확인 필요</span></p>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>돈이 들어오는 길</h2>
+            <span class="card-number">06</span>
+          </div>
+          <ul>
+            <li>검증 단계: 핵심 작성·발행 경험은 무료 테스트</li>
+            <li>개인 유료 요금: <span class="unknown">확인 필요 원</span></li>
+            <li>결제 주기: <span class="unknown">확인 필요</span></li>
+            <li>표시 가격의 부가가치세 포함 여부: <span class="unknown">확인 필요</span></li>
+            <li>교육기관·부트캠프용 단체 계약: <span class="unknown">수요 확인 필요</span></li>
+          </ul>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>위험한 가정</h2>
+            <span class="card-number">07</span>
+          </div>
+          <ul>
+            <li>취업 준비생이 네 단계의 서술을 끝까지 직접 작성할 것이다.</li>
+            <li>채용 담당자가 이 구조에서 지원자의 실제 기여와 판단을 더 쉽게 이해할 것이다.</li>
+            <li>여러 직군에 같은 기본 구조가 유효할 것이다.</li>
+            <li>기존 무료 도구보다 작성 편의와 결과물 품질에 비용을 낼 것이다.</li>
+            <li>고유 주소 공개에 대한 개인정보·검색 노출 우려를 관리할 수 있다.</li>
+          </ul>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>근거와 확인 날짜</h2>
+            <span class="card-number">08</span>
+          </div>
+          <ul class="evidence-list">
+            <li>
+              <a href="./PRD.md">제품 문제·초기 고객 가설 — PRD.md</a>
+              <small>확인: 2026. 07. 27. · 내부 가설이며 고객 검증 전</small>
+            </li>
+            <li>
+              <a href="./docs/SPEC.md">현재 MVP 범위 — docs/SPEC.md</a>
+              <small>확인: 2026. 07. 27.</small>
+            </li>
+            <li>
+              <a href="http://127.0.0.1:3000/dashboard-preview">작성 대시보드 화면</a>
+              <small>확인: 2026. 07. 27. · 로컬 서버 실행 필요</small>
+            </li>
+            <li>
+              <a href="http://127.0.0.1:3000/portfolio-preview">공개 포트폴리오 화면</a>
+              <small>확인: 2026. 07. 27. · 로컬 서버 실행 필요</small>
+            </li>
+            <li>
+              <a href="https://ncs.go.kr/ve/guide/ncsEduGuide.pdf">NCS 직업기초능력 가이드</a>
+              <small>확인: 2026. 07. 27. · 문제해결능력을 직업기초능력으로 정의</small>
+            </li>
+            <li>
+              <a href="https://www.notion.com/help/public-pages-and-web-publishing">Notion Sites 공식 도움말</a>
+              <small>확인: 2026. 07. 27. · 페이지 웹 발행과 링크 공유 지원</small>
+            </li>
+            <li>
+              <a href="https://docs.github.com/en/pages/quickstart">GitHub Pages 공식 빠른 시작</a>
+              <small>확인: 2026. 07. 27. · 프로젝트·이력서용 사이트 사용 안내</small>
+            </li>
+            <li>
+              <a href="https://www.canva.com/ko_kr/create/landing-pages/">Canva 웹 페이지 제작 안내</a>
+              <small>확인: 2026. 07. 27. · 범용 드래그 앤 드롭 제작 대안</small>
+            </li>
+          </ul>
+        </article>
+
+        <article>
+          <div class="card-head">
+            <h2>다음 실험</h2>
+            <span class="card-number">09</span>
+          </div>
+          <ul>
+            <li>타겟 취업 준비생에게 현재 데모로 실제 프로젝트 하나를 작성하게 한다.</li>
+            <li>중단 지점, 작성 완료 여부, 걸린 시간과 막힌 질문을 관찰해 기록한다.</li>
+            <li>채용 경험자에게 기존 포트폴리오와 구조화 화면을 비교해 역할·판단 이해 여부를 묻는다.</li>
+            <li>무료 사용 후 지불 의향과 원하는 결제 방식을 질문한다.</li>
+            <li>실험 인원·기간·통과 기준은 <span class="unknown">확인 필요</span></li>
+          </ul>
+        </article>
+      </section>
+
+      <footer>
+        <span>확인된 사실과 검증 전 가설을 구분한 사업 계획 초안</span>
+        <span>시장 규모·가격·전환율 수치는 근거 확보 전까지 기재하지 않음</span>
+      </footer>
+    </main>
+  </body>
+</html>

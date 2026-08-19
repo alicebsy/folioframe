@@ -144,7 +144,7 @@ const projectsData = {
     quality_assurance: `실측 스크린샷 200건 기반 분류 정확도 측정(95%), 이화여대·일산·광화문 3개 지역 현장 위치 추천 테스트(90%)`,
     deployment: `클라이언트 TestFlight 배포 및 AWS EC2 기반 Spring Boot 실서버 구축`,
     evidence: `졸업프로젝트 결과 보고서, 장려상 수상 증빙, 실측 테스트 데이터셋 문서 및 GitHub 커밋 이력`,
-    learnings: `온디바이스 AI와 백엔드 서버 간의 효율적인 역할 분담과 사용자 프라이버시를 최우선으로 고려한 시스템 설계의 중요성을 체득했습니다.`,
+    learnings: `**온디바이스 AI와 백엔드 서버 간의 효율적인 역할 분담**과 사용자 프라이버시를 최우선으로 고려한 시스템 설계의 중요성을 체득했습니다.`,
     next_time: `CoreML 경량화 임베딩 모델을 추가 도입해 사진 속 객체 시각적 유사도 검색 기능 확장`
   },
   "Folioframe — 직군 맞춤형 웹 포트폴리오 서비스": {
@@ -162,7 +162,7 @@ const projectsData = {
     quality_assurance: `슬러그 중복 검증, 실시간 미리보기 렌더링 검증, 다중 디바이스 뷰포트 반응형 UI 테스트`,
     deployment: `GitHub 연동 Vercel 자동 CI/CD 배포 파이프라인 구축 및 커스텀 도메인 연결`,
     evidence: `라이브 서비스(folioframe-lake.vercel.app), GitHub 소스코드 및 커밋 이력, 실제 사용자 발행 데이터`,
-    learnings: `제품 기획부터 프로덕션 배포까지 풀 사이클을 경험하며, 사용자 경험을 고려한 데이터 모델링과 상태 관리의 중요성을 배웠습니다.`,
+    learnings: `제품 기획부터 프로덕션 배포까지 풀 사이클을 경험하며, **사용자 경험을 고려한 데이터 모델링과 상태 관리의 중요성**을 배웠습니다.`,
     next_time: `방문자 분석 애널리틱스 대시보드 및 PDF 포트폴리오 원클릭 내보내기 기능 추가`
   },
   "Ticker — Human Stock Market": {
@@ -180,7 +180,7 @@ const projectsData = {
     quality_assurance: `동시 주문 시나리오 테스트, 트랜잭션 롤백 검증 및 잔고 정합성 테스트 수행`,
     deployment: `클라우드 서버 인스턴스 기반 배포 및 실시간 테스트 완료`,
     evidence: `GitHub 저장소의 백엔드 트랜잭션 처리 코드, ERD 설계 문서 및 API 엔드포인트 커밋 내역`,
-    learnings: `금융 거래 메커니즘에서 동시성 제어와 트랜잭션 격리 수준의 중요성을 깊이 체득했습니다.`,
+    learnings: `금융 거래 메커니즘에서 **동시성 제어와 트랜잭션 격리 수준의 중요성**을 깊이 체득했습니다.`,
     next_time: `Redis 기반 분산 락(Redlock) 및 체결 큐(Message Queue) 도입으로 대규모 트래픽 처리 성능 고도화`
   },
   "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": {
@@ -198,7 +198,7 @@ const projectsData = {
     quality_assurance: `12가지 엔딩 루트에 대한 분기 경로 전수 테스트 및 상태 복구 검증`,
     deployment: `웹 호스팅 실서버 배포 및 사용자 시연 완료`,
     evidence: `GitHub 저장소의 분기 계산 알고리즘 코드 및 상태 관리 커밋 이력`,
-    learnings: `복잡한 비즈니스 분기 로직을 상태 머신 구조로 깔끔하게 모듈화하는 설계 기법을 배웠습니다.`,
+    learnings: `복잡한 비즈니스 분기 로직을 **상태 머신 구조로 깔끔하게 모듈화하는 설계 기법**을 배웠습니다.`,
     next_time: `사용자 선택 통계 데이터 시각화 및 소셜 공유 오픈그래프(OG) 카드 자동 생성 기능 추가`
   },
   "EGGO — 농꾸하고 작심삼일 타파하자": {
@@ -216,7 +216,7 @@ const projectsData = {
     quality_assurance: `다양한 일상 사물(텀블러, 책, 운동기구 등)에 대한 실시간 이미지 인식률 및 예외 케이스 테스트`,
     deployment: `Android APK 빌드 및 실기기 테스트 완료`,
     evidence: `GitHub README, 이미지 인식 파이프라인 코드 및 실제 모바일 시연 영상`,
-    learnings: `모바일 환경에서 온디바이스 AI와 클라우드 AI의 장단점을 파악하고 최적의 조합을 설계하는 역량을 길렀습니다.`,
+    learnings: `모바일 환경에서 **온디바이스 AI와 클라우드 AI의 최적 조합을 설계하는 역량**을 길렀습니다.`,
     next_time: `사용자 맞춤형 커스텀 미션 등록 및 경량 로컬 비전 모델 파인튜닝`
   },
   "Localhost — 멀티플레이어 뮤직 퀴즈 게임": {
@@ -234,7 +234,7 @@ const projectsData = {
     quality_assurance: `다중 브라우저 탭 및 다중 기기 동시 접속 환경에서 재생 동기화 및 퀴즈 점수 집계 테스트`,
     deployment: `클라우드 서버 배포 및 다자간 실시간 시연 완료`,
     evidence: `GitHub README의 기능·기술 스택·구조·실행 방법과 배서연 명의의 animation·socket·domain·game screen 관련 커밋에서 확인할 수 있습니다.`,
-    learnings: `실시간 멀티플레이어 환경에서 웹소켓 이벤트 라이프사이클 관리와 상태 동기화 기법을 깊이 학습했습니다.`,
+    learnings: `실시간 멀티플레이어 환경에서 **웹소켓 이벤트 라이프사이클 관리와 상태 동기화 기법**을 깊이 학습했습니다.`,
     next_time: `웹RTC(WebRTC) 기반 음성 채팅 기능 추가 및 3D 그래픽 최적화`
   },
   "도다(DODA) — 정보 장벽을 낮추는 콘텐츠 플랫폼": {
@@ -252,7 +252,7 @@ const projectsData = {
     quality_assurance: `회원가입/로그인 Bearer 토큰 인증, 복지 조건 필터링, 북마크 CRUD, Excel 파싱 API 검증`,
     deployment: `GitHub Actions CI/CD → AWS ECR 이미지 빌드 및 EC2 컨테이너 자동 배포 (HTTPS 적용)`,
     evidence: `GitHub README의 기획 배경·기능·API·ERD·배포 문서와 백엔드 구현 커밋에서 확인할 수 있습니다.`,
-    learnings: `단기 해커톤 환경에서 명확한 API 계약과 빠른 CI/CD 자동화가 협업 효율에 미치는 결정적 영향을 배웠습니다.`,
+    learnings: `단기 해커톤 환경에서 **명확한 API 계약과 빠른 CI/CD 자동화가 협업 효율에 미치는 결정적 영향**을 배웠습니다.`,
     next_time: `Elasticsearch 기반 전문 검색 엔진 연동 및 사용자 맞춤형 공공 정책 추천 알고리즘 구현`
   },
   "자율 추종 스마트 카트 — Aruco·LiDAR 센서 융합": {
@@ -270,7 +270,7 @@ const projectsData = {
     quality_assurance: `마커 인식 거리(1~3m) 추종 정밀도 측정 및 0.5m 이내 장애물 돌발 출현 시 긴급 정지 반응 검증`,
     deployment: `Gazebo 시뮬레이터 가상 환경 빌드 및 주행 데모 영상 제작`,
     evidence: `GitHub 소스코드, ROS2 패키지 노드 구성도 및 Gazebo 시뮬레이션 주행 시연 비디오`,
-    learnings: `센서 융합을 통한 안전 제어 메커니즘과 ROS2 노드 간 토픽 통신 디버깅 역량을 체득했습니다.`,
+    learnings: `센서 융합을 통한 **안전 제어 메커니즘과 ROS2 노드 간 토픽 통신 디버깅 역량**을 체득했습니다.`,
     next_time: `실제 물리 하드웨어(Turtlebot 또는 카트 모터 드라이버)에 임베디드 포팅 및 실내 자율 주행 확장`
   }
 };

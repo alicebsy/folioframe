@@ -7590,14 +7590,56 @@ label em {
   margin-top: 0.9em;
 }
 
-/* Typography & Bold emphasis (하이라이트 배경 없이 깔끔한 폰트 굵기만 적용) */
-.rich-text-highlight,
-strong {
+/* Selective Underline-style Highlighter Marker (단어 전체 박스가 아닌 글자 하단 38%에만 은은한 마커 밑줄, 글자색 유지) */
+.rich-text-highlight {
   display: inline;
-  font-weight: 650;
+  font-weight: 700;
   color: inherit !important;
-  background: none !important;
+  padding: 0 0.05em;
+  margin: 0;
+  border-radius: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  line-height: inherit;
   text-decoration: none;
+}
+
+/* Theme 01: Editorial (세이지/올리브 마커 밑줄) */
+.theme-editorial .rich-text-highlight {
+  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
+  color: inherit !important;
+}
+
+.theme-editorial .identity-section .rich-text-highlight,
+.theme-editorial .public-footer .rich-text-highlight,
+.theme-editorial .case-evidence .rich-text-highlight {
+  background: linear-gradient(to top, rgba(205, 239, 85, 0.35) 0%, rgba(205, 239, 85, 0.35) 38%, transparent 38%);
+  color: inherit !important;
+}
+
+/* Theme 02: Minimal */
+.theme-minimal .rich-text-highlight {
+  background: linear-gradient(to top, rgba(254, 240, 138, 0.85) 0%, rgba(254, 240, 138, 0.85) 42%, transparent 42%);
+  color: inherit;
+}
+
+.theme-minimal .identity-section .rich-text-highlight,
+.theme-minimal .case-evidence .rich-text-highlight {
+  background: linear-gradient(to top, rgba(147, 197, 253, 0.5) 0%, rgba(147, 197, 253, 0.5) 40%, transparent 40%);
+  color: #1e3a8a;
+}
+
+/* Theme 03: Bold */
+.theme-bold .rich-text-highlight {
+  background: linear-gradient(to top, #ffe600 0%, #ffe600 48%, transparent 48%);
+  color: inherit;
+  font-weight: 850;
+}
+
+/* Theme 04: Noir */
+.theme-noir .rich-text-highlight {
+  background: linear-gradient(to top, rgba(218, 255, 1, 0.35) 0%, rgba(218, 255, 1, 0.35) 40%, transparent 40%);
+  color: #daff01;
 }
 
 .rich-text-field {

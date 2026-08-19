@@ -36,7 +36,7 @@ export default function PublicPortfolio({
         <div className="hero-grid">
           <div>
             <h1>안녕하세요,<br /><span>{portfolio.name}</span>입니다.</h1>
-            <p><RichText value={portfolio.bio} autoEmphasis /></p>
+            <p><RichText value={portfolio.bio} /></p>
             <div className="candidate-summary">
               {portfolio.experienceLevel && <span>{portfolio.experienceLevel}</span>}
               {portfolio.strengths.map((strength) => <b key={strength}>{strength}</b>)}
@@ -85,11 +85,11 @@ export default function PublicPortfolio({
             <h2>프로젝트 너머의<br className="identity-title-break" />{" "}저를 소개합니다.</h2>
           </div>
           <div className="identity-content">
-            {portfolio.aboutMe && <div className="identity-lead"><RichText value={portfolio.aboutMe} autoEmphasis /></div>}
+            {portfolio.aboutMe && <div className="identity-lead"><RichText value={portfolio.aboutMe} /></div>}
             <div className="identity-grid">
-              {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p><RichText value={portfolio.workStyle} autoEmphasis /></p></article>}
-              {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p><RichText value={portfolio.values} autoEmphasis /></p></article>}
-              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p><RichText value={portfolio.lookingFor} autoEmphasis /></p></article>}
+              {portfolio.workStyle && <article><span>01</span><h3>일하는 방식</h3><p><RichText value={portfolio.workStyle} /></p></article>}
+              {portfolio.values && <article><span>02</span><h3>중요하게 생각하는 가치</h3><p><RichText value={portfolio.values} /></p></article>}
+              {portfolio.lookingFor && <article><span>03</span><h3>앞으로의 방향</h3><p><RichText value={portfolio.lookingFor} /></p></article>}
             </div>
           </div>
         </section>

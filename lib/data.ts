@@ -122,93 +122,13 @@ export async function ensureFeaturedColumns() {
   await featuredColumnsReady;
 }
 
-function highlightText(raw: string, fallbackWithHighlights: string): string {
-  if (!raw || raw.trim() === "") return fallbackWithHighlights;
-  if (raw.includes("**")) return raw;
-  // If the raw text is roughly similar to the default unhighlighted text, use the curated highlighted version
-  return fallbackWithHighlights;
-}
-
 function mapPortfolio(row: PortfolioRow): Portfolio {
-  const bio = row.bio && row.bio.includes("**")
-    ? row.bio
-    : row.bio
-      ? `**${row.bio.split(".")[0].trim()}**${row.bio.includes(".") ? row.bio.slice(row.bio.indexOf(".")) : ""}`
-      : "**복잡한 문제를 단순한 사용자 경험으로 전환**하고, **지속 가능한 코드 구조를 설계**하는 개발자입니다.";
-
-  const aboutMe = highlightText(
-    row.about_me,
-    "화면을 구현하는 데서 멈추지 않고, **사용자가 겪는 문제와 코드가 오래 유지될 구조를 함께 고민**하는 개발자입니다. 모호한 문제를 **재현 가능한 단위로 나누고 실제 동작으로 검증**하는 과정에 몰입하며, 초·중·고 8년간의 연속 임원과 동아리 회장 경험으로 **팀의 잠재력을 이끌어내는 신뢰 기반의 협업**을 추구합니다.",
-  );
-
-  const workStyle = highlightText(
-    row.work_style,
-    "문제를 마주하면 먼저 **재현 경로와 가설, 로그를 남기고 작은 단위로 구현해 빠르게 검증**합니다. 코드 리뷰에서는 **기술적 선택의 이유를 명확히 설명**하고, 팀원이 언제든 다시 활용할 수 있는 **재사용 컴포넌트와 표준화된 문서**를 남깁니다.",
-  );
-
-  const values = highlightText(
-    row.personal_values,
-    "**빠르게 만드는 민첩성과 안정적으로 운영하는 내구성 사이의 균형**, 그리고 **동료 누구나 쉽게 읽고 이해할 수 있는 명확한 코드**를 가장 중요한 기준으로 삼습니다.",
-  );
-
-  const lookingFor = highlightText(
-    row.looking_for,
-    "사용자와 가장 가까운 위치에서 **제품의 가치를 높이고 프론트엔드 아키텍처, 렌더링 성능, 품질 전반을 책임지는 엔지니어**로 성장하고자 합니다.",
-  );
-
-  const aspiration = highlightText(
-    row.aspiration,
-    "**좋은 동료들과 함께 어려운 문제를 즐겁게 풀어나가며**, 시간이 지나도 **사용자에게 사랑받고 오래 쓰이는 가치 있는 제품**을 만드는 개발자가 되겠습니다.",
-  );
-
-  const aspirationTitle = row.aspiration_title || "**오래 쓰이고 신뢰받는 제품을 만드는 개발자**";
-
-  const defaultCareerHighlight: Record<string, string> = {
-    Folioframe: "**Next.js 기반 포트폴리오 작성·발행 흐름**을 설계하고, **PostgreSQL 데이터 모델링부터 Vercel 무중단 배포까지 전 과정**을 1인 풀스택으로 완성했습니다.",
-    "웹 개발 스터디": "**React 렌더링 최적화, 상태 관리 아키텍처, 자동화 테스트(E2E/단위) 및 웹 성능 지표(Core Web Vitals)**를 심도 있게 학습하고 코드 리뷰를 주도했습니다.",
-  };
-
-  const careers = (row.careers ?? []).map((c) => {
-    if (c.organization && c.organization.includes("데포르테")) {
-      return {
-        ...c,
-        description: "초등학교 3학년부터 고등학교 2학년까지 매년 **학급 반장**, 중3 **전교부회장**, 고2 **중국어과 과장**을 역임하며 다져온 조직 운영 노하우를 바탕으로 자율 동아리 '데포르테'를 기획·창설했습니다. 50명 규모의 연합동아리에서 **기획부원부터 회장까지** 활동하며 소외되는 사람 없이 모두가 주도적으로 참여하는 문화를 이끌었습니다. 부원 개개인의 의견을 세심하게 조율하고 **감정과 사실을 분리해 따뜻하지만 명확하게 소통**하여, 높은 만족도와 끈끈한 팀 협업 문화를 구축했습니다.",
-      };
-    }
-    if (defaultCareerHighlight[c.organization] && (!c.description || !c.description.includes("**"))) {
-      return {
-        ...c,
-        description: defaultCareerHighlight[c.organization],
-      };
-    }
-    if (c.description && !c.description.includes("**")) {
-      const firstDot = c.description.indexOf(".");
-      if (firstDot > 5) {
-        return {
-          ...c,
-          description: `**${c.description.slice(0, firstDot + 1)}**${c.description.slice(firstDot + 1)}`,
-        };
-      }
-    }
-    return c;
-  });
-
-  const educations = (row.educations ?? []).map((e) => {
-    if (!e.description || !e.description.includes("**")) {
-      return {
-        ...e,
-        description: "**자료구조, 데이터베이스, 운영체제, 알고리즘, 웹 프로그래밍**을 학습하고, **개발 동아리 팀 프로젝트와 코드 리뷰**를 통해 실전 협업 경험을 쌓았습니다.",
-      };
-    }
-    return e;
-  });
-
   return {
     id: row.id,
     name: row.name,
     profileImageUrl: row.profile_image_url ?? "",
     jobTitle: row.job_title,
-    bio,
+    bio: row.bio || "Java와 Spring Boot를 중심으로 데이터와 API 흐름을 설계하고 구현하는 백엔드 개발자입니다.",
     contactEmail: row.contact_email ?? "",
     slug: row.slug,
     isPublished: row.is_published,
@@ -218,18 +138,18 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
     interests: row.interests,
     strengths: row.strengths ?? [],
     coreSkills: row.core_skills ?? [],
-    aboutMe,
-    workStyle,
-    values,
-    lookingFor,
-    aspiration,
-    aspirationTitle,
+    aboutMe: row.about_me || "",
+    workStyle: row.work_style || "",
+    values: row.personal_values || "",
+    lookingFor: row.looking_for || "",
+    aspiration: row.aspiration ?? "",
+    aspirationTitle: row.aspiration_title ?? "",
     resumeUrl: row.resume_url,
     githubUrl: row.github_url,
     linkedinUrl: row.linkedin_url,
     blogUrl: row.blog_url,
-    careers,
-    educations,
+    careers: row.careers ?? [],
+    educations: row.educations ?? [],
     certificates: row.certificates ?? [],
   };
 }

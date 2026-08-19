@@ -164,7 +164,7 @@ export default function PublicPortfolio({
         {!!featuredProjects.length && <div className="portfolio-section-title">
           <span>SELECTED WORK</span>
           <h2>대표 프로젝트</h2>
-          <p>{String(featuredProjects.length).padStart(2, "0")} FEATURED</p>
+          
         </div>}
 
         {!!featuredProjects.length && <div className="project-showcase-grid featured-project-grid">
@@ -246,7 +246,7 @@ export default function PublicPortfolio({
           <div className="portfolio-section-title more-projects-title">
             <span>MORE WORK</span>
             <h2>그 외 프로젝트</h2>
-            <p>{String(moreProjects.length).padStart(2, "0")} PROJECTS</p>
+            
           </div>
           <div className="project-showcase-grid more-project-grid">
             {moreProjects.map((project, index) => {

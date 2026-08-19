@@ -8371,17 +8371,37 @@ label em {
   border-bottom: 1px solid rgba(25, 27, 22, 0.18);
 }
 
-.portfolio-motion-band > div {
+.portfolio-motion-track {
   width: max-content;
-  padding: 12px 0;
   display: flex;
   align-items: center;
-  gap: 30px;
-  animation: portfolio-marquee 28s linear infinite;
+  animation: portfolio-marquee 32s linear infinite;
+  will-change: transform;
+}
+
+.portfolio-motion-track:hover {
+  animation-play-state: paused;
+}
+
+.portfolio-motion-group {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 12px 18px;
+  flex-shrink: 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
+}
+
+.portfolio-motion-group span {
+  white-space: nowrap;
+}
+
+.portfolio-motion-group i {
+  color: inherit;
+  opacity: 0.6;
 }
 
 .portfolio-motion-band i {

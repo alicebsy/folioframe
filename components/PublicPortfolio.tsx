@@ -76,9 +76,23 @@ export default function PublicPortfolio({
       </header>
 
       <div className="portfolio-motion-band" aria-hidden="true">
-        <div>
-          <span>BUILD WITH INTENT</span><i>✦</i><span>SHIP WITH CONFIDENCE</span><i>✦</i><span>LEARN IN PUBLIC</span><i>✦</i>
-          <span>BUILD WITH INTENT</span><i>✦</i><span>SHIP WITH CONFIDENCE</span><i>✦</i><span>LEARN IN PUBLIC</span><i>✦</i>
+        <div className="portfolio-motion-track">
+          <div className="portfolio-motion-group">
+          <span>ARCHITECTURE FIRST</span><i>✦</i>
+          <span>CLEAN CODE & ROBUST DESIGN</span><i>✦</i>
+          <span>SOLVE REAL PROBLEMS</span><i>✦</i>
+          <span>CONTINUOUS LEARNING & DELIVERY</span><i>✦</i>
+          <span>AI-AUGMENTED EXECUTION</span><i>✦</i>
+          <span>EMPATHY & COLLABORATION</span><i>✦</i>
+          </div>
+          <div className="portfolio-motion-group" aria-hidden="true">
+          <span>ARCHITECTURE FIRST</span><i>✦</i>
+          <span>CLEAN CODE & ROBUST DESIGN</span><i>✦</i>
+          <span>SOLVE REAL PROBLEMS</span><i>✦</i>
+          <span>CONTINUOUS LEARNING & DELIVERY</span><i>✦</i>
+          <span>AI-AUGMENTED EXECUTION</span><i>✦</i>
+          <span>EMPATHY & COLLABORATION</span><i>✦</i>
+          </div>
         </div>
       </div>
 

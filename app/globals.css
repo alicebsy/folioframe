@@ -7590,56 +7590,57 @@ label em {
   margin-top: 0.9em;
 }
 
-/* Selective Underline-style Highlighter Marker (단어 전체 박스가 아닌 글자 하단 38%에만 은은한 마커 밑줄, 글자색 유지) */
+/* Selective Green Underline-style Highlighter Marker (글자 하단 40%에 산뜻한 초록색 형광펜 밑줄, 텍스트 가독성 유지) */
 .rich-text-highlight {
   display: inline;
   font-weight: 700;
   color: inherit !important;
-  padding: 0 0.05em;
+  padding: 0 0.08em;
   margin: 0;
   border-radius: 0;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   line-height: inherit;
   text-decoration: none;
+  background: linear-gradient(to top, rgba(74, 222, 128, 0.55) 0%, rgba(74, 222, 128, 0.55) 42%, transparent 42%);
 }
 
-/* Theme 01: Editorial (세이지/올리브 마커 밑줄) */
+/* Theme 01: Editorial (산뜻하고 선명한 그린 마커 밑줄) */
 .theme-editorial .rich-text-highlight {
-  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
+  background: linear-gradient(to top, rgba(74, 222, 128, 0.55) 0%, rgba(74, 222, 128, 0.55) 42%, transparent 42%);
   color: inherit !important;
 }
 
 .theme-editorial .identity-section .rich-text-highlight,
 .theme-editorial .public-footer .rich-text-highlight,
 .theme-editorial .case-evidence .rich-text-highlight {
-  background: linear-gradient(to top, rgba(205, 239, 85, 0.35) 0%, rgba(205, 239, 85, 0.35) 38%, transparent 38%);
+  background: linear-gradient(to top, rgba(74, 222, 128, 0.5) 0%, rgba(74, 222, 128, 0.5) 42%, transparent 42%);
   color: inherit !important;
 }
 
 /* Theme 02: Minimal */
 .theme-minimal .rich-text-highlight {
-  background: linear-gradient(to top, rgba(254, 240, 138, 0.85) 0%, rgba(254, 240, 138, 0.85) 42%, transparent 42%);
+  background: linear-gradient(to top, rgba(74, 222, 128, 0.55) 0%, rgba(74, 222, 128, 0.55) 42%, transparent 42%);
   color: inherit;
 }
 
 .theme-minimal .identity-section .rich-text-highlight,
 .theme-minimal .case-evidence .rich-text-highlight {
-  background: linear-gradient(to top, rgba(147, 197, 253, 0.5) 0%, rgba(147, 197, 253, 0.5) 40%, transparent 40%);
-  color: #1e3a8a;
+  background: linear-gradient(to top, rgba(52, 211, 153, 0.5) 0%, rgba(52, 211, 153, 0.5) 40%, transparent 40%);
+  color: inherit;
 }
 
 /* Theme 03: Bold */
 .theme-bold .rich-text-highlight {
-  background: linear-gradient(to top, #ffe600 0%, #ffe600 48%, transparent 48%);
+  background: linear-gradient(to top, #4ade80 0%, #4ade80 48%, transparent 48%);
   color: inherit;
   font-weight: 850;
 }
 
 /* Theme 04: Noir */
 .theme-noir .rich-text-highlight {
-  background: linear-gradient(to top, rgba(218, 255, 1, 0.35) 0%, rgba(218, 255, 1, 0.35) 40%, transparent 40%);
-  color: #daff01;
+  background: linear-gradient(to top, rgba(74, 222, 128, 0.4) 0%, rgba(74, 222, 128, 0.4) 40%, transparent 40%);
+  color: #4ade80;
 }
 
 .rich-text-field {

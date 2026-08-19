@@ -10706,6 +10706,9 @@ label em {
     animation: none !important;
     transition: none !important;
     box-sizing: border-box !important;
+    letter-spacing: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
   }
 
   html, body {
@@ -10714,6 +10717,8 @@ label em {
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif !important;
+    -webkit-text-size-adjust: 100% !important;
   }
 
   .public-shell {
@@ -10723,39 +10728,42 @@ label em {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.75 !important;
   }
 
-  /* Keep Clean Nav Bar with Brand Mark */
+  /* Nav Bar */
   .public-nav {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 16px 28px !important;
+    padding: 22px 36px !important;
     background: #f5f4ee !important;
     border-bottom: 1px solid #d7d7cf !important;
   }
 
   .public-nav .brand {
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 800 !important;
     color: #20221e !important;
     display: flex !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
   }
 
   .public-nav .brand-mark {
     display: inline-block !important;
     color: #85943f !important;
+    font-size: 16px !important;
   }
 
   .public-nav .slug-badge {
     display: inline-block !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     color: #7b8e34 !important;
     background: #edf1db !important;
-    padding: 3px 8px !important;
-    border-radius: 4px !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
     border: 1px solid #d2deaa !important;
     font-weight: 700 !important;
   }
@@ -10769,10 +10777,9 @@ label em {
     display: none !important;
   }
 
-  /* Rich Hero Section with Gradient Accent */
+  /* Spacious Hero Section */
   .portfolio-hero {
-    padding: 36px 32px 32px !important;
-    margin-bottom: 0 !important;
+    padding: 48px 36px 40px !important;
     background:
       radial-gradient(ellipse 65% 120% at 100% 50%, rgba(205, 239, 85, 0.45) 0%, rgba(205, 239, 85, 0.15) 50%, transparent 80%),
       linear-gradient(115deg, #f5f4ee 0%, #f5f4ee 60%, #edf1d8 100%) !important;
@@ -10783,40 +10790,42 @@ label em {
 
   .portfolio-kicker {
     display: inline-block !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     color: #66752d !important;
     border-bottom: 2px solid #b5d34c !important;
-    padding-bottom: 4px !important;
-    margin-bottom: 14px !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 18px !important;
     letter-spacing: 0.08em !important;
   }
 
   .hero-grid {
     display: grid !important;
-    grid-template-columns: 1fr 200px !important;
-    gap: 32px !important;
+    grid-template-columns: 1fr 220px !important;
+    gap: 36px !important;
     align-items: start !important;
   }
 
   .portfolio-hero h1 {
-    font-size: 28px !important;
+    font-size: 32px !important;
     font-weight: 800 !important;
     color: #20221e !important;
-    line-height: 1.25 !important;
-    margin-bottom: 12px !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  .portfolio-hero h1 span {
-    color: #20221e !important;
-    position: relative !important;
+    line-height: 1.35 !important;
+    margin-bottom: 16px !important;
+    letter-spacing: -0.01em !important;
   }
 
   .portfolio-hero p {
-    font-size: 14px !important;
+    font-size: 15px !important;
     color: #383c32 !important;
-    line-height: 1.65 !important;
+    line-height: 1.8 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .candidate-summary {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
     margin-bottom: 16px !important;
   }
 
@@ -10826,11 +10835,10 @@ label em {
     background: #ffffff !important;
     color: #2e3321 !important;
     border: 1px solid #d4d2bf !important;
-    padding: 4px 10px !important;
-    border-radius: 4px !important;
-    font-size: 11.5px !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
-    margin-right: 6px !important;
   }
 
   .candidate-summary b::before {
@@ -10839,14 +10847,15 @@ label em {
   }
 
   .developer-stack {
-    margin-top: 14px !important;
+    margin-top: 18px !important;
     display: flex !important;
     align-items: center !important;
+    flex-wrap: wrap !important;
     gap: 8px !important;
   }
 
   .developer-stack span {
-    font-size: 10.5px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     color: #66752d !important;
     letter-spacing: 0.05em !important;
@@ -10856,29 +10865,29 @@ label em {
     display: inline-block !important;
     background: #e2e8c6 !important;
     color: #20221e !important;
-    padding: 3px 8px !important;
-    border-radius: 4px !important;
-    font-size: 11.5px !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
   }
 
   .hero-side {
     border-left: 1px solid #dcdacb !important;
-    padding-left: 20px !important;
+    padding-left: 24px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
   }
 
   .large-avatar {
-    width: 88px !important;
-    height: 88px !important;
+    width: 96px !important;
+    height: 96px !important;
     border: 2.5px solid #20221e !important;
     border-radius: 50% !important;
     overflow: hidden !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
     background: #ffffff !important;
   }
 
@@ -10889,43 +10898,43 @@ label em {
   }
 
   .hero-side strong {
-    font-size: 14px !important;
+    font-size: 15px !important;
     font-weight: 800 !important;
     color: #20221e !important;
   }
 
   .hero-side a {
-    font-size: 12px !important;
+    font-size: 13px !important;
     color: #556420 !important;
     text-decoration: underline !important;
   }
 
   .hero-links {
-    margin-top: 6px !important;
+    margin-top: 8px !important;
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: center !important;
-    gap: 5px !important;
+    gap: 6px !important;
   }
 
   .hero-links a {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     color: #4a5c18 !important;
     background: #eef2db !important;
     border: 1px solid #d4deb3 !important;
-    padding: 2px 7px !important;
-    border-radius: 4px !important;
+    padding: 4px 9px !important;
+    border-radius: 6px !important;
     text-decoration: none !important;
   }
 
-  /* Motion Band in Print as Static Editorial Accent */
+  /* Motion Band */
   .portfolio-motion-band {
     display: block !important;
     background: #20221e !important;
     color: #cdef55 !important;
-    padding: 8px 0 !important;
-    font-size: 11px !important;
+    padding: 10px 0 !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     letter-spacing: 0.12em !important;
     text-align: center !important;
@@ -10935,7 +10944,7 @@ label em {
   .portfolio-motion-band div {
     display: flex !important;
     justify-content: center !important;
-    gap: 16px !important;
+    gap: 20px !important;
   }
 
   .portfolio-motion-band i {
@@ -10945,8 +10954,7 @@ label em {
 
   /* Identity Section */
   .identity-section {
-    padding: 32px 32px !important;
-    margin-bottom: 0 !important;
+    padding: 38px 36px !important;
     border-bottom: 1px solid #d7d7cf !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -10955,76 +10963,75 @@ label em {
   .identity-heading span,
   .career-section-title span,
   .portfolio-section-title span {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     color: #66752d !important;
     letter-spacing: 0.08em !important;
     display: block !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
   }
 
   .identity-heading h2,
   .career-section-title h2,
   .portfolio-section-title h2 {
-    font-size: 22px !important;
+    font-size: 24px !important;
     font-weight: 800 !important;
     color: #20221e !important;
-    letter-spacing: -0.02em !important;
-    margin: 0 0 16px 0 !important;
+    letter-spacing: -0.01em !important;
+    margin: 0 0 20px 0 !important;
   }
 
   .identity-lead {
-    font-size: 13.5px !important;
+    font-size: 14.5px !important;
     color: #20221e !important;
     background: #ffffff !important;
     border: 1px solid #d7d7cf !important;
     border-left: 4px solid #85943f !important;
-    padding: 16px 20px !important;
+    padding: 18px 22px !important;
     border-radius: 8px !important;
-    margin-bottom: 16px !important;
-    line-height: 1.7 !important;
+    margin-bottom: 20px !important;
+    line-height: 1.8 !important;
   }
 
   .identity-grid {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 12px !important;
+    gap: 16px !important;
   }
 
   .identity-grid article {
     background: #ffffff !important;
     border: 1px solid #d7d7cf !important;
-    padding: 14px 16px !important;
+    padding: 18px 18px !important;
     border-radius: 8px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
   .identity-grid article span {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     color: #85943f !important;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
   }
 
   .identity-grid article h3 {
-    font-size: 14px !important;
+    font-size: 15px !important;
     font-weight: 800 !important;
     color: #20221e !important;
-    margin: 4px 0 6px !important;
+    margin: 6px 0 8px !important;
   }
 
   .identity-grid article p {
-    font-size: 12.5px !important;
+    font-size: 13.5px !important;
     color: #383c32 !important;
-    line-height: 1.6 !important;
+    line-height: 1.75 !important;
   }
 
   /* Experience & Education Timelines */
   .career-section,
   .education-section {
-    padding: 32px 32px !important;
-    margin-bottom: 0 !important;
+    padding: 38px 36px !important;
     border-bottom: 1px solid #d7d7cf !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -11033,13 +11040,13 @@ label em {
   .career-timeline article {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    border-left: 2px solid #b5d34c !important;
-    padding-left: 18px !important;
-    margin-bottom: 16px !important;
+    border-left: 2.5px solid #b5d34c !important;
+    padding-left: 20px !important;
+    margin-bottom: 22px !important;
   }
 
   .career-timeline article > span {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     color: #66752d !important;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
@@ -11048,38 +11055,37 @@ label em {
   .career-entry-heading {
     display: flex !important;
     align-items: baseline !important;
-    gap: 8px !important;
-    margin: 3px 0 4px !important;
+    gap: 10px !important;
+    margin: 4px 0 6px !important;
   }
 
   .career-entry-heading h3 {
-    font-size: 15px !important;
+    font-size: 16.5px !important;
     font-weight: 800 !important;
     color: #20221e !important;
   }
 
   .career-entry-heading strong {
-    font-size: 13px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;
     color: #556420 !important;
   }
 
   .career-timeline p {
-    font-size: 12.8px !important;
+    font-size: 14px !important;
     color: #383c32 !important;
-    line-height: 1.6 !important;
+    line-height: 1.75 !important;
   }
 
   /* Projects Showcase with Full Case Study & Exact Visuals */
   .portfolio-projects {
-    padding: 32px 32px !important;
-    margin-bottom: 0 !important;
+    padding: 38px 36px !important;
   }
 
   .project-showcase-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 20px !important;
+    gap: 26px !important;
   }
 
   .project-showcase-card {
@@ -11087,19 +11093,19 @@ label em {
     break-inside: avoid !important;
     background: #ffffff !important;
     border: 1px solid #d7d7cf !important;
-    padding: 20px !important;
-    border-radius: 10px !important;
+    padding: 24px 26px !important;
+    border-radius: 12px !important;
     display: grid !important;
-    grid-template-columns: 220px 1fr !important;
-    gap: 20px !important;
+    grid-template-columns: 240px 1fr !important;
+    gap: 24px !important;
     align-items: start !important;
   }
 
   .project-showcase-media {
     display: block !important;
-    width: 220px !important;
-    height: 155px !important;
-    border-radius: 8px !important;
+    width: 240px !important;
+    height: 170px !important;
+    border-radius: 10px !important;
     overflow: hidden !important;
     border: 1px solid #d7d7cf !important;
     background: #f0eee4 !important;
@@ -11109,7 +11115,7 @@ label em {
     display: block !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* Rich full visual presentation */
+    object-fit: cover !important;
     object-position: center !important;
     image-rendering: -webkit-optimize-contrast !important;
   }
@@ -11119,20 +11125,21 @@ label em {
   }
 
   .project-showcase-meta {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     color: #66752d !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
     display: flex !important;
-    gap: 8px !important;
+    gap: 10px !important;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
   }
 
   .project-showcase-card h3 {
-    font-size: 17px !important;
+    font-size: 19px !important;
     font-weight: 800 !important;
     color: #20221e !important;
-    margin: 0 0 6px 0 !important;
+    margin: 0 0 8px 0 !important;
+    line-height: 1.35 !important;
   }
 
   .project-showcase-card h3 a {
@@ -11141,26 +11148,26 @@ label em {
   }
 
   .project-summary-text {
-    font-size: 13px !important;
+    font-size: 14px !important;
     color: #383c32 !important;
-    line-height: 1.6 !important;
-    margin-bottom: 8px !important;
+    line-height: 1.75 !important;
+    margin-bottom: 10px !important;
   }
 
   .project-showcase-tags {
     display: flex !important;
     flex-wrap: wrap !important;
-    gap: 5px !important;
+    gap: 6px !important;
   }
 
   .project-showcase-tags span {
     background: #edf1db !important;
     border: 1px solid #d2deaa !important;
     color: #3b4816 !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
-    padding: 2px 7px !important;
-    border-radius: 4px !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
   }
 
   /* Deep Case Study Breakdown inside Card */
@@ -11168,20 +11175,20 @@ label em {
     grid-column: 1 / -1 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 10px !important;
-    margin-top: 14px !important;
-    padding-top: 14px !important;
+    gap: 12px !important;
+    margin-top: 18px !important;
+    padding-top: 18px !important;
     border-top: 1px solid #e8e6dc !important;
   }
 
   .pdf-case-block {
     display: flex !important;
     flex-direction: column !important;
-    gap: 3px !important;
+    gap: 4px !important;
   }
 
   .pdf-case-block strong {
-    font-size: 12px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
     color: #556420 !important;
   }
@@ -11191,41 +11198,41 @@ label em {
   }
 
   .pdf-case-block p {
-    font-size: 12.5px !important;
+    font-size: 13.5px !important;
     color: #272a23 !important;
-    line-height: 1.6 !important;
+    line-height: 1.75 !important;
     margin: 0 !important;
   }
 
   /* Aspiration Section */
   .aspiration-section {
-    margin: 0 32px 32px !important;
+    margin: 0 36px 38px !important;
     background: #f1f4df !important;
     border: 1px solid #cad7a3 !important;
-    padding: 24px 28px !important;
-    border-radius: 10px !important;
+    padding: 28px 32px !important;
+    border-radius: 12px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
   .aspiration-inner span {
-    font-size: 11px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     color: #66752d !important;
     letter-spacing: 0.08em !important;
   }
 
   .aspiration-inner h2 {
-    font-size: 17px !important;
+    font-size: 19px !important;
     font-weight: 800 !important;
     color: #20221e !important;
-    margin: 4px 0 8px !important;
+    margin: 6px 0 10px !important;
   }
 
   .aspiration-inner p {
-    font-size: 13px !important;
+    font-size: 14px !important;
     color: #383c32 !important;
-    line-height: 1.65 !important;
+    line-height: 1.8 !important;
   }
 
   /* Signature Green Underline Highlight */
@@ -11237,7 +11244,7 @@ label em {
   }
 
   .public-footer {
-    padding: 24px 32px 36px !important;
+    padding: 28px 36px 40px !important;
     border-top: 1px solid #d7d7cf !important;
     display: flex !important;
     justify-content: space-between !important;
@@ -11245,7 +11252,7 @@ label em {
   }
 
   .public-footer h2 {
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 800 !important;
     color: #20221e !important;
   }

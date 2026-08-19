@@ -4900,13 +4900,49 @@ label em {
 
 .profile-about-preview {
   max-width: 680px;
-  overflow: hidden;
-  display: -webkit-box;
-  color: #777a70 !important;
-  font-size: 10px !important;
-  line-height: 1.65 !important;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  color: #4a5042 !important;
+  font-size: 13px !important;
+  line-height: 1.8 !important;
+  margin-top: 8px;
+}
+
+.profile-about-preview .rich-text-highlight {
+  background: linear-gradient(to top, rgba(188, 228, 72, 0.68) 0%, rgba(188, 228, 72, 0.68) 40%, transparent 40%);
+  font-weight: 700;
+}
+
+.profile-details-preview {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  max-width: 750px;
+}
+
+.profile-preview-item {
+  padding: 12px 14px;
+  background: #fafbf8;
+  border: 1px solid #e3e7db;
+  border-radius: 8px;
+}
+
+.profile-preview-item b {
+  display: block;
+  font-size: 11px;
+  color: #6d812f;
+  margin-bottom: 5px;
+}
+
+.profile-preview-item p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #52584a;
+}
+
+.profile-preview-item .rich-text-highlight {
+  background: linear-gradient(to top, rgba(188, 228, 72, 0.68) 0%, rgba(188, 228, 72, 0.68) 40%, transparent 40%);
+  font-weight: 700;
 }
 
 /* Portfolio theme picker */

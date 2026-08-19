@@ -1206,14 +1206,14 @@ export default function DashboardClient({
               <details className="editor-disclosure profile-disclosure" open>
                 <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향 · 마무리</small></summary>
                 <div className="disclosure-content identity-editor">
-                  <RichTextField label="나에 대한 소개" value={profileDraft.aboutMe} onChange={(value) => setProfileDraft({ ...profileDraft, aboutMe: value })} placeholder="핵심 성향과 경험을 2~3개의 짧은 문단으로 적어 주세요." maxLength={700} />
+                  <RichTextField label="나에 대한 소개" value={profileDraft.aboutMe} onChange={(value) => setProfileDraft({ ...profileDraft, aboutMe: value })} placeholder="핵심 성향과 경험을 2~3개의 짧은 문단으로 적어 주세요." maxLength={4000} />
                   <div className="form-row two">
-                    <RichTextField label="일하는 방식" value={profileDraft.workStyle} onChange={(value) => setProfileDraft({ ...profileDraft, workStyle: value })} placeholder="한 문단에 한 가지 방식만 적어 주세요." maxLength={400} />
-                    <RichTextField label="중요하게 생각하는 가치" value={profileDraft.values} onChange={(value) => setProfileDraft({ ...profileDraft, values: value })} placeholder="가장 중요한 기준을 짧고 선명하게 적어 주세요." maxLength={300} />
+                    <RichTextField label="일하는 방식" value={profileDraft.workStyle} onChange={(value) => setProfileDraft({ ...profileDraft, workStyle: value })} placeholder="한 문단에 한 가지 방식만 적어 주세요." maxLength={2500} />
+                    <RichTextField label="중요하게 생각하는 가치" value={profileDraft.values} onChange={(value) => setProfileDraft({ ...profileDraft, values: value })} placeholder="가장 중요한 기준을 짧고 선명하게 적어 주세요." maxLength={2500} />
                   </div>
-                  <RichTextField label="앞으로의 방향" value={profileDraft.lookingFor} onChange={(value) => setProfileDraft({ ...profileDraft, lookingFor: value })} placeholder="앞으로의 방향은 한두 문장으로 정리해 주세요." maxLength={300} />
+                  <RichTextField label="앞으로의 방향" value={profileDraft.lookingFor} onChange={(value) => setProfileDraft({ ...profileDraft, lookingFor: value })} placeholder="앞으로의 방향은 한두 문장으로 정리해 주세요." maxLength={2500} />
                   <label>마무리 제목<input value={profileDraft.aspirationTitle ?? ""} onChange={(event) => setProfileDraft({ ...profileDraft, aspirationTitle: event.target.value })} placeholder="예: 오래 쓰이는 제품을 만드는 개발자" /></label>
-                  <RichTextField label="마무리 문구" value={profileDraft.aspiration ?? ""} onChange={(value) => setProfileDraft({ ...profileDraft, aspiration: value })} placeholder="마지막에 남기고 싶은 말을 짧게 적어 주세요." maxLength={500} />
+                  <RichTextField label="마무리 문구" value={profileDraft.aspiration ?? ""} onChange={(value) => setProfileDraft({ ...profileDraft, aspiration: value })} placeholder="마지막에 남기고 싶은 말을 짧게 적어 주세요." maxLength={2500} />
                 </div>
               </details>
               <details className="editor-disclosure profile-disclosure">
@@ -1242,7 +1242,7 @@ export default function DashboardClient({
                         value={entry.description}
                         onChange={(value) => updateCareer(entry.id, "description", value)}
                         placeholder="무엇을 맡았고 어떤 변화를 만들었는지 적어 주세요. (강조할 부분에 형광펜 버튼 적용 가능)"
-                        maxLength={600}
+                        maxLength={2000}
                       />
                       <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, careers: profileDraft.careers.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
                     </div>
@@ -1265,7 +1265,7 @@ export default function DashboardClient({
                         value={entry.description}
                         onChange={(value) => updateEducation(entry.id, "description", value)}
                         placeholder="개발과 관련해 배운 내용, 동아리, 연구, 수상 등을 적어 주세요. (강조할 부분에 형광펜 버튼 적용 가능)"
-                        maxLength={600}
+                        maxLength={2000}
                       />
                       <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, educations: profileDraft.educations.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
                     </div>
@@ -1311,6 +1311,28 @@ export default function DashboardClient({
               </div>
               <p>{data.portfolio.bio ? <RichText value={data.portfolio.bio} /> : "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
               {data.portfolio.aboutMe && <div className="profile-about-preview"><RichText value={data.portfolio.aboutMe} /></div>}
+              {(data.portfolio.workStyle || data.portfolio.values || data.portfolio.lookingFor) && (
+                <div className="profile-details-preview">
+                  {data.portfolio.workStyle && (
+                    <article className="profile-preview-item">
+                      <b>일하는 방식</b>
+                      <p><RichText value={data.portfolio.workStyle} /></p>
+                    </article>
+                  )}
+                  {data.portfolio.values && (
+                    <article className="profile-preview-item">
+                      <b>중요하게 생각하는 가치</b>
+                      <p><RichText value={data.portfolio.values} /></p>
+                    </article>
+                  )}
+                  {data.portfolio.lookingFor && (
+                    <article className="profile-preview-item">
+                      <b>앞으로의 방향</b>
+                      <p><RichText value={data.portfolio.lookingFor} /></p>
+                    </article>
+                  )}
+                </div>
+              )}
               {(data.portfolio.experienceLevel || data.portfolio.strengths.length > 0) && (
                 <div className="profile-summary-chips">
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}
@@ -1589,7 +1611,7 @@ export default function DashboardClient({
                 value={projectDraft.summary}
                 onChange={(value) => setProjectDraft({ ...projectDraft, summary: value })}
                 placeholder="프로젝트의 목적과 배경을 설명해 주세요."
-                maxLength={500}
+                maxLength={2500}
               />
               <div className="project-facts">
                 <label>시작 월<input type="month" value={projectDraft.periodStart} onInput={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} /></label>
@@ -1757,14 +1779,14 @@ export default function DashboardClient({
               <details className="editor-disclosure project-disclosure" open>
                 <summary><span>개발 구현과 운영</span><small>아키텍처 · 테스트와 품질 · 배포와 운영</small></summary>
                 <div className="disclosure-content">
-                  <RichTextField label="아키텍처와 기술 선택" value={projectDraft.architecture} onChange={(value) => setProjectDraft({ ...projectDraft, architecture: value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" maxLength={700} />
+                  <RichTextField label="아키텍처와 기술 선택" value={projectDraft.architecture} onChange={(value) => setProjectDraft({ ...projectDraft, architecture: value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" maxLength={4000} />
                   <div className="form-row two">
-                    <RichTextField label="테스트와 품질" value={projectDraft.qualityAssurance} onChange={(value) => setProjectDraft({ ...projectDraft, qualityAssurance: value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" maxLength={700} />
-                    <RichTextField label="배포와 운영" value={projectDraft.deployment} onChange={(value) => setProjectDraft({ ...projectDraft, deployment: value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." maxLength={700} />
+                    <RichTextField label="테스트와 품질" value={projectDraft.qualityAssurance} onChange={(value) => setProjectDraft({ ...projectDraft, qualityAssurance: value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" maxLength={4000} />
+                    <RichTextField label="배포와 운영" value={projectDraft.deployment} onChange={(value) => setProjectDraft({ ...projectDraft, deployment: value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." maxLength={4000} />
                   </div>
                 </div>
               </details>
-              <RichTextField label="성과 근거" value={projectDraft.evidence} onChange={(value) => setProjectDraft({ ...projectDraft, evidence: value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." maxLength={500} />
+              <RichTextField label="성과 근거" value={projectDraft.evidence} onChange={(value) => setProjectDraft({ ...projectDraft, evidence: value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." maxLength={2500} />
               <details className="editor-disclosure project-disclosure">
                 <summary><span>회고와 다음 단계</span><small>배운 점 · 다시 한다면 바꿀 점</small></summary>
                 <div className="disclosure-content form-row two">

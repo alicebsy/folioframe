@@ -13,7 +13,7 @@ function slugify(value: string) {
 }
 
 function normalizeUrl(value: unknown) {
-  const url = String(value ?? "").trim().slice(0, 500);
+  const url = String(value ?? "").trim().slice(0, 2500);
   if (!url) return "";
   try {
     const parsed = new URL(url);
@@ -39,7 +39,7 @@ function normalizeCareers(value: unknown): CareerEntry[] {
     organization: String(entry?.organization ?? "").trim().slice(0, 80),
     role: String(entry?.role ?? "").trim().slice(0, 80),
     period: String(entry?.period ?? "").trim().slice(0, 50),
-    description: String(entry?.description ?? "").trim().slice(0, 500),
+    description: String(entry?.description ?? "").trim().slice(0, 2500),
   })).filter((entry) => entry.organization || entry.role);
 }
 
@@ -50,7 +50,7 @@ function normalizeEducations(value: unknown): EducationEntry[] {
     school: String(entry?.school ?? "").trim().slice(0, 100),
     major: String(entry?.major ?? "").trim().slice(0, 100),
     period: String(entry?.period ?? "").trim().slice(0, 50),
-    description: String(entry?.description ?? "").trim().slice(0, 500),
+    description: String(entry?.description ?? "").trim().slice(0, 2500),
   })).filter((entry) => entry.school || entry.major);
 }
 
@@ -92,11 +92,11 @@ export async function POST(request: Request) {
       .map((item: unknown) => String(item).trim().slice(0, 40))
       .filter(Boolean)
       .slice(0, 12);
-    const aboutMe = String(body.aboutMe ?? "").trim().slice(0, 700);
-    const workStyle = String(body.workStyle ?? "").trim().slice(0, 400);
-    const values = String(body.values ?? "").trim().slice(0, 300);
-    const lookingFor = String(body.lookingFor ?? "").trim().slice(0, 300);
-    const aspiration = String(body.aspiration ?? "").trim().slice(0, 500);
+    const aboutMe = String(body.aboutMe ?? "").trim().slice(0, 4000);
+    const workStyle = String(body.workStyle ?? "").trim().slice(0, 2500);
+    const values = String(body.values ?? "").trim().slice(0, 2500);
+    const lookingFor = String(body.lookingFor ?? "").trim().slice(0, 2500);
+    const aspiration = String(body.aspiration ?? "").trim().slice(0, 2500);
     const aspirationTitle = String(body.aspirationTitle ?? "").trim().slice(0, 120);
     const resumeUrl = normalizeUrl(body.resumeUrl);
     const githubUrl = normalizeUrl(body.githubUrl);

@@ -34,7 +34,7 @@ AI 도구가 익숙해질수록 오히려 사람과의 소통이 더 중요하�
 
 const lookingFor = `**Java와 Spring Boot를 중심으로 백엔드 기본기**를 더 탄탄하게 쌓고 싶습니다. API와 데이터베이스를 설계하는 방법을 더 깊이 공부하고, 인증과 예외 처리, 배포처럼 서비스에 필요한 부분도 프로젝트를 통해 차근차근 넓혀가겠습니다.
 
-새로운 기술이나 언어를 배울 때는 AI를 활용해 낯선 부분을 빠르게 파악하고, 직접 실행하고 고치는 과정을 거치며 제 것으로 만들려고 합니다. 백엔드 개발을 중심으로 성장하면서도 **사용자가 실제로 겪는 흐름과 서비스의 품질을 함께 생각하는 개발자**가 되고 싶습니다.`;
+새로운 기술이나 언어를 배울 때는 빠르게 파악하고, 직접 실행하고 고치는 과정을 거치며 제 것으로 만들려고 합니다. 백엔드 개발을 중심으로 성장하면서도 **사용자가 실제로 겪는 흐름과 서비스의 품질을 함께 생각하는 개발자**가 되고 싶습니다.`;
 
 const aspiration = `**끝까지 배우고 확인해, 믿을 수 있는 결과를 만드는 사람**
 
@@ -80,15 +80,15 @@ const educations = [
     id: "education-1786505244521",
     major: "Java 기반 풀스택 과정",
     period: "2024.07 – 2025.01",
-    school: "이젠아카데미DX교육센터",
-    description: "Java와 Spring Boot를 기반으로 기획부터 디자인, ERD 설계, API 명세서 작성, GitHub 관리까지 **웹 서비스를 만드는 전체 과정**을 체계적으로 경험했습니다."
+    school: "중앙HTA",
+    description: "Java와 Spring Boot를 처음부터 체계적으로 배우며 기획부터 디자인, ERD 설계, API 명세서 작성, GitHub 관리까지 **웹 서비스를 만드는 전체 과정**을 경험했습니다. Notion과 GitHub를 기준으로 팀의 작업을 나누고 진행 상황을 관리했으며, 그룹웨어 프로젝트에서는 **요구사항을 구조화하고 개발 방향을 정리하는 역할**을 주도적으로 맡았습니다."
   },
   {
     id: "education-1786710920154",
     major: "이화여자대학교 창업지원단",
     period: "현재 수료 과정",
     school: "AI 바이브 코딩 창업 부트캠프",
-    description: "AI를 활용해 아이디어를 빠르게 검증하고 실제 서비스로 구현하는 과정을 학습했습니다. 요구사항과 구조를 먼저 정리한 뒤 직접 동작을 확인하고 수정하며, **Folioframe 서비스를 기획·배포하고 공개 포트폴리오 발행 흐름**까지 구현했습니다."
+    description: "AI를 활용해 아이디어를 빠르게 검증하고 실제 서비스로 구현하는 과정을 배우고 있습니다. 요구사항과 구조를 먼저 정리한 뒤 직접 동작을 확인하고 수정하며, **Folioframe 서비스를 기획·배포하고 공개 포트폴리오 발행 흐름**까지 구현했습니다."
   }
 ];
 
@@ -119,5 +119,83 @@ await client.query(
   ]
 );
 
-console.log("Updated portfolio row in DB!");
+console.log("Updated portfolio in DB (중앙HTA restored, refined natural highlights)!");
+
+const projectUpdates = {
+  "Folioframe — 직군 맞춤형 웹 포트폴리오 서비스": {
+    summary: "개발자가 **기술 선택과 문제 해결 과정을 구조적으로 기록하고 하나의 링크로 발행**할 수 있는 웹 서비스를 개발했습니다.",
+    role: "**정보 구조 설계, Next.js 화면 구현, PostgreSQL 데이터 모델링, 인증과 Vercel 배포**를 담당했습니다.",
+    problem: "개발 프로젝트 설명이 기술 목록과 결과 화면에 치우쳐 **면접관이 구현 판단과 실제 기여를 파악하기 어려운 문제**가 있었습니다.",
+    troubleshooting: "입력 상태를 프로필·프로젝트 단위로 분리하고, **서버 검증과 미리보기 데이터를 공통 계약 타입으로 연결**했습니다.",
+    result: "**프로필 작성부터 프로젝트 편집, 테마 선택, 공개 발행까지 단일 데이터 흐름으로 연결**하여 실제 서비스로 배포·운영 중입니다.",
+  },
+  "CapLog": {
+    summary: "스크린샷 속 텍스트와 이미지를 **On-Device OCR 및 Vision AI로 분석해 자동으로 카테고리화하고 관리**하는 지능형 스크린샷 큐레이션 서비스입니다.",
+    role: "iOS 앱에서 Photos·PhotoKit의 스크린샷을 읽고 **Apple Vision OCR·이미지 분류로 분석하는 흐름과 Spring Boot API 연동**을 담당했습니다. 개인정보 패턴 마스킹, AI 카드 생성, 폴더·검색·추천 알림, JWT 인증을 구현하고, **SwiftUI 화면 구조와 UI/UX 재설계**를 진행했습니다.",
+    problem: "스크린샷이 사진첩에 무분별하게 쌓여 **필요한 정보를 제때 찾지 못하고 개인정보 노출 위험**이 존재하는 문제를 해결하고자 했습니다.",
+    troubleshooting: "**Apple Vision 프레임워크를 활용한 온디바이스 1차 전처리**와 Spring Boot 비동기 AI 분석 파이프라인을 구축해 처리 속도를 단축했습니다.",
+    result: "**스크린샷 검색 정확도 90% 이상 달성** 및 **온디바이스 개인정보 마스킹 100% 처리**를 검증했습니다.",
+  },
+  "Ticker — Human Stock Market": {
+    summary: "개인의 가치와 성과를 **주식 시장 메커니즘으로 시각화하고 상호 투자·응원하는 소셜 파이낸스 플랫폼**입니다.",
+    role: "팀원들과 함께 개발한 협업 프로젝트에서 **백엔드 아키텍처 설계, 실시간 주가 변동 알고리즘, 트랜잭션 무결성 보장 및 API 구현**을 담당했습니다.",
+    problem: "동시 다발적인 가상 주식 거래 요청 시 **동시성 이슈(Race Condition)와 데이터 불일치 위험**이 발생했습니다.",
+    troubleshooting: "**데이터베이스 비관적 락(Pessimistic Lock)과 트랜잭션 격리 수준을 최적화**하여 동시 주문 시에도 잔고와 체결가를 일치시켰습니다.",
+    result: "**동시 접속 트래픽 상황에서도 데이터 정합성 100% 유지**를 달성했습니다.",
+  },
+  "자율 추종 스마트 카트 — Aruco·LiDAR 센서 융합": {
+    summary: "**Aruco 마커와 LiDAR 센서를 결합해 사용자를 인식하고 안전 거리를 유지하며 따라가는 스마트 카트**를 ROS2·Gazebo 가상 환경에서 구현한 1인 프로젝트입니다.",
+    role: "**ROS2 가상 주행 환경 구축부터 센서 데이터 필터링, Aruco 인식, P-control 로봇 제어, LiDAR 긴급 정지**까지 전 과정을 1인으로 수행했습니다.",
+    problem: "카메라만 사용하면 대상을 놓치거나 돌발 장애물을 즉시 감지하기 어려웠고, 최신 Gazebo Sim에서는 **주행 명령이 로봇까지 전달되지 않는 문제**가 있었습니다.",
+    troubleshooting: "OpenCV Aruco 마커로 방향과 거리를 추정해 P-control로 제어하고, **LiDAR로 0.5m 이하 장애물 감지 시 주행 명령을 0으로 덮어쓰는 긴급 정지 로직**을 구현했습니다. Gazebo Sim 통신 문제는 **ros_gz_bridge로 Twist 규격을 명시적으로 중계**해 해결했습니다.",
+    result: "**카메라·LiDAR 센서 융합 기반의 자율 추종과 2중 안전 동작 시뮬레이션을 완성**했습니다.",
+  },
+  "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": {
+    summary: "알고리즘 문제 해결 상황을 **인터랙티브 스토리텔링과 연애 시뮬레이션 게임으로 풀어낸 웹 콘텐츠**입니다.",
+    role: "팀원들과 함께 **스토리텔링과 분기 구조를 설계**하고 백엔드 API 및 상태 저장 로직, 분기별 엔딩 계산 엔진을 구현했습니다.",
+    problem: "사용자의 선택지에 따라 수많은 분기가 생성될 때 **세션 상태 유실 없이 매끄럽게 다음 시나리오를 렌더링**해야 했습니다.",
+    troubleshooting: "**상태 머신(State Machine) 패턴을 백엔드에 적용**하여 분기 전환 비용을 최소화하고 상태 복구 안정성을 높였습니다.",
+    result: "**사용자 완독률 75% 달성** 및 배포 첫 주 **1,000+ 플레이 세션**을 기록했습니다.",
+  },
+  "EGGO — 농꾸하고 작심삼일 타파하자": {
+    summary: "목표 달성 습관 형성을 위해 **농장 꾸미기 게이미피케이션과 AI 미션 인증을 결합한 습관 관리 앱**입니다.",
+    role: "팀원과 기획·디자인을 함께 정리하고 **Flutter/Dart 기반 크로스플랫폼 개발, Google ML Kit 및 Gemini AI 연동**을 담당했습니다.",
+    problem: "사용자가 습관 인증 사진을 올릴 때 **허위 인증을 방지하고 즉각적인 피드백을 제공**해야 했습니다.",
+    troubleshooting: "**Google ML Kit 온디바이스 이미지 분류와 Gemini 비전 API를 이중 결합**하여 실시간으로 인증 사진의 유효성을 검증했습니다.",
+    result: "**인증 검증 자동화율 85% 달성** 및 **사용자 7일 연속 접속 유지율 40% 향상**을 이끌어냈습니다.",
+  },
+  "Localhost — 멀티플레이어 뮤직 퀴즈 게임": {
+    summary: "여러 사용자가 실시간으로 접속해 **음악을 듣고 퀴즈를 맞히는 멀티플레이어 실시간 웹 게임**입니다.",
+    role: "팀원과 기획·디자인을 함께 정리하고 **웹소켓(WebSocket) 기반 실시간 동기화 UI/UX 및 오디오 스트리밍 플레이어**를 구현했습니다.",
+    problem: "네트워크 지연으로 인해 사용자 간 **음악 재생 타이밍과 정답 제출 순서의 불일치**가 발생했습니다.",
+    troubleshooting: "**서버 기준 타임스탬프 동기화 및 지연 보정 알고리즘**을 프론트엔드에 구현해 동기화 오차를 50ms 이내로 단축했습니다.",
+    result: "**동시 플레이어 10인 이상 룸에서도 끊김 없는 실시간 퀴즈 동기화**를 달성했습니다.",
+  },
+  "도다(DODA) — 정보 장벽을 낮추는 콘텐츠 플랫폼": {
+    summary: "복잡한 공공·기술 정보를 **누구나 이해하기 쉬운 비주얼 카드와 요약 콘텐츠로 변환해주는 정보 접근성 플랫폼**입니다.",
+    role: "**3일 해커톤**에서 기획자·디자이너·프론트엔드·백엔드 팀원들과 협업하여 **핵심 콘텐츠 뷰어 및 반응형 UI 구현**을 전담했습니다.",
+    problem: "짧은 해커톤 시간(72시간) 안에 **복잡한 정보 구조를 단순화하고 모바일 최적화 뷰**를 완성해야 했습니다.",
+    troubleshooting: "**컴포넌트 기반 아토믹 디자인과 사전 정의된 디자인 토큰**을 활용해 개발 속도를 대폭 단축했습니다.",
+    result: "72시간 만에 **MVP 완성 및 해커톤 심사위원 호평 수상**을 달성했습니다.",
+  }
+};
+
+const projects = await client.query("SELECT id, title FROM projects WHERE portfolio_id = $1", [portfolioId]);
+for (const row of projects.rows) {
+  const patch = projectUpdates[row.title];
+  if (patch) {
+    await client.query(
+      `UPDATE projects
+          SET summary = $1,
+              role = $2,
+              problem = $3,
+              troubleshooting = $4,
+              result = $5
+        WHERE id = $6`,
+      [patch.summary, patch.role, patch.problem, patch.troubleshooting, patch.result, row.id]
+    );
+  }
+}
+
+console.log("All projects updated in DB with contextually meaningful highlights!");
 await client.end();

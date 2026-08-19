@@ -7590,7 +7590,7 @@ label em {
   margin-top: 0.9em;
 }
 
-/* Underline-style Marker Highlight (텍스트 하단에 자연스럽게 깔리는 형광펜 밑줄) */
+/* Underline-style Marker Highlight (글자색은 그대로 유지하고, 글자 하단 38%에만 은은한 마커 밑줄) */
 .rich-text-highlight,
 .rich-text-paragraph strong,
 .public-shell .rich-text-paragraph strong,
@@ -7599,7 +7599,8 @@ label em {
 .mini-story-grid p strong {
   display: inline;
   font-weight: 750;
-  padding: 0 0.05em;
+  color: inherit !important;
+  padding: 0 0.04em;
   margin: 0;
   border-radius: 0;
   box-decoration-break: clone;
@@ -7608,15 +7609,15 @@ label em {
   text-decoration: none;
 }
 
-/* Theme 01: Editorial (자연스러운 세이지/올리브 하단 마커 밑줄) */
+/* Theme 01: Editorial (글자색 변화 없이 하단에만 세이지/올리브 마커 밑줄) */
 .theme-editorial .rich-text-highlight,
 .theme-editorial .rich-text-paragraph strong,
 .theme-editorial .case-story p strong,
 .theme-editorial .project-showcase-copy p strong,
 .theme-editorial .career-timeline p strong,
 .theme-editorial .project-detail-content p strong {
-  background: linear-gradient(to top, rgba(199, 229, 90, 0.6) 0%, rgba(199, 229, 90, 0.6) 42%, transparent 42%);
-  color: inherit;
+  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
+  color: inherit !important;
 }
 
 .theme-editorial .identity-section .rich-text-highlight,
@@ -7625,8 +7626,8 @@ label em {
 .theme-editorial .case-evidence .rich-text-paragraph strong,
 .theme-editorial .public-footer .rich-text-highlight,
 .theme-editorial .public-footer .rich-text-paragraph strong {
-  background: linear-gradient(to top, rgba(205, 239, 85, 0.4) 0%, rgba(205, 239, 85, 0.4) 40%, transparent 40%);
-  color: #e2fd70;
+  background: linear-gradient(to top, rgba(205, 239, 85, 0.35) 0%, rgba(205, 239, 85, 0.35) 38%, transparent 38%);
+  color: inherit !important;
 }
 
 /* Theme 02: Minimal (따뜻한 옐로우 하단 마커 밑줄) */
@@ -10467,8 +10468,8 @@ label em {
 }
 
 .theme-editorial .aspiration-inner p strong {
-  background: linear-gradient(to top, rgba(199, 229, 90, 0.6) 0%, rgba(199, 229, 90, 0.6) 42%, transparent 42%);
-  color: inherit;
+  background: linear-gradient(to top, rgba(199, 229, 90, 0.55) 0%, rgba(199, 229, 90, 0.55) 38%, transparent 38%);
+  color: inherit !important;
 }
 
 .theme-minimal .aspiration-inner p strong {

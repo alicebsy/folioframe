@@ -28,7 +28,7 @@ export default async function Home() {
         </div>
 
         <div className="landing-hero-preview" aria-label="개발자 포트폴리오 미리보기">
-          <div className="landing-preview-top"><span className="brand-mark">✦</span><b>kim.codex</b><small>AVAILABLE FOR WORK</small></div>
+          <div className="landing-preview-top"><span className="brand-mark">✦</span><b>hong.gildong</b><small>AVAILABLE FOR WORK</small></div>
           <div className="landing-preview-intro"><span>FRONTEND DEVELOPER · 2026</span><h2>문제를 끝까지<br />구현하는 개발자</h2><p>사용자의 흐름을 관찰하고, 작고 선명한 인터페이스로 답을 만듭니다.</p></div>
           <div className="landing-preview-project"><div className="landing-code-lines"><i /><i /><i /><i /></div><div><span>FEATURED PROJECT</span><strong>Checkout<br />rebuild</strong><small>React · TypeScript · Test</small></div></div>
           <div className="landing-preview-note"><span>01</span><p>문제 정의부터<br />배포 이후까지</p><b>↗</b></div>
@@ -52,7 +52,7 @@ export default async function Home() {
       <section className="landing-templates" id="templates">
         <div className="landing-template-heading"><div><span>4 PORTFOLIO THEMES</span><h2>내용은 같아도,<br />인상은 다르게.</h2></div><p>카드형, 미니멀, 대담한 타이포그래피, 어두운 몰입형까지. 작성한 내용을 각 테마에서 확인할 수 있습니다.</p></div>
         <div className="landing-theme-grid">
-          <a className="landing-theme-card editorial" href="/portfolio-preview?theme=editorial"><div><span>01</span><b>Editorial</b><small>차분하고 선명한 흐름</small></div><i>안녕하세요,<br />김코덱스입니다.</i><em>예시 보기 ↗</em></a>
+          <a className="landing-theme-card editorial" href="/portfolio-preview?theme=editorial"><div><span>01</span><b>Editorial</b><small>차분하고 선명한 흐름</small></div><i>안녕하세요,<br />홍길동입니다.</i><em>예시 보기 ↗</em></a>
           <a className="landing-theme-card minimal" href="/portfolio-preview?theme=minimal"><div><span>02</span><b>Minimal</b><small>간결한 정보 중심</small></div><i>build<br />with care.</i><em>예시 보기 ↗</em></a>
           <a className="landing-theme-card bold" href="/portfolio-preview?theme=bold"><div><span>03</span><b>Bold</b><small>강한 타이포그래피</small></div><i>MAKE IT<br />WORK.</i><em>예시 보기 ↗</em></a>
           <a className="landing-theme-card noir" href="/portfolio-preview?theme=noir"><div><span>04</span><b>Noir</b><small>몰입감 있는 다크 테마</small></div><i>ship<br />the work.</i><em>예시 보기 ↗</em></a>

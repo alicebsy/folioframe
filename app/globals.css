@@ -5232,8 +5232,10 @@ label em {
 
 .dashboard-shell .profile-about-preview {
   font-size: 13px !important;
-  line-height: 1.75 !important;
-  -webkit-line-clamp: 3;
+  line-height: 1.8 !important;
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
 }
 
 .dashboard-shell .profile-summary-chips span,
@@ -5281,7 +5283,7 @@ label em {
 .dashboard-shell .project-scan strong {
   font-size: 13px;
   line-height: 1.65;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 6;
 }
 
 .dashboard-shell .story-grid-preview > span i {
@@ -5296,7 +5298,7 @@ label em {
   color: #62665d;
   font-size: 12px;
   line-height: 1.6;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 6;
 }
 
 .dashboard-shell .visibility-row > span {
@@ -5372,9 +5374,11 @@ label em {
 }
 
 .dashboard-shell .profile-about-preview {
-  font-size: 10px !important;
-  line-height: 1.65 !important;
-  -webkit-line-clamp: 2;
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
 }
 
 .dashboard-shell .profile-summary-chips span,

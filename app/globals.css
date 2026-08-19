@@ -11093,22 +11093,31 @@ label em {
     break-inside: avoid !important;
     background: #ffffff !important;
     border: 1px solid #d7d7cf !important;
-    padding: 24px 26px !important;
+    padding: 26px 28px !important;
     border-radius: 12px !important;
-    display: grid !important;
-    grid-template-columns: 240px 1fr !important;
-    gap: 24px !important;
-    align-items: start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
   }
 
   .project-showcase-media {
     display: block !important;
-    width: 240px !important;
-    height: 170px !important;
+    width: 100% !important;
+    max-height: 280px !important;
     border-radius: 10px !important;
     overflow: hidden !important;
     border: 1px solid #d7d7cf !important;
     background: #f0eee4 !important;
+  }
+
+  .pdf-print-image {
+    display: block !important;
+    width: 100% !important;
+    height: 280px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    image-rendering: -webkit-optimize-contrast !important;
   }
 
   .pdf-print-image {

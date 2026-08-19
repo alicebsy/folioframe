@@ -141,7 +141,7 @@ export default function PublicPortfolio({
 
       {!!portfolio.certificates.length && (
         <section className="certificate-section">
-          <div className="career-section-title"><span>CERTIFICATIONS</span><h2>자격과 인증</h2></div>
+          <div className="career-section-title"><span>CERTIFICATIONS</span><h2>자격증</h2></div>
           <div className="certificate-grid">
             {portfolio.certificates.map((entry, index) => {
               const content = (

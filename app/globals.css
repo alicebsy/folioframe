@@ -4907,7 +4907,6 @@ label em {
 }
 
 .profile-about-preview .rich-text-highlight {
-  background: linear-gradient(to top, rgba(188, 228, 72, 0.68) 0%, rgba(188, 228, 72, 0.68) 40%, transparent 40%);
   font-weight: 700;
 }
 
@@ -4941,7 +4940,6 @@ label em {
 }
 
 .profile-preview-item .rich-text-highlight {
-  background: linear-gradient(to top, rgba(188, 228, 72, 0.68) 0%, rgba(188, 228, 72, 0.68) 40%, transparent 40%);
   font-weight: 700;
 }
 
@@ -10591,4 +10589,77 @@ label em {
 .public-shell .hero-side .large-avatar-image {
   object-fit: contain;
   object-position: center;
+}
+
+/* Dashboard: 하이라이트 밑줄 없이 깔끔한 기본 텍스트 유지 */
+.dashboard-shell .rich-text-highlight,
+.dashboard-main .rich-text-highlight,
+.profile-card .rich-text-highlight,
+.project-card .rich-text-highlight,
+.interactive-project-card .rich-text-highlight,
+.modal .rich-text-highlight,
+.mini-public-preview .rich-text-highlight {
+  background: none !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  padding: 0 !important;
+  font-weight: 700 !important;
+}
+
+.rich-text-field {
+  display: block;
+}
+
+.rich-text-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rich-text-label-row small {
+  color: #8a917e;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.rich-text-input-wrap {
+  overflow: hidden;
+  margin-top: 7px;
+  border: 1px solid #dfe4d4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.rich-text-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-bottom: 1px solid #edf0e8;
+  color: #8a917e;
+  font-size: 10px;
+}
+
+.rich-text-toolbar button {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #cbd6a5;
+  border-radius: 6px;
+  color: #587018;
+  background: #f2f7e2;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rich-text-toolbar button:hover {
+  background: #e6f0c7;
+}
+
+.rich-text-input-wrap textarea {
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
 }

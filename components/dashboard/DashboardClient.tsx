@@ -318,15 +318,50 @@ function RichTextField({
   placeholder: string;
   maxLength?: number;
 }) {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const emphasizeSelection = () => {
+    const input = inputRef.current;
+    if (!input) return;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const selected = value.slice(start, end);
+    const replacement = selected ? `**${selected}**` : "**강조할 문장**";
+    const nextValue = `${value.slice(0, start)}${replacement}${value.slice(end)}`;
+    onChange(nextValue);
+    requestAnimationFrame(() => {
+      input.focus();
+      const cursor = start + replacement.length;
+      input.setSelectionRange(cursor, cursor);
+    });
+  };
+
   return (
-    <label>
-      <span>{label}</span>
-      <textarea
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        maxLength={maxLength}
-      />
+    <label className="rich-text-field">
+      <span className="rich-text-label-row">
+        <span>{label}</span>
+        <small>줄을 나누면 문단으로, 선택 후 B를 누르면 강조</small>
+      </span>
+      <div className="rich-text-input-wrap">
+        <div className="rich-text-toolbar" role="toolbar" aria-label={`${label} 서식 도구`}>
+          <button type="button" onClick={emphasizeSelection} aria-label="강조 (굵게)">
+            <b>B</b>
+          </button>
+        </div>
+        <textarea
+          ref={inputRef}
+          value={value}
+          maxLength={maxLength}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          onKeyDown={(event) => {
+            if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "b") {
+              event.preventDefault();
+              emphasizeSelection();
+            }
+          }}
+        />
+      </div>
     </label>
   );
 }
@@ -342,13 +377,47 @@ function RichTextEditor({
   placeholder: string;
   maxLength?: number;
 }) {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const emphasizeSelection = () => {
+    const input = inputRef.current;
+    if (!input) return;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const selected = value.slice(start, end);
+    const replacement = selected ? `**${selected}**` : "**강조할 문장**";
+    const nextValue = `${value.slice(0, start)}${replacement}${value.slice(end)}`;
+    onChange(nextValue);
+    requestAnimationFrame(() => {
+      input.focus();
+      const cursor = start + replacement.length;
+      input.setSelectionRange(cursor, cursor);
+    });
+  };
+
   return (
-    <textarea
-      value={value}
-      maxLength={maxLength}
-      onChange={(event) => onChange(event.target.value)}
-      placeholder={placeholder}
-    />
+    <div className="rich-text-editor">
+      <div className="rich-text-input-wrap">
+        <div className="rich-text-toolbar" role="toolbar" aria-label="서식 도구">
+          <button type="button" onClick={emphasizeSelection} aria-label="강조 (굵게)">
+            <b>B</b>
+          </button>
+        </div>
+        <textarea
+          ref={inputRef}
+          value={value}
+          maxLength={maxLength}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          onKeyDown={(event) => {
+            if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "b") {
+              event.preventDefault();
+              emphasizeSelection();
+            }
+          }}
+        />
+      </div>
+    </div>
   );
 }
 

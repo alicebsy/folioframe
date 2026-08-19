@@ -102,7 +102,13 @@ export default function PublicPortfolio({
             {portfolio.careers.map((entry) => (
               <article key={entry.id}>
                 <span>{entry.period || "기간 미입력"}</span>
-                <div><h3>{entry.organization}</h3><strong>{entry.role}</strong><p><RichText value={entry.description} /></p></div>
+                <div>
+                  <div className="career-entry-heading">
+                    <h3>{entry.organization}</h3>
+                    {entry.role && <strong>{entry.role}</strong>}
+                  </div>
+                  <p><RichText value={entry.description} /></p>
+                </div>
               </article>
             ))}
           </div>
@@ -116,7 +122,13 @@ export default function PublicPortfolio({
             {portfolio.educations.map((entry) => (
               <article key={entry.id}>
                 <span>{entry.period || "기간 미입력"}</span>
-                <div><h3>{entry.school}</h3><strong>{entry.major}</strong><p><RichText value={entry.description} /></p></div>
+                <div>
+                  <div className="career-entry-heading">
+                    <h3>{entry.school}</h3>
+                    {entry.major && <strong>{entry.major}</strong>}
+                  </div>
+                  <p><RichText value={entry.description} /></p>
+                </div>
               </article>
             ))}
           </div>

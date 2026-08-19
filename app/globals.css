@@ -7802,23 +7802,34 @@ label em {
   font-size: 10px;
 }
 
+.career-entry-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
 .career-timeline h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .career-timeline strong {
-  display: block;
-  margin-top: 5px;
+  display: inline-block;
+  margin: 0;
   color: #6d812f;
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .career-timeline p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: #666960;
-  font-size: 12px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 .focused-case-story section small {

@@ -10685,7 +10685,7 @@ label em {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 15mm 15mm 15mm 15mm;
+    margin: 14mm 14mm 14mm 14mm;
   }
 
   *, *::before, *::after {
@@ -10694,31 +10694,41 @@ label em {
     color-adjust: exact !important;
     text-rendering: geometricPrecision !important;
     -webkit-font-smoothing: antialiased !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
   }
 
-  /* Hide web-only elements */
-  .public-nav,
+  /* Completely hide video, web banners, animations, buttons, interactive controls */
+  video,
   .portfolio-motion-band,
+  .public-nav,
+  .pdf-export-btn,
+  .project-showcase-media,
   .project-showcase-action,
   .project-detail-link,
-  .pdf-export-btn,
   .project-back-link,
-  .brand-mark {
+  .brand-mark,
+  .status-dot,
+  .hero-links a::after {
     display: none !important;
   }
 
   html, body, .public-shell {
     background: #ffffff !important;
-    color: #0f172a !important;
+    color: #111827 !important;
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
-    box-shadow: none !important;
-    font-size: 14px !important;
-    line-height: 1.6 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif !important;
+    font-size: 13.5px !important;
+    line-height: 1.65 !important;
   }
 
+  /* Section padding and page break optimization */
   .portfolio-hero,
   .identity-section,
   .career-section,
@@ -10733,138 +10743,361 @@ label em {
     break-inside: avoid;
   }
 
+  /* Static Clean Hero Header */
   .portfolio-hero {
     padding-top: 0 !important;
     padding-bottom: 24px !important;
+    margin-bottom: 28px !important;
     background: none !important;
-    border-bottom: 2px solid #0f172a !important;
+    border-bottom: 2px solid #111827 !important;
+  }
+
+  .portfolio-kicker {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    color: #4b5563 !important;
+    margin-bottom: 8px !important;
+    display: block !important;
   }
 
   .portfolio-hero h1 {
-    font-size: 28px !important;
+    font-size: 26px !important;
     font-weight: 800 !important;
-    color: #0f172a !important;
+    color: #111827 !important;
     line-height: 1.3 !important;
+    margin-bottom: 12px !important;
   }
 
   .portfolio-hero p {
-    font-size: 15px !important;
-    color: #334155 !important;
-    line-height: 1.6 !important;
+    font-size: 14.5px !important;
+    color: #374151 !important;
+    line-height: 1.65 !important;
+    margin-bottom: 16px !important;
   }
 
   .candidate-summary span,
   .candidate-summary b {
-    background: #f1f5f9 !important;
-    color: #0f172a !important;
-    border: 1px solid #cbd5e1 !important;
+    display: inline-block !important;
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-right: 6px !important;
+  }
+
+  .developer-stack {
+    margin-top: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .developer-stack span {
+    font-size: 11px !important;
     font-weight: 700 !important;
+    color: #6b7280 !important;
   }
 
   .developer-stack b {
-    background: #e2e8f0 !important;
-    color: #0f172a !important;
-    font-weight: 700 !important;
+    display: inline-block !important;
+    background: #e5e7eb !important;
+    color: #111827 !important;
+    padding: 2px 8px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
   }
 
   .hero-grid {
     display: grid !important;
-    grid-template-columns: 2.2fr 1fr !important;
+    grid-template-columns: 2.3fr 1fr !important;
     gap: 24px !important;
   }
 
   .hero-side {
-    border-left: 1px solid #e2e8f0 !important;
+    border-left: 1px solid #e5e7eb !important;
     padding-left: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
   }
 
-  .large-avatar {
-    width: 90px !important;
-    height: 90px !important;
-    border: 2px solid #0f172a !important;
+  .hero-side strong {
+    font-size: 15px !important;
+    color: #111827 !important;
+  }
+
+  .hero-side a {
+    font-size: 13px !important;
+    color: #2563eb !important;
+    text-decoration: underline !important;
+  }
+
+  .hero-links {
+    margin-top: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  /* Identity Section */
+  .identity-section {
+    margin-bottom: 30px !important;
+  }
+
+  .identity-heading span {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #6b7280 !important;
+  }
+
+  .identity-heading h2 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    margin-top: 4px !important;
+    margin-bottom: 14px !important;
   }
 
   .identity-lead {
-    font-size: 14px !important;
-    color: #1e293b !important;
-    background: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    padding: 16px !important;
-    border-radius: 8px !important;
-    margin-bottom: 20px !important;
+    font-size: 13.5px !important;
+    color: #1f2937 !important;
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 14px 18px !important;
+    border-radius: 6px !important;
+    margin-bottom: 16px !important;
   }
 
-  .identity-grid article,
-  .career-timeline article,
-  .education-section article,
+  .identity-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .identity-grid article {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 12px 14px !important;
+    border-radius: 6px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .identity-grid article span {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #9ca3af !important;
+  }
+
+  .identity-grid article h3 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    margin-top: 2px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .identity-grid article p {
+    font-size: 12.5px !important;
+    color: #374151 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Experience & Education Timelines */
+  .career-section,
+  .education-section {
+    margin-bottom: 30px !important;
+  }
+
+  .career-section-title span {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #6b7280 !important;
+  }
+
+  .career-section-title h2 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    margin-top: 4px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .career-timeline article {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    border-left: 2px solid #cbd5e1 !important;
+    padding-left: 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .career-timeline article > span {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+  }
+
+  .career-entry-heading {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .career-entry-heading h3 {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+  }
+
+  .career-entry-heading strong {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #4b5563 !important;
+  }
+
+  .career-timeline p {
+    font-size: 13px !important;
+    color: #374151 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Project Showcase Cards in Print */
+  .portfolio-projects {
+    margin-bottom: 30px !important;
+  }
+
+  .portfolio-section-title span {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #6b7280 !important;
+  }
+
+  .portfolio-section-title h2 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    margin-top: 4px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .project-showcase-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
   .project-showcase-card {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 16px 20px !important;
+    border-radius: 6px !important;
+    display: block !important;
   }
 
-  .project-showcase-card {
-    margin-bottom: 20px !important;
-    padding: 16px !important;
-    border-radius: 8px !important;
+  .project-showcase-copy {
+    padding: 0 !important;
+  }
+
+  .project-showcase-meta {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    margin-bottom: 6px !important;
+    display: flex !important;
+    gap: 8px !important;
   }
 
   .project-showcase-card h3 {
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    color: #0f172a !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .project-showcase-card h3 a {
+    color: #111827 !important;
+    text-decoration: none !important;
   }
 
   .project-showcase-card p {
     font-size: 13.5px !important;
-    color: #334155 !important;
+    color: #374151 !important;
+    line-height: 1.65 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .project-showcase-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
   }
 
   .project-showcase-tags span {
-    background: #f1f5f9 !important;
-    border: 1px solid #cbd5e1 !important;
-    color: #334155 !important;
-    font-weight: 600 !important;
+    background: #f3f4f6 !important;
+    border: 1px solid #e5e7eb !important;
+    color: #374151 !important;
     font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
   }
 
-  .career-timeline article,
-  .education-section article {
-    border: none !important;
-    border-left: 2px solid #cbd5e1 !important;
-    padding-left: 16px !important;
-    margin-bottom: 18px !important;
+  /* Aspiration Closing Note */
+  .aspiration-section {
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 18px 20px !important;
+    border-radius: 6px !important;
+    margin-bottom: 24px !important;
   }
 
-  .career-entry-heading h3,
-  .education-section h3 {
+  .aspiration-inner span {
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    color: #6b7280 !important;
+  }
+
+  .aspiration-inner h2 {
     font-size: 16px !important;
-    font-weight: 700 !important;
-    color: #0f172a !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
   }
 
-  .career-entry-heading strong,
-  .education-section strong {
-    color: #475569 !important;
+  .aspiration-inner p {
     font-size: 13px !important;
+    color: #374151 !important;
+    line-height: 1.6 !important;
   }
 
-  .career-timeline p,
-  .education-section p {
-    font-size: 13px !important;
-    color: #334155 !important;
-  }
-
+  /* Static Clean Highlight & Footer */
   .rich-text-highlight {
-    background: transparent !important;
-    box-shadow: inset 0 -0.45em 0 rgba(34, 197, 94, 0.45) !important;
-    color: #0f172a !important;
+    background: #eefcf3 !important;
+    border-bottom: 1.5px solid #16a34a !important;
+    color: #111827 !important;
     font-weight: 700 !important;
   }
 
-  a {
-    text-decoration: none !important;
-    color: #0f172a !important;
+  .public-footer {
+    border-top: 1px solid #e5e7eb !important;
+    padding-top: 18px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .public-footer h2 {
+    font-size: 15px !important;
+    color: #111827 !important;
   }
 }

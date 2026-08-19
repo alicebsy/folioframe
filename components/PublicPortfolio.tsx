@@ -191,8 +191,43 @@ export default function PublicPortfolio({
                     {project.contribution && <span>{project.contribution}</span>}
                   </div>
                   <h3><a href={href}>{project.title}</a></h3>
-                  <p><RichText value={project.summary} /></p>
+                  <p className="project-summary-text"><RichText value={project.summary} /></p>
                   {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
+                  
+                  {/* PDF 전용 상세 케이스 스터디 (내가 맡은 일, 대표 성과, 문제 해결, 아키텍처) */}
+                  <div className="pdf-project-deep-case">
+                    {project.role && (
+                      <div className="pdf-case-block">
+                        <strong>내가 맡은 역할 & 기여</strong>
+                        <p><RichText value={project.role} /></p>
+                      </div>
+                    )}
+                    {project.result && (
+                      <div className="pdf-case-block result-block">
+                        <strong>대표 성과 & 결과</strong>
+                        <p><RichText value={project.result} /></p>
+                      </div>
+                    )}
+                    {project.problem && (
+                      <div className="pdf-case-block">
+                        <strong>문제 상황 (Problem)</strong>
+                        <p><RichText value={project.problem} /></p>
+                      </div>
+                    )}
+                    {project.troubleshooting && (
+                      <div className="pdf-case-block">
+                        <strong>해결 과정 & 기술적 판단 (Troubleshooting)</strong>
+                        <p><RichText value={project.troubleshooting} /></p>
+                      </div>
+                    )}
+                    {project.architecture && (
+                      <div className="pdf-case-block">
+                        <strong>아키텍처 및 기술 스택</strong>
+                        <p><RichText value={project.architecture} /></p>
+                      </div>
+                    )}
+                  </div>
+
                   <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
                 </div>
               </article>
@@ -229,8 +264,43 @@ export default function PublicPortfolio({
                       {project.contribution && <span>{project.contribution}</span>}
                     </div>
                     <h3><a href={href}>{project.title}</a></h3>
-                  <p><RichText value={project.summary} /></p>
+                    <p className="project-summary-text"><RichText value={project.summary} /></p>
                     {!!project.techStacks.length && <div className="project-showcase-tags">{project.techStacks.map((tech) => <span key={tech}>{tech}</span>)}</div>}
+                    
+                    {/* PDF 전용 상세 케이스 스터디 (그 외 프로젝트) */}
+                    <div className="pdf-project-deep-case">
+                      {project.role && (
+                        <div className="pdf-case-block">
+                          <strong>내가 맡은 역할 & 기여</strong>
+                          <p><RichText value={project.role} /></p>
+                        </div>
+                      )}
+                      {project.result && (
+                        <div className="pdf-case-block result-block">
+                          <strong>대표 성과 & 결과</strong>
+                          <p><RichText value={project.result} /></p>
+                        </div>
+                      )}
+                      {project.problem && (
+                        <div className="pdf-case-block">
+                          <strong>문제 상황 (Problem)</strong>
+                          <p><RichText value={project.problem} /></p>
+                        </div>
+                      )}
+                      {project.troubleshooting && (
+                        <div className="pdf-case-block">
+                          <strong>해결 과정 & 기술적 판단 (Troubleshooting)</strong>
+                          <p><RichText value={project.troubleshooting} /></p>
+                        </div>
+                      )}
+                      {project.architecture && (
+                        <div className="pdf-case-block">
+                          <strong>아키텍처 및 기술 스택</strong>
+                          <p><RichText value={project.architecture} /></p>
+                        </div>
+                      )}
+                    </div>
+
                     <a className="project-detail-link" href={href}>프로젝트 자세히 보기 <span>→</span></a>
                   </div>
                 </article>

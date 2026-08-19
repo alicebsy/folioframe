@@ -10654,3 +10654,109 @@ label em {
   border: 0;
   border-radius: 0;
 }
+
+/* --- Print & PDF Export Styles --- */
+.pdf-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground, #0f172a);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pdf-export-btn:hover {
+  background: var(--surface-hover, #f8fafc);
+  border-color: var(--line-focus, #cbd5e1);
+}
+
+.public-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+
+  /* Hide web-only elements */
+  .public-nav,
+  .portfolio-motion-band,
+  .project-showcase-action,
+  .project-detail-link,
+  .pdf-export-btn,
+  .project-back-link,
+  .brand-mark {
+    display: none !important;
+  }
+
+  body, .public-shell {
+    background: #ffffff !important;
+    color: #000000 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .portfolio-hero,
+  .identity-section,
+  .career-section,
+  .education-section,
+  .certificate-section,
+  .portfolio-projects,
+  .aspiration-section,
+  .public-footer {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .portfolio-hero {
+    padding-top: 10px !important;
+    padding-bottom: 24px !important;
+    background: none !important;
+    border-bottom: 2px solid #333333 !important;
+  }
+
+  .hero-grid {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr !important;
+    gap: 20px !important;
+  }
+
+  .project-showcase-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 24px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+
+  .career-timeline article,
+  .identity-grid article {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .rich-text-highlight {
+    background: #f1f5f9 !important;
+    border-bottom: 2px solid #22c55e !important;
+  }
+}

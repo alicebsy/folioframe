@@ -7671,35 +7671,61 @@ label em {
 .rich-text-toolbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  padding: 7px 9px;
+  padding: 7px 10px;
   border-bottom: 1px solid #edf0e8;
-  color: #8a917e;
-  font-size: 10px;
+  color: #757d6b;
+  font-size: 11px;
+  background: #fafbf8;
 }
 
-.rich-text-toolbar button {
-  width: auto;
-  min-width: 26px;
-  height: 26px;
+.rich-text-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rich-text-toolbar button.highlight-toolbar-btn {
+  height: 27px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 0 8px;
+  gap: 6px;
+  padding: 0 10px;
   border: 1px solid #cbd6a5;
   border-radius: 6px;
-  color: #3f5515;
-  background: #f4f8e6;
+  color: #2e4310;
+  background: #f1f6dd;
   font-family: inherit;
   font-size: 11px;
-  font-weight: 750;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.rich-text-toolbar button:hover {
-  background: #e6f0c7;
-  border-color: #b0c27f;
+.rich-text-toolbar button.highlight-toolbar-btn:hover {
+  background: #e3efbd;
+  border-color: #9cb558;
+}
+
+.rich-text-toolbar button.highlight-preview-toggle {
+  height: 25px;
+  padding: 0 9px;
+  border: 1px solid #d5dcd0;
+  border-radius: 5px;
+  color: #555d4c;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rich-text-toolbar button.highlight-preview-toggle:hover {
+  background: #f1f4ed;
+  color: #20261b;
+  border-color: #b8c2b1;
 }
 
 .rich-text-toolbar .marker-icon {
@@ -7707,11 +7733,30 @@ label em {
   place-items: center;
   min-width: 15px;
   height: 15px;
-  background: #fef08a;
-  color: #854d0e;
+  background: #d8f263;
+  color: #3b500d;
   border-radius: 3px;
   font-size: 9px;
   font-weight: 900;
+}
+
+.rich-text-hint {
+  font-size: 10px;
+  color: #8c9382;
+}
+
+.rich-text-live-preview {
+  padding: 12px 14px;
+  min-height: 80px;
+  background: #fbfbf7;
+  color: #2c3128;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.rich-text-live-preview .rich-text-highlight {
+  background: linear-gradient(to top, rgba(188, 228, 72, 0.68) 0%, rgba(188, 228, 72, 0.68) 40%, transparent 40%);
+  font-weight: 700;
 }
 
 .rich-text-input-wrap textarea {

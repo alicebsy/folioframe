@@ -346,6 +346,7 @@ function RichTextEditor({
   maxLength?: number;
 }) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [showLivePreview, setShowLivePreview] = useState(false);
 
   const emphasizeSelection = () => {
     const input = inputRef.current;
@@ -353,31 +354,76 @@ function RichTextEditor({
     const start = input.selectionStart;
     const end = input.selectionEnd;
     const selected = value.slice(start, end);
-    const replacement = selected ? `**${selected}**` : "**강조할 문장**";
+
+    if (selected.startsWith("**") && selected.endsWith("**") && selected.length >= 4) {
+      const unwrapped = selected.slice(2, -2);
+      const nextValue = `${value.slice(0, start)}${unwrapped}${value.slice(end)}`;
+      onChange(nextValue);
+      requestAnimationFrame(() => {
+        input.focus();
+        input.setSelectionRange(start, start + unwrapped.length);
+      });
+      return;
+    }
+
+    const replacement = selected ? `**${selected}**` : "**강조할 문구**";
     const nextValue = `${value.slice(0, start)}${replacement}${value.slice(end)}`;
     onChange(nextValue);
     requestAnimationFrame(() => {
       input.focus();
-      const cursor = start + replacement.length;
-      input.setSelectionRange(cursor, cursor);
+      const cursorStart = selected ? start : start + 2;
+      const cursorEnd = selected ? start + replacement.length : start + 2 + "강조할 문구".length;
+      input.setSelectionRange(cursorStart, cursorEnd);
     });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.metaKey || e.ctrlKey) && (e.key === "b" || e.key === "B" || e.key === "h" || e.key === "H")) {
+      e.preventDefault();
+      emphasizeSelection();
+    }
   };
 
   return (
     <div className="rich-text-input-wrap">
       <div className="rich-text-toolbar" role="toolbar" aria-label="본문 서식 도구">
-          <button type="button" className="highlight-toolbar-btn" onClick={emphasizeSelection} aria-label="선택한 문장 하이라이트" title="선택한 영역에 형광펜 하이라이트를 적용합니다">
-            <span className="marker-icon">H</span> 형광펜 하이라이트
+        <div className="rich-text-toolbar-actions">
+          <button
+            type="button"
+            className="highlight-toolbar-btn"
+            onClick={emphasizeSelection}
+            aria-label="선택한 문장 형광펜 하이라이트"
+            title="선택한 단어/문장을 드래그 후 누르면 초록색 형광펜 하이라이트가 적용됩니다 (단축키: Cmd+B)"
+          >
+            <span className="marker-icon" aria-hidden="true">✦</span> 형광펜 하이라이트
           </button>
-          <span>**하이라이트** 또는 ==하이라이트== · 빈 줄로 문단 구분</span>
+          <span className="rich-text-hint">드래그 후 버튼 클릭(또는 Cmd+B) · **문구** 입력 시 밑줄 하이라이트</span>
+        </div>
+        {value ? (
+          <button
+            type="button"
+            className="highlight-preview-toggle"
+            onClick={() => setShowLivePreview((prev) => !prev)}
+            title="하이라이트 적용 결과 미리보기"
+          >
+            {showLivePreview ? "편집기로 돌아가기" : "미리보기"}
+          </button>
+        ) : null}
       </div>
-      <textarea
-        ref={inputRef}
-        value={value}
-        maxLength={maxLength}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-      />
+      {showLivePreview ? (
+        <div className="rich-text-live-preview">
+          <RichText value={value} />
+        </div>
+      ) : (
+        <textarea
+          ref={inputRef}
+          value={value}
+          maxLength={maxLength}
+          onChange={(event) => onChange(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+        />
+      )}
     </div>
   );
 }
@@ -1150,16 +1196,13 @@ export default function DashboardClient({
                   </div>
                 </label>
               </div>
-              <label>
-                한 줄 소개
-                <input
-                  value={profileDraft.bio}
-                  onChange={(event) =>
-                    setProfileDraft({ ...profileDraft, bio: event.target.value })
-                  }
-                  placeholder="나를 설명하는 한 문장을 입력하세요."
-                />
-              </label>
+              <RichTextField
+                label="한 줄 소개"
+                value={profileDraft.bio}
+                onChange={(value) => setProfileDraft({ ...profileDraft, bio: value })}
+                placeholder="나를 설명하는 한 문장을 입력하세요. (단어를 드래그하고 형광펜 버튼을 누르면 밑줄 하이라이트됩니다)"
+                maxLength={150}
+              />
               <details className="editor-disclosure profile-disclosure" open>
                 <summary><span>나를 소개합니다</span><small>소개 · 일하는 방식 · 가치관 · 방향 · 마무리</small></summary>
                 <div className="disclosure-content identity-editor">
@@ -1194,7 +1237,13 @@ export default function DashboardClient({
                         <label>역할<input value={entry.role} onChange={(event) => updateCareer(entry.id, "role", event.target.value)} placeholder="프로덕트 매니저" /></label>
                         <label>기간<input value={entry.period} onChange={(event) => updateCareer(entry.id, "period", event.target.value)} placeholder="2025.03 – 현재" /></label>
                       </div>
-                      <label>주요 경험<textarea value={entry.description} onChange={(event) => updateCareer(entry.id, "description", event.target.value)} placeholder="무엇을 맡았고 어떤 변화를 만들었는지 적어 주세요." /></label>
+                      <RichTextField
+                        label="주요 경험"
+                        value={entry.description}
+                        onChange={(value) => updateCareer(entry.id, "description", value)}
+                        placeholder="무엇을 맡았고 어떤 변화를 만들었는지 적어 주세요. (강조할 부분에 형광펜 버튼 적용 가능)"
+                        maxLength={600}
+                      />
                       <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, careers: profileDraft.careers.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
                     </div>
                   ))}
@@ -1211,7 +1260,13 @@ export default function DashboardClient({
                         <label>전공·과정<input value={entry.major} onChange={(event) => updateEducation(entry.id, "major", event.target.value)} placeholder="컴퓨터공학과" /></label>
                         <label>기간<input value={entry.period} onChange={(event) => updateEducation(entry.id, "period", event.target.value)} placeholder="2022.03 – 2026.02" /></label>
                       </div>
-                      <label>배운 내용·활동<textarea value={entry.description} onChange={(event) => updateEducation(entry.id, "description", event.target.value)} placeholder="개발과 관련해 배운 내용, 동아리, 연구, 수상 등을 적어 주세요." /></label>
+                      <RichTextField
+                        label="배운 내용·활동"
+                        value={entry.description}
+                        onChange={(value) => updateEducation(entry.id, "description", value)}
+                        placeholder="개발과 관련해 배운 내용, 동아리, 연구, 수상 등을 적어 주세요. (강조할 부분에 형광펜 버튼 적용 가능)"
+                        maxLength={600}
+                      />
                       <button type="button" className="career-remove" onClick={() => setProfileDraft({ ...profileDraft, educations: profileDraft.educations.filter((item) => item.id !== entry.id) })}>이 항목 삭제</button>
                     </div>
                   ))}
@@ -1254,8 +1309,8 @@ export default function DashboardClient({
                 <h2>{data.portfolio.name || "프로필을 완성해 주세요"}</h2>
                 <span>{data.portfolio.jobTitle || "희망 직무 미입력"}</span>
               </div>
-              <p>{data.portfolio.bio || "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
-              {data.portfolio.aboutMe && <p className="profile-about-preview">{data.portfolio.aboutMe}</p>}
+              <p>{data.portfolio.bio ? <RichText value={data.portfolio.bio} /> : "한 줄 소개를 입력하면 공개 페이지에 표시됩니다."}</p>
+              {data.portfolio.aboutMe && <div className="profile-about-preview"><RichText value={data.portfolio.aboutMe} /></div>}
               {(data.portfolio.experienceLevel || data.portfolio.strengths.length > 0) && (
                 <div className="profile-summary-chips">
                   {data.portfolio.experienceLevel && <span>{data.portfolio.experienceLevel}</span>}

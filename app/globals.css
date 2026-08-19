@@ -10711,6 +10711,126 @@ label em {
   display: none;
 }
 
+
+/* --- Creator Top Banner & Identity Styles --- */
+.creator-notice-bar {
+  background: #1e2217;
+  color: #f5f4ee;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px max(5vw, calc((100vw - 1180px) / 2));
+  font-size: 13px;
+  position: relative;
+  z-index: 50;
+}
+
+.creator-notice-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.creator-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #cdef55;
+  color: #1e2217;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.creator-notice-content p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e5e3d7;
+  font-size: 13px;
+}
+
+.creator-notice-content p strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.creator-notice-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.creator-link-home {
+  display: inline-flex;
+  align-items: center;
+  color: #cdef55;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(205, 239, 85, 0.12);
+  border: 1px solid rgba(205, 239, 85, 0.35);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  transition: all 0.15s ease;
+}
+
+.creator-link-home:hover {
+  background: #cdef55;
+  color: #1e2217;
+}
+
+.creator-role-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #556420;
+  background: #edf1db;
+  border: 1px solid #d2deaa;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+.creator-footer-credit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+}
+
+.creator-footer-credit strong {
+  font-size: 13px;
+  font-weight: 800;
+  color: inherit;
+}
+
+.creator-footer-credit small {
+  font-size: 11.5px;
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .creator-notice-bar {
+    padding: 10px 16px;
+  }
+  .creator-notice-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .creator-footer-credit {
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 12px;
+  }
+}
+
 @media print {
   @page {
     size: A4 portrait;

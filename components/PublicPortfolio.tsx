@@ -24,11 +24,25 @@ export default function PublicPortfolio({
 
   return (
     <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
+      {/* Folioframe 서비스 개발자 상단 고정 안내 배너 */}
+      <div className="creator-notice-bar">
+        <div className="creator-notice-content">
+          <span className="creator-badge">MAKER</span>
+          <p>
+            <strong>지금 보고 계신 이 포트폴리오 웹 서비스(Folioframe)를 직접 기획·개발·배포했습니다.</strong>
+          </p>
+          <div className="creator-notice-links">
+            <a href="/" className="creator-link-home">서비스 둘러보기 ↗</a>
+          </div>
+        </div>
+      </div>
+
       <nav className="public-nav">
-        <span className="brand">
+        <a className="brand" href="/" title="Folioframe 서비스 홈으로 이동">
           <span className="brand-mark">✦</span>
           <span>Folioframe</span>
-        </span>
+          <span className="creator-role-tag">CREATOR & DEVELOPER</span>
+        </a>
         <div className="public-nav-right">
           <PdfExportButton />
           <span className="slug-badge">/p/{portfolio.slug}</span>
@@ -352,7 +366,10 @@ export default function PublicPortfolio({
             {portfolio.contactEmail} <b>↗</b>
           </a>
         )}
-        <small>Made with Folioframe</small>
+        <div className="creator-footer-credit">
+          <strong>Folioframe Service Creator</strong>
+          <small>Designed & Engineered by {portfolio.name} (배서연)</small>
+        </div>
       </footer>
     </main>
   );

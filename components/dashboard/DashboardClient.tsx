@@ -1602,13 +1602,17 @@ export default function DashboardClient({
                   placeholder="프로젝트 이름"
                 />
               </label>
-              <RichTextField
-                label="프로젝트 개요"
-                value={projectDraft.summary}
-                onChange={(value) => setProjectDraft({ ...projectDraft, summary: value })}
-                placeholder="프로젝트의 목적과 배경을 설명해 주세요."
-                maxLength={2500}
-              />
+              <label>
+                프로젝트 개요
+                <textarea
+                  maxLength={2500}
+                  value={projectDraft.summary}
+                  onChange={(event) =>
+                    setProjectDraft({ ...projectDraft, summary: event.target.value })
+                  }
+                  placeholder="프로젝트의 목적과 배경을 설명해 주세요."
+                />
+              </label>
               <div className="project-facts">
                 <label>시작 월<input type="month" value={projectDraft.periodStart} onInput={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodStart: event.currentTarget.value }))} /></label>
                 <label>종료 월<input type="month" value={projectDraft.periodEnd} onInput={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} onChange={(event) => setProjectDraft((current) => ({ ...current, periodEnd: event.currentTarget.value }))} /></label>
@@ -1714,25 +1718,6 @@ export default function DashboardClient({
                   <button type="button" className="media-add-button" onClick={addVideoMedia}>영상 추가</button>
                   <small>브라우저에서 직접 재생할 수 있는 MP4·WebM 주소를 입력하고 추가하세요. 추가된 영상도 위에서 삭제할 수 있습니다.</small>
                 </label>
-                <div className="attachment-editor">
-                  <span className="upload-label">프로젝트 파일 <em>최대 8개</em></span>
-                  <small>PDF, 발표자료, 문서처럼 프로젝트를 더 설명해 줄 자료를 첨부할 수 있어요. 파일당 25MB 이하입니다.</small>
-                  {(projectDraft.attachments ?? []).length > 0 && (
-                    <div className="attachment-list">
-                      {(projectDraft.attachments ?? []).map((file) => (
-                        <div className="attachment-item" key={file.id}>
-                          <span className="attachment-type">{file.type.includes("pdf") ? "PDF" : "FILE"}</span>
-                          <span className="attachment-copy"><strong>{file.name}</strong><small>{formatFileSize(file.size)}</small></span>
-                          <button type="button" onClick={() => removeProjectAttachment(file.id)} aria-label={`${file.name} 삭제`}>×</button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <label className="file-upload-button">
-                    <input type="file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip,application/pdf" onChange={handleAttachmentUpload} />
-                    <span>파일 추가</span>
-                  </label>
-                </div>
               </div>
               <div className="story-fields">
                 {[
@@ -1745,13 +1730,13 @@ export default function DashboardClient({
                     <span className="step-number">{number}</span>
                     <span className="field-copy">
                       <b>{label}</b>
-                      <RichTextEditor
+                      <textarea
                         maxLength={key === "troubleshooting" ? 1000 : 500}
                         value={String(projectDraft[key as keyof ProjectDraft] ?? "")}
-                        onChange={(value) =>
+                        onChange={(event) =>
                           setProjectDraft({
                             ...projectDraft,
-                            [key]: value,
+                            [key]: event.target.value,
                           })
                         }
                         placeholder={placeholder}
@@ -1764,30 +1749,33 @@ export default function DashboardClient({
                 <summary><span>프로젝트 맥락과 핵심 판단</span><small>대상 · 목표 · 제약 · 의사결정 · 협업</small></summary>
                 <div className="disclosure-content">
                   <div className="form-row two">
-                    <RichTextField label="대상 사용자" value={projectDraft.targetAudience} onChange={(value) => setProjectDraft({ ...projectDraft, targetAudience: value })} placeholder="누구의 어떤 상황을 위한 프로젝트였나요?" />
-                    <RichTextField label="프로젝트 목표" value={projectDraft.goal} onChange={(value) => setProjectDraft({ ...projectDraft, goal: value })} placeholder="달성하려던 사용자·사업 목표는 무엇이었나요?" />
+                    <label>대상 사용자<textarea value={projectDraft.targetAudience} onChange={(event) => setProjectDraft({ ...projectDraft, targetAudience: event.target.value })} placeholder="누구의 어떤 상황을 위한 프로젝트였나요?" /></label>
+                    <label>프로젝트 목표<textarea value={projectDraft.goal} onChange={(event) => setProjectDraft({ ...projectDraft, goal: event.target.value })} placeholder="달성하려던 사용자·사업 목표는 무엇이었나요?" /></label>
                   </div>
-                  <RichTextField label="제약 조건" value={projectDraft.constraints} onChange={(value) => setProjectDraft({ ...projectDraft, constraints: value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." />
-                  <RichTextField label="가장 중요한 결정" value={projectDraft.keyDecision} onChange={(value) => setProjectDraft({ ...projectDraft, keyDecision: value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" />
-                  <RichTextField label="협업 방식" value={projectDraft.collaboration} onChange={(value) => setProjectDraft({ ...projectDraft, collaboration: value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" />
+                  <label>제약 조건<textarea value={projectDraft.constraints} onChange={(event) => setProjectDraft({ ...projectDraft, constraints: event.target.value })} placeholder="시간, 인력, 기술, 정책 등 고려한 제약을 적어 주세요." /></label>
+                  <label>가장 중요한 결정<textarea value={projectDraft.keyDecision} onChange={(event) => setProjectDraft({ ...projectDraft, keyDecision: event.target.value })} placeholder="어떤 대안 중 무엇을 선택했고, 그 이유는 무엇인가요?" /></label>
+                  <label>협업 방식<textarea value={projectDraft.collaboration} onChange={(event) => setProjectDraft({ ...projectDraft, collaboration: event.target.value })} placeholder="누구와 어떻게 소통하고 의견을 조율했나요?" /></label>
                 </div>
               </details>
               <details className="editor-disclosure project-disclosure" open>
                 <summary><span>개발 구현과 운영</span><small>아키텍처 · 테스트와 품질 · 배포와 운영</small></summary>
                 <div className="disclosure-content">
-                  <RichTextField label="아키텍처와 기술 선택" value={projectDraft.architecture} onChange={(value) => setProjectDraft({ ...projectDraft, architecture: value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" maxLength={4000} />
+                  <label>아키텍처와 기술 선택<textarea maxLength={4000} value={projectDraft.architecture} onChange={(event) => setProjectDraft({ ...projectDraft, architecture: event.target.value })} placeholder="어떤 구조와 기술을 선택했으며, 다른 대안 대신 선택한 이유는 무엇인가요?" /></label>
                   <div className="form-row two">
-                    <RichTextField label="테스트와 품질" value={projectDraft.qualityAssurance} onChange={(value) => setProjectDraft({ ...projectDraft, qualityAssurance: value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" maxLength={4000} />
-                    <RichTextField label="배포와 운영" value={projectDraft.deployment} onChange={(value) => setProjectDraft({ ...projectDraft, deployment: value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." maxLength={4000} />
+                    <label>테스트와 품질<textarea maxLength={4000} value={projectDraft.qualityAssurance} onChange={(event) => setProjectDraft({ ...projectDraft, qualityAssurance: event.target.value })} placeholder="단위·통합·E2E 테스트, 성능, 접근성, 코드 리뷰를 어떻게 확인했나요?" /></label>
+                    <label>배포와 운영<textarea maxLength={4000} value={projectDraft.deployment} onChange={(event) => setProjectDraft({ ...projectDraft, deployment: event.target.value })} placeholder="CI/CD, 배포 환경, 모니터링, 장애 대응 방식을 적어 주세요." /></label>
                   </div>
                 </div>
               </details>
-              <RichTextField label="성과 근거" value={projectDraft.evidence} onChange={(value) => setProjectDraft({ ...projectDraft, evidence: value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." maxLength={2500} />
+              <label>
+                성과 근거
+                <textarea maxLength={2500} value={projectDraft.evidence} onChange={(event) => setProjectDraft({ ...projectDraft, evidence: event.target.value })} placeholder="성과를 어떻게 측정했는지, 어떤 자료로 확인할 수 있는지 적어 주세요." />
+              </label>
               <details className="editor-disclosure project-disclosure">
                 <summary><span>회고와 다음 단계</span><small>배운 점 · 다시 한다면 바꿀 점</small></summary>
                 <div className="disclosure-content form-row two">
-                  <RichTextField label="배운 점" value={projectDraft.learnings} onChange={(value) => setProjectDraft({ ...projectDraft, learnings: value })} placeholder="이 경험을 통해 무엇을 새롭게 알게 되었나요?" />
-                  <RichTextField label="다시 한다면" value={projectDraft.nextTime} onChange={(value) => setProjectDraft({ ...projectDraft, nextTime: value })} placeholder="다음에는 무엇을 다르게 시도하고 싶나요?" />
+                  <label>배운 점<textarea value={projectDraft.learnings} onChange={(event) => setProjectDraft({ ...projectDraft, learnings: event.target.value })} placeholder="이 경험을 통해 무엇을 새롭게 알게 되었나요?" /></label>
+                  <label>다시 한다면<textarea value={projectDraft.nextTime} onChange={(event) => setProjectDraft({ ...projectDraft, nextTime: event.target.value })} placeholder="다음에는 무엇을 다르게 시도하고 싶나요?" /></label>
                 </div>
               </details>
               <div className="quality-checklist">

@@ -3,6 +3,7 @@ import type { Portfolio, PortfolioTheme, Project } from "@/lib/models";
 
 export const portfolio: Portfolio = {
   id: "preview-portfolio",
+  versionName: "프론트엔드 개발자",
   name: "홍길동",
   profileImageUrl: "",
   jobTitle: "프론트엔드 개발자",

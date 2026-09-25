@@ -441,6 +441,7 @@ export default function DashboardClient({
   const [publishResult, setPublishResult] = useState<PublishResult>(null);
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(false);
+  const [newVersionName, setNewVersionName] = useState("");
 
   const completeCount = data.projects.filter(projectIsComplete).length;
   const publicCount = data.projects.filter(
@@ -488,12 +489,82 @@ export default function DashboardClient({
     window.setTimeout(() => setToast(""), 2400);
   };
 
-  const refreshData = async () => {
+  const refreshData = async (portfolioId = data.portfolio.id) => {
     if (previewMode) return;
-    const response = await api("/api/portfolio");
+    const response = await api(`/api/portfolio?portfolioId=${encodeURIComponent(portfolioId)}`);
     setData(response.data);
     setProfileDraft(response.data.portfolio);
+    router.replace(`/dashboard?portfolioId=${encodeURIComponent(portfolioId)}`, { scroll: false });
     router.refresh();
+  };
+
+  const selectPortfolioVersion = async (portfolioId: string) => {
+    if (portfolioId === data.portfolio.id) return;
+    if ((profileEditing || projectModal) && !window.confirm("저장하지 않은 변경사항은 사라집니다. 다른 포트폴리오로 이동할까요?")) return;
+    setLoading(true);
+    try {
+      const response = await api(`/api/portfolio?portfolioId=${encodeURIComponent(portfolioId)}`);
+      setData(response.data);
+      setProfileDraft(response.data.portfolio);
+      setProfileEditing(false);
+      setProjectModal(false);
+      setPublishResult(null);
+      router.replace(`/dashboard?portfolioId=${encodeURIComponent(portfolioId)}`, { scroll: false });
+      router.refresh();
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "포트폴리오를 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const duplicatePortfolioVersion = async () => {
+    const versionName = newVersionName.trim();
+    if (!versionName) {
+      notify("새 포트폴리오의 이름을 입력해 주세요.");
+      return;
+    }
+    if ((profileEditing || projectModal) && !window.confirm("현재 작성 중인 변경사항을 저장하지 않고 기존 포트폴리오를 복제할까요?")) return;
+    setLoading(true);
+    try {
+      const result = await api("/api/portfolio/versions", {
+        sourcePortfolioId: data.portfolio.id,
+        versionName,
+      });
+      setNewVersionName("");
+      await refreshData(result.portfolioId);
+      setProfileEditing(false);
+      setProjectModal(false);
+      setPublishResult(null);
+      notify(`‘${versionName}’ 포트폴리오를 복제했습니다. 프로필과 프로젝트는 독립적으로 편집할 수 있어요.`);
+    } catch (error) {
+      notify((error as { message?: string }).message ?? "포트폴리오를 복제하지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyPortfolioLink = async (slug: string) => {
+    const url = new URL(`/p/${slug}`, window.location.origin).toString();
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const field = document.createElement("textarea");
+        field.value = url;
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        const copied = document.execCommand("copy");
+        field.remove();
+        if (!copied) throw new Error("copy unavailable");
+      }
+      notify("공개 주소를 복사했습니다.");
+    } catch {
+      notify("복사하지 못했어요. 링크를 눌러 주소를 직접 복사해 주세요.");
+    }
   };
 
   const saveProfile = async () => {
@@ -527,7 +598,7 @@ export default function DashboardClient({
     }
     setLoading(true);
     try {
-      await api("/api/portfolio/theme", { theme });
+      await api("/api/portfolio/theme", { portfolioId: data.portfolio.id, theme });
       notify("포트폴리오 테마를 저장했습니다.");
     } catch (error) {
       setData((current) => ({ ...current, portfolio: { ...current.portfolio, theme: data.portfolio.theme } }));
@@ -832,7 +903,7 @@ export default function DashboardClient({
       const path = projectDraft.id
         ? `/api/projects/${projectDraft.id}/update`
         : "/api/projects";
-      await api(path, projectDraft);
+      await api(path, { ...projectDraft, portfolioId: data.portfolio.id });
       await refreshData();
       setProjectModal(false);
       notify(projectDraft.id ? "프로젝트를 수정했습니다." : "프로젝트를 추가했습니다.");
@@ -862,6 +933,7 @@ export default function DashboardClient({
     try {
       await api(`/api/projects/${project.id}/visibility`, {
         isPublic: !project.isPublic,
+        portfolioId: data.portfolio.id,
       });
       await refreshData();
       notify(project.isPublic ? "프로젝트를 비공개로 전환했습니다." : "프로젝트를 공개로 전환했습니다.");
@@ -882,7 +954,7 @@ export default function DashboardClient({
       return;
     }
     try {
-      await api(`/api/projects/${project.id}/featured`, { isFeatured: !project.isFeatured });
+      await api(`/api/projects/${project.id}/featured`, { isFeatured: !project.isFeatured, portfolioId: data.portfolio.id });
       await refreshData();
       notify(project.isFeatured ? "대표 프로젝트에서 제외했습니다." : "대표 프로젝트로 설정했습니다.");
     } catch (error) {
@@ -902,7 +974,7 @@ export default function DashboardClient({
     }
     setLoading(true);
     try {
-      await api(`/api/projects/${project.id}/delete`, {});
+      await api(`/api/projects/${project.id}/delete`, { portfolioId: data.portfolio.id });
       await refreshData();
       notify("프로젝트를 삭제했습니다.");
     } catch (error) {
@@ -939,7 +1011,7 @@ export default function DashboardClient({
     }
     setLoading(true);
     try {
-      const result = await api("/api/portfolio/publish", {});
+      const result = await api("/api/portfolio/publish", { portfolioId: data.portfolio.id });
       await refreshData();
       setPublishResult({
         type: "success",
@@ -1115,9 +1187,9 @@ export default function DashboardClient({
       <section className="workspace">
         <div className="page-intro">
           <div>
-            <span className="eyebrow">MY PORTFOLIO</span>
-            <h1>개발 과정이 증거가 되는 포트폴리오</h1>
-            <p>기술 선택부터 구현, 테스트, 배포까지 정리하면 개발자의 판단이 선명해집니다.</p>
+            <span className="eyebrow">MY PORTFOLIOS</span>
+            <h1>지원 직무에 맞는 포트폴리오를 발행하세요</h1>
+            <p>버전마다 소개와 프로젝트 구성을 따로 편집하고, 각기 다른 공개 주소로 발행할 수 있습니다.</p>
           </div>
           <div className="publish-summary">
             <div className={`status-dot ${data.portfolio.isPublished ? "live" : ""}`} />
@@ -1133,6 +1205,97 @@ export default function DashboardClient({
             </div>
           </div>
         </div>
+
+        <section className="portfolio-version-panel panel" aria-labelledby="portfolio-version-title">
+          <div className="portfolio-version-copy">
+            <span className="eyebrow">PORTFOLIO VERSIONS</span>
+            <h2 id="portfolio-version-title">직무별 포트폴리오</h2>
+            <p>버전을 복제하면 프로필과 프로젝트가 복사됩니다. 이후 수정·공개 설정은 각 버전에만 적용됩니다.</p>
+          </div>
+          <div className="portfolio-version-controls">
+            <label>
+              현재 편집 중
+              <select
+                value={data.portfolio.id}
+                disabled={loading || previewMode}
+                onChange={(event) => selectPortfolioVersion(event.target.value)}
+              >
+                {(data.versions ?? [{
+                  id: data.portfolio.id,
+                  versionName: data.portfolio.versionName,
+                  jobTitle: data.portfolio.jobTitle,
+                  slug: data.portfolio.slug,
+                  isPublished: data.portfolio.isPublished,
+                  updatedAt: "",
+                }]).map((version) => (
+                  <option key={version.id} value={version.id}>
+                    {version.versionName}{version.jobTitle ? ` · ${version.jobTitle}` : ""} · {version.isPublished ? "발행됨" : "초안"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              새 버전 이름
+              <input
+                value={newVersionName}
+                maxLength={80}
+                disabled={loading || previewMode}
+                onChange={(event) => setNewVersionName(event.target.value)}
+                onKeyDown={(event) => { if (event.key === "Enter") duplicatePortfolioVersion(); }}
+                placeholder="예: QA · 백엔드 · 제품 PM"
+              />
+            </label>
+            <button className="button dark" disabled={loading || previewMode || !newVersionName.trim()} onClick={duplicatePortfolioVersion}>
+              <Icon name="plus" />현재 버전 복제
+            </button>
+          </div>
+          <div className="portfolio-version-links" aria-labelledby="portfolio-version-links-title">
+            <div className="portfolio-version-links-heading">
+              <div>
+                <span className="eyebrow">SHARE YOUR WORK</span>
+                <h3 id="portfolio-version-links-title">발행한 포트폴리오 링크</h3>
+              </div>
+              <span>지원할 직무에 맞는 주소를 복사해 전달하세요.</span>
+            </div>
+            <div className="portfolio-version-link-list">
+              {(data.versions ?? [{
+                id: data.portfolio.id,
+                versionName: data.portfolio.versionName,
+                jobTitle: data.portfolio.jobTitle,
+                slug: data.portfolio.slug,
+                isPublished: data.portfolio.isPublished,
+                updatedAt: "",
+              }]).map((version) => {
+                const siteHost = (process.env.NEXT_PUBLIC_APP_URL || "folioframe-lake.vercel.app")
+                  .replace(/^https?:\/\//, "")
+                  .replace(/\/$/, "");
+                const publicPath = `/p/${version.slug}`;
+                return (
+                  <article className={`portfolio-version-link${version.id === data.portfolio.id ? " current" : ""}`} key={version.id}>
+                    <div className="portfolio-version-link-info">
+                      <div className="portfolio-version-link-title">
+                        <strong>{version.versionName}</strong>
+                        {version.jobTitle && <span>{version.jobTitle}</span>}
+                        {version.id === data.portfolio.id && <em>편집 중</em>}
+                      </div>
+                      {version.isPublished ? (
+                        <a href={publicPath} target="_blank" rel="noreferrer">{siteHost}{publicPath}</a>
+                      ) : (
+                        <span className="portfolio-version-link-draft">발행하면 이 버전의 공개 주소가 여기에 표시됩니다.</span>
+                      )}
+                    </div>
+                    {version.isPublished && (
+                      <div className="portfolio-version-link-actions">
+                        <button className="button secondary" type="button" onClick={() => copyPortfolioLink(version.slug)}>주소 복사</button>
+                        <a className="button secondary" href={publicPath} target="_blank" rel="noreferrer">열기</a>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
         <section className="profile-card panel">
           <div
@@ -1155,6 +1318,15 @@ export default function DashboardClient({
           </div>
           {profileEditing ? (
             <div className="profile-form">
+              <label>
+                포트폴리오 이름
+                <input
+                  value={profileDraft.versionName}
+                  maxLength={80}
+                  onChange={(event) => setProfileDraft({ ...profileDraft, versionName: event.target.value })}
+                  placeholder="예: QA 엔지니어 지원용"
+                />
+              </label>
               <div className="form-row three">
                 <label>
                   이름
@@ -1433,7 +1605,7 @@ export default function DashboardClient({
 
         <section className="projects-section">
           <div className="section-heading">
-            <div><h2>내 개발 프로젝트</h2><p>기술 선택, 구현, 테스트, 배포 과정과 본인의 기여를 중심으로 작성하세요.</p></div>
+            <div><h2>프로젝트와 경험</h2><p>선택한 지원 직무와 관련 있는 사례를 골라 공개하고, 각 사례에서 본인의 역할과 근거를 보여주세요.</p></div>
             <button className="button dark" onClick={() => openProject()}>
               <Icon name="plus" />프로젝트 작성
             </button>

@@ -11,13 +11,16 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ ok: false }, { status: 401 });
 
     const body = await request.json();
+    const portfolioId = String(body.portfolioId ?? "");
     const theme = String(body.theme ?? "") as PortfolioTheme;
     if (!themes.has(theme)) return badRequest("지원하지 않는 포트폴리오 테마입니다.");
+    if (!portfolioId) return badRequest("포트폴리오 버전을 확인해 주세요.");
 
-    await query(
-      `UPDATE portfolios SET theme = $1, updated_at = NOW() WHERE owner_id = $2`,
-      [theme, user.id],
+    const updated = await query(
+      `UPDATE portfolios SET theme = $1, updated_at = NOW() WHERE id = $2 AND owner_id = $3`,
+      [theme, portfolioId, user.id],
     );
+    if (!updated.rowCount) return NextResponse.json({ ok: false, message: "포트폴리오를 찾을 수 없습니다." }, { status: 404 });
     return NextResponse.json({ ok: true, theme });
   } catch (error) {
     return serverError(error);

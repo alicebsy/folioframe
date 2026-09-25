@@ -11,11 +11,14 @@ type PublishRow = {
   incomplete_titles: string[] | null;
 };
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     const user = await apiUser();
     if (!user) return NextResponse.json({ ok: false }, { status: 401 });
 
+    const body = await request.json();
+    const portfolioId = String(body.portfolioId ?? "");
+    if (!portfolioId) return badRequest("발행할 포트폴리오를 선택해 주세요.");
     const result = await query<PublishRow>(
       `SELECT f.name, f.job_title, f.bio, f.slug,
               COUNT(p.id) FILTER (WHERE p.is_public)::int AS public_count,
@@ -27,9 +30,9 @@ export async function POST() {
               ) AS incomplete_titles
          FROM portfolios f
          LEFT JOIN projects p ON p.portfolio_id = f.id
-        WHERE f.owner_id = $1
+        WHERE f.owner_id = $1 AND f.id = $2
         GROUP BY f.id`,
-      [user.id],
+      [user.id, portfolioId],
     );
     const portfolio = result.rows[0];
     if (!portfolio) return badRequest("포트폴리오를 찾을 수 없습니다.");
@@ -51,8 +54,8 @@ export async function POST() {
     await query(
       `UPDATE portfolios
           SET is_published = TRUE, published_at = NOW(), updated_at = NOW()
-        WHERE owner_id = $1`,
-      [user.id],
+        WHERE owner_id = $1 AND id = $2`,
+      [user.id, portfolioId],
     );
 
     return NextResponse.json({

@@ -9,6 +9,7 @@ const previewData: DashboardData = {
   },
   portfolio: {
     id: "preview-portfolio",
+    versionName: "프론트엔드 개발자",
     name: "홍길동",
     profileImageUrl: "",
     jobTitle: "프론트엔드 개발자",

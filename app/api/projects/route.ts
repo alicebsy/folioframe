@@ -6,11 +6,12 @@ import { missingProjectFields, parseProjectInput } from "@/lib/project-input";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const user = await apiUser();
     if (!user) return NextResponse.json({ ok: false }, { status: 401 });
-    const data = await getDashboardData(user);
+    const portfolioId = new URL(request.url).searchParams.get("portfolioId");
+    const data = await getDashboardData(user, portfolioId);
     return NextResponse.json({ ok: true, projects: data.projects });
   } catch (error) {
     return serverError(error);
@@ -22,7 +23,9 @@ export async function POST(request: Request) {
     const user = await apiUser();
     if (!user) return NextResponse.json({ ok: false }, { status: 401 });
 
-    const input = parseProjectInput(await request.json());
+    const body = await request.json();
+    const portfolioId = String(body.portfolioId ?? "");
+    const input = parseProjectInput(body);
     await ensureProjectMediaColumn();
     await ensureProjectAttachmentsColumn();
     if (!input.title) return badRequest("프로젝트명을 입력해 주세요.");
@@ -30,12 +33,12 @@ export async function POST(request: Request) {
       return badRequest("미완성 프로젝트는 공개할 수 없습니다.");
     }
 
+    if (!portfolioId) return badRequest("저장할 포트폴리오 버전을 확인해 주세요.");
     const portfolioResult = await query<{ id: string }>(
-      "SELECT id FROM portfolios WHERE owner_id = $1 LIMIT 1",
-      [user.id],
+      "SELECT id FROM portfolios WHERE id = $1 AND owner_id = $2 LIMIT 1",
+      [portfolioId, user.id],
     );
-    const portfolioId = portfolioResult.rows[0]?.id;
-    if (!portfolioId) return badRequest("포트폴리오를 찾을 수 없습니다.");
+    if (!portfolioResult.rowCount) return badRequest("포트폴리오를 찾을 수 없습니다.");
 
     const projectId = await transaction(async (client) => {
       const orderResult = await client.query<{ next_order: number }>(

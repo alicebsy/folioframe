@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { ensurePortfolioVersions } from "@/lib/data";
 import { apiUser, badRequest, serverError } from "@/lib/http";
 import type { CareerEntry, CertificateEntry, EducationEntry } from "@/lib/models";
 
@@ -67,16 +68,19 @@ function normalizeCertificates(value: unknown): CertificateEntry[] {
 
 export async function POST(request: Request) {
   try {
+    await ensurePortfolioVersions();
     const user = await apiUser();
     if (!user) {
       return NextResponse.json({ ok: false }, { status: 401 });
     }
 
     const body = await request.json();
-    await query(
+    const updated = await query(
       `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS profile_image_url TEXT NOT NULL DEFAULT ''`,
     );
     const name = String(body.name ?? "").trim().slice(0, 30);
+    const portfolioId = String(body.id ?? "");
+    const versionName = String(body.versionName ?? "기본 포트폴리오").trim().slice(0, 80);
     const profileImageUrl = normalizeProfileImage(body.profileImageUrl);
     const jobTitle = String(body.jobTitle ?? "").trim().slice(0, 50);
     const bio = String(body.bio ?? "").trim().slice(0, 160);
@@ -106,6 +110,7 @@ export async function POST(request: Request) {
     const educations = normalizeEducations(body.educations);
     const certificates = normalizeCertificates(body.certificates);
 
+    if (!portfolioId) return badRequest("포트폴리오 버전을 확인해 주세요.");
     if (!name || !jobTitle || !bio) {
       return badRequest("이름, 희망 직무, 한 줄 소개를 입력해 주세요.");
     }
@@ -115,19 +120,20 @@ export async function POST(request: Request) {
 
     await query(
       `UPDATE portfolios
-          SET name = $1, job_title = $2, bio = $3, contact_email = $4,
-              slug = $5, experience_level = $6, interests = $7, strengths = $8,
-              about_me = $9, work_style = $10, personal_values = $11, looking_for = $12,
-              aspiration = $13, aspiration_title = $14, resume_url = $15, github_url = $16,
-              linkedin_url = $17, blog_url = $18, careers = $19::jsonb, core_skills = $20,
-              educations = $21::jsonb, certificates = $22::jsonb,
-              profile_image_url = $23, updated_at = NOW()
-        WHERE owner_id = $24`,
-      [name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
+          SET version_name = $1, name = $2, job_title = $3, bio = $4, contact_email = $5,
+              slug = $6, experience_level = $7, interests = $8, strengths = $9,
+              about_me = $10, work_style = $11, personal_values = $12, looking_for = $13,
+              aspiration = $14, aspiration_title = $15, resume_url = $16, github_url = $17,
+              linkedin_url = $18, blog_url = $19, careers = $20::jsonb, core_skills = $21,
+              educations = $22::jsonb, certificates = $23::jsonb,
+              profile_image_url = $24, updated_at = NOW()
+        WHERE id = $25 AND owner_id = $26`,
+      [versionName || "기본 포트폴리오", name, jobTitle, bio, contactEmail || null, slug, experienceLevel,
         interests, strengths, aboutMe, workStyle, values, lookingFor, aspiration, aspirationTitle,
         resumeUrl, githubUrl, linkedinUrl, blogUrl, JSON.stringify(careers), coreSkills,
-        JSON.stringify(educations), JSON.stringify(certificates), profileImageUrl, user.id],
+        JSON.stringify(educations), JSON.stringify(certificates), profileImageUrl, portfolioId, user.id],
     );
+    if (!updated.rowCount) return NextResponse.json({ ok: false, message: "포트폴리오를 찾을 수 없습니다." }, { status: 404 });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

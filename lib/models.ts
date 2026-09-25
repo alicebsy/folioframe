@@ -85,6 +85,7 @@ export type ProjectQualityCheck = {
 
 export type Portfolio = {
   id: string;
+  versionName: string;
   name: string;
   profileImageUrl: string;
   jobTitle: string;
@@ -113,10 +114,20 @@ export type Portfolio = {
   certificates: CertificateEntry[];
 };
 
+export type PortfolioVersion = {
+  id: string;
+  versionName: string;
+  jobTitle: string;
+  slug: string;
+  isPublished: boolean;
+  updatedAt: string;
+};
+
 export type DashboardData = {
   user: { id: string; email: string; isAdmin: boolean };
   portfolio: Portfolio;
   projects: Project[];
+  versions?: PortfolioVersion[];
 };
 
 export const projectIsComplete = (project: Omit<Project, "id" | "displayOrder">) =>

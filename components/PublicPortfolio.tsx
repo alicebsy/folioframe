@@ -21,27 +21,21 @@ export default function PublicPortfolio({
   const featuredProjects = projects.filter((project) => project.isFeatured);
   const featuredIds = new Set(featuredProjects.map((project) => project.id));
   const moreProjects = projects.filter((project) => !featuredIds.has(project.id));
+  const title = portfolio.jobTitle.toLowerCase();
+  const motionWords = title.includes("qa")
+    ? ["정상·예외 흐름", "재현 가능한 검증", "API 테스트", "회귀 확인", "명확한 이슈 리포트"]
+    : title.includes("po")
+      ? ["요구사항 정리", "사용자 흐름", "운영 개선", "우선순위 조정", "팀 간 맥락 공유"]
+      : title.includes("pm") || title.includes("product manager")
+        ? ["문제 정의", "사용자 관점", "우선순위 설정", "빠른 가설 검증", "팀의 실행 정렬"]
+        : ["API 설계", "데이터 정합성", "예외 처리", "안정적인 서비스", "테스트와 배포"];
 
   return (
     <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
-      {/* Folioframe 서비스 개발자 상단 고정 안내 배너 */}
-      <div className="creator-notice-bar">
-        <div className="creator-notice-content">
-          <span className="creator-badge">MAKER</span>
-          <p>
-            <strong>지금 보고 계신 이 포트폴리오 웹 서비스(Folioframe)를 직접 기획·개발·배포했습니다.</strong>
-          </p>
-          <div className="creator-notice-links">
-            <a href="/" className="creator-link-home">서비스 둘러보기 ↗</a>
-          </div>
-        </div>
-      </div>
-
       <nav className="public-nav">
         <a className="brand" href="/" title="Folioframe 서비스 홈으로 이동">
           <span className="brand-mark">✦</span>
           <span>Folioframe</span>
-          <span className="creator-role-tag">CREATOR & DEVELOPER</span>
         </a>
         <div className="public-nav-right">
           <PdfExportButton />
@@ -91,22 +85,11 @@ export default function PublicPortfolio({
 
       <div className="portfolio-motion-band" aria-hidden="true">
         <div className="portfolio-motion-track">
-          <div className="portfolio-motion-group">
-          <span>ARCHITECTURE FIRST</span><i>✦</i>
-          <span>CLEAN CODE & ROBUST DESIGN</span><i>✦</i>
-          <span>SOLVE REAL PROBLEMS</span><i>✦</i>
-          <span>CONTINUOUS LEARNING & DELIVERY</span><i>✦</i>
-          <span>AI-AUGMENTED EXECUTION</span><i>✦</i>
-          <span>EMPATHY & COLLABORATION</span><i>✦</i>
-          </div>
-          <div className="portfolio-motion-group" aria-hidden="true">
-          <span>ARCHITECTURE FIRST</span><i>✦</i>
-          <span>CLEAN CODE & ROBUST DESIGN</span><i>✦</i>
-          <span>SOLVE REAL PROBLEMS</span><i>✦</i>
-          <span>CONTINUOUS LEARNING & DELIVERY</span><i>✦</i>
-          <span>AI-AUGMENTED EXECUTION</span><i>✦</i>
-          <span>EMPATHY & COLLABORATION</span><i>✦</i>
-          </div>
+          {[0, 1].map((copy) => (
+            <div className="portfolio-motion-group" aria-hidden={copy === 1 ? "true" : undefined} key={copy}>
+              {motionWords.map((word) => <span key={word}>{word}</span>).flatMap((word, index) => index < motionWords.length - 1 ? [word, <i key={`${copy}-${index}`}>✦</i>] : [word])}
+            </div>
+          ))}
         </div>
       </div>
 

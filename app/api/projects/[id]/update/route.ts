@@ -13,10 +13,13 @@ export async function POST(
     if (!user) return NextResponse.json({ ok: false }, { status: 401 });
 
     const { id } = await params;
-    const input = parseProjectInput(await request.json());
+    const body = await request.json();
+    const portfolioId = String(body.portfolioId ?? "");
+    const input = parseProjectInput(body);
     await ensureProjectMediaColumn();
     await ensureProjectAttachmentsColumn();
     if (!input.title) return badRequest("프로젝트명을 입력해 주세요.");
+    if (!portfolioId) return badRequest("저장할 포트폴리오 버전을 확인해 주세요.");
     if (input.isPublic && missingProjectFields(input).length) {
       return badRequest("미완성 프로젝트는 공개할 수 없습니다.");
     }
@@ -32,7 +35,7 @@ export async function POST(
                 architecture=$20, quality_assurance=$21, deployment=$22,
                 cover_image_url=$23, video_url=$24, media=$25, attachments=$26, is_public=$27, updated_at=NOW()
            FROM portfolios f
-          WHERE p.id=$28 AND p.portfolio_id=f.id AND f.owner_id=$29
+          WHERE p.id=$28 AND p.portfolio_id=f.id AND f.owner_id=$29 AND f.id=$30
           RETURNING p.id`,
         [
           input.title,
@@ -64,6 +67,7 @@ export async function POST(
           input.isPublic,
           id,
           user.id,
+          portfolioId,
         ],
       );
       if (!result.rowCount) return false;

@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { createSession } from "@/lib/auth";
 import { transaction } from "@/lib/db";
+import { ensurePortfolioVersions } from "@/lib/data";
 import { badRequest, serverError } from "@/lib/http";
 
 function baseSlug(email: string) {
@@ -17,6 +18,7 @@ function baseSlug(email: string) {
 
 export async function POST(request: Request) {
   try {
+    await ensurePortfolioVersions();
     const body = await request.json();
     const email = String(body.email ?? "").trim().toLowerCase();
     const password = String(body.password ?? "");
@@ -39,8 +41,8 @@ export async function POST(request: Request) {
       const id = userResult.rows[0].id;
       const suffix = crypto.randomUUID().slice(0, 6);
       await client.query(
-        `INSERT INTO portfolios (owner_id, contact_email, slug)
-         VALUES ($1, $2, $3)`,
+        `INSERT INTO portfolios (owner_id, version_name, contact_email, slug)
+         VALUES ($1, '기본 포트폴리오', $2, $3)`,
         [id, email, `${baseSlug(email)}-${suffix}`],
       );
       return id;

@@ -1,5 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const user = await getCurrentUser();
   const isLoggedIn = Boolean(user);
@@ -17,9 +19,9 @@ export default async function Home() {
 
       <section className="landing-hero" id="top">
         <div className="landing-hero-copy">
-          <span className="landing-kicker"><i /> PORTFOLIO FOR DEVELOPERS</span>
-          <h1>코드만큼 중요한<br /><em>개발의 맥락</em>을<br />보여주세요.</h1>
-          <p>기술 선택부터 구현, 검증, 배포까지. 개발자가 만든 결과와 판단을 면접관이 한눈에 이해할 수 있는 포트폴리오로 정리합니다.</p>
+          <span className="landing-kicker"><i /> PORTFOLIOS FOR EVERY ROLE</span>
+          <h1>지원 직무마다 다른<br /><em>나의 강점</em>을<br />보여주세요.</h1>
+          <p>QA, 개발, PM처럼 지원하는 역할마다 다른 경험을 골라 담고, 각 직무에 맞는 포트폴리오 링크로 발행하세요.</p>
           <div className="landing-hero-actions">
             <a className="landing-primary-cta" href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "무료로 시작하기"} <span>→</span></a>
             <a className="landing-secondary-cta" href="#templates">예시 포트폴리오 보기</a>
@@ -41,7 +43,7 @@ export default async function Home() {
       </section>
 
       <section className="landing-features" id="features">
-        <div className="landing-section-heading"><span>WHAT TO SHOW</span><h2>개발 경험을<br />읽기 쉽게 구조화합니다.</h2><p>한 프로젝트 안에서도 역할, 기술, 의사결정과 결과가 자연스럽게 이어지도록 구성합니다.</p></div>
+        <div className="landing-section-heading"><span>WHAT TO SHOW</span><h2>경험을<br />읽기 쉽게 구조화합니다.</h2><p>한 프로젝트 안에서도 역할, 판단과 결과가 자연스럽게 이어지도록 구성합니다.</p></div>
         <div className="landing-feature-grid">
           <article><span>01</span><h3>프로젝트의<br />핵심을 먼저</h3><p>대표 이미지·영상, 한 줄 요약과 기술 키워드로 첫 화면에서 시선을 잡습니다.</p><div className="landing-card-project"><b>PRODUCT</b><i /><i /><i /></div></article>
           <article><span>02</span><h3>내 기여와<br />판단을 명확히</h3><p>문제, 맡은 역할, 선택한 이유와 검증 결과를 프로젝트 상세에서 차분히 설명합니다.</p><div className="landing-card-flow"><b>문제 정의</b><i /><b>구현</b><i /><b>검증 · 배포</b></div></article>
@@ -60,10 +62,10 @@ export default async function Home() {
       </section>
 
       <section className="landing-final">
-        <span>YOUR NEXT PORTFOLIO</span><h2>이제, 만든 것을<br /><em>제대로 보여줄 차례.</em></h2><p>프로젝트 하나부터 시작해도 충분합니다.</p><a href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "포트폴리오 만들기"} <b>→</b></a>
+        <span>YOUR NEXT PORTFOLIO</span><h2>이제, 만든 것을<br /><em>제대로 보여줄 차례.</em></h2><p>직무별 버전으로 나누어 만들고, 각각 다른 링크로 공유할 수 있습니다.</p><a href={isLoggedIn ? "/dashboard" : "/login?mode=register"}>{isLoggedIn ? "마이페이지로 이동" : "포트폴리오 만들기"} <b>→</b></a>
       </section>
 
-      <footer className="landing-footer"><a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a><span>DEVELOPER PORTFOLIO, MADE CLEAR.</span><a href={isLoggedIn ? "/dashboard" : "/login"}>{isLoggedIn ? "마이페이지" : "로그인"}</a></footer>
+      <footer className="landing-footer"><a className="brand" href="#top"><span className="brand-mark">✦</span><span>Folioframe</span></a><span>ROLE-READY PORTFOLIOS, MADE CLEAR.</span><a href={isLoggedIn ? "/dashboard" : "/login"}>{isLoggedIn ? "마이페이지" : "로그인"}</a></footer>
     </main>
   );
 }

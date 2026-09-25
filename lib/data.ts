@@ -1,9 +1,10 @@
 import "server-only";
 import { query } from "./db";
-import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, Project, ProjectAttachment, ProjectLink, ProjectMedia } from "./models";
+import type { CareerEntry, CertificateEntry, DashboardData, EducationEntry, Portfolio, PortfolioTheme, PortfolioVersion, Project, ProjectAttachment, ProjectLink, ProjectMedia } from "./models";
 
 type PortfolioRow = {
   id: string;
+  version_name: string;
   name: string;
   profile_image_url: string;
   job_title: string;
@@ -67,6 +68,7 @@ type ProjectRow = {
 };
 
 let profileImageColumnReady: Promise<void> | null = null;
+let portfolioVersionsReady: Promise<void> | null = null;
 let projectMediaColumnReady: Promise<void> | null = null;
 let projectAttachmentsColumnReady: Promise<void> | null = null;
 let featuredColumnsReady: Promise<void> | null = null;
@@ -81,6 +83,29 @@ async function ensureProfileImageColumn() {
     ).then(() => undefined);
   }
   await profileImageColumnReady;
+}
+
+export async function ensurePortfolioVersions() {
+  if (!portfolioVersionsReady) {
+    portfolioVersionsReady = query(
+      `ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS version_name TEXT NOT NULL DEFAULT '기본 포트폴리오';
+       DO $$
+       DECLARE owner_unique_constraint TEXT;
+       BEGIN
+         SELECT conname INTO owner_unique_constraint
+           FROM pg_constraint
+          WHERE conrelid = 'portfolios'::regclass
+            AND contype = 'u'
+            AND pg_get_constraintdef(oid) = 'UNIQUE (owner_id)'
+          LIMIT 1;
+         IF owner_unique_constraint IS NOT NULL THEN
+           EXECUTE format('ALTER TABLE portfolios DROP CONSTRAINT %I', owner_unique_constraint);
+         END IF;
+       END $$;
+       CREATE INDEX IF NOT EXISTS idx_portfolios_owner_id ON portfolios(owner_id);`,
+    ).then(() => undefined);
+  }
+  await portfolioVersionsReady;
 }
 
 export async function ensureProjectMediaColumn() {
@@ -125,6 +150,7 @@ export async function ensureFeaturedColumns() {
 function mapPortfolio(row: PortfolioRow): Portfolio {
   return {
     id: row.id,
+    versionName: row.version_name || "기본 포트폴리오",
     name: row.name,
     profileImageUrl: row.profile_image_url ?? "",
     jobTitle: row.job_title,
@@ -175,7 +201,7 @@ function mapProject(row: ProjectRow): Project {
   const coverImageUrl = row.cover_image_url || coverOverrides[row.title] || "";
   const isCapLog = row.title === "CapLog";
   const contribution = isCapLog
-    ? "풀스택 개발 · 프론트엔드 개발 · 백엔드 개발 · 기획 · 테스트·QA"
+    ? "iOS 앱 개발 · 백엔드 개발 · 제품 흐름 고도화"
     : row.contribution;
   const teamSize = isCapLog ? "2인 팀 개발 → 1인 고도화·진행 중" : row.team_size;
   const techStacks = isCapLog
@@ -247,24 +273,30 @@ const projectSelect = `
 
 export async function getDashboardData(
   user: DashboardData["user"],
+  requestedPortfolioId?: string | null,
 ): Promise<DashboardData> {
+  await ensurePortfolioVersions();
   await ensureProfileImageColumn();
   await ensureProjectMediaColumn();
   await ensureProjectAttachmentsColumn();
   await ensureFeaturedColumns();
   const portfolioResult = await query<PortfolioRow>(
-    `SELECT id, name, profile_image_url, job_title, bio, contact_email, slug,
+    `SELECT id, version_name, name, profile_image_url, job_title, bio, contact_email, slug,
             is_published, published_at, theme, experience_level, interests, strengths, core_skills,
             about_me, work_style, personal_values, looking_for, aspiration, aspiration_title,
             resume_url, github_url, linkedin_url, blog_url, careers, educations, certificates
        FROM portfolios
       WHERE owner_id = $1
+        AND ($2::uuid IS NULL OR id = $2::uuid)
+      ORDER BY CASE WHEN $2::uuid IS NULL AND is_published THEN 0 ELSE 1 END,
+               updated_at DESC, created_at ASC
       LIMIT 1`,
-    [user.id],
+    [user.id, requestedPortfolioId || null],
   );
 
   const portfolioRow = portfolioResult.rows[0];
   if (!portfolioRow) {
+    if (requestedPortfolioId) return getDashboardData(user);
     throw new Error("포트폴리오를 찾을 수 없습니다.");
   }
 
@@ -276,20 +308,44 @@ export async function getDashboardData(
     [portfolioRow.id],
   );
 
+  const versionsResult = await query<{
+    id: string;
+    version_name: string;
+    job_title: string;
+    slug: string;
+    is_published: boolean;
+    updated_at: Date;
+  }>(
+    `SELECT id, version_name, job_title, slug, is_published, updated_at
+       FROM portfolios
+      WHERE owner_id = $1
+      ORDER BY created_at ASC`,
+    [user.id],
+  );
+
   return {
     user,
     portfolio: mapPortfolio(portfolioRow),
     projects: projectResult.rows.map(mapProject),
+    versions: versionsResult.rows.map((row): PortfolioVersion => ({
+      id: row.id,
+      versionName: row.version_name || "기본 포트폴리오",
+      jobTitle: row.job_title,
+      slug: row.slug,
+      isPublished: row.is_published,
+      updatedAt: row.updated_at.toISOString(),
+    })),
   };
 }
 
 export async function getPublicPortfolio(slug: string) {
+  await ensurePortfolioVersions();
   await ensureProfileImageColumn();
   await ensureProjectMediaColumn();
   await ensureProjectAttachmentsColumn();
   await ensureFeaturedColumns();
   const portfolioResult = await query<PortfolioRow & { email: string }>(
-    `SELECT p.id, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
+    `SELECT p.id, p.version_name, p.name, p.profile_image_url, p.job_title, p.bio, p.contact_email, p.slug,
             p.is_published, p.published_at, p.theme, p.experience_level, p.interests,
             p.strengths, p.core_skills, p.about_me, p.work_style, p.personal_values, p.looking_for, p.aspiration, p.aspiration_title,
             p.resume_url, p.github_url, p.linkedin_url, p.blog_url,

@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE TABLE IF NOT EXISTS portfolios (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  owner_id UUID NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  version_name TEXT NOT NULL DEFAULT '기본 포트폴리오',
   name TEXT NOT NULL DEFAULT '',
   profile_image_url TEXT NOT NULL DEFAULT '',
   job_title TEXT NOT NULL DEFAULT '',
@@ -50,6 +51,23 @@ CREATE TABLE IF NOT EXISTS portfolios (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- 기존 계정의 포트폴리오는 유지하면서 사용자당 여러 버전을 허용한다.
+ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS version_name TEXT NOT NULL DEFAULT '기본 포트폴리오';
+DO $$
+DECLARE owner_unique_constraint TEXT;
+BEGIN
+  SELECT conname INTO owner_unique_constraint
+    FROM pg_constraint
+   WHERE conrelid = 'portfolios'::regclass
+     AND contype = 'u'
+     AND pg_get_constraintdef(oid) = 'UNIQUE (owner_id)'
+   LIMIT 1;
+  IF owner_unique_constraint IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE portfolios DROP CONSTRAINT %I', owner_unique_constraint);
+  END IF;
+END $$;
+CREATE INDEX IF NOT EXISTS idx_portfolios_owner_id ON portfolios(owner_id);
 
 CREATE TABLE IF NOT EXISTS projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

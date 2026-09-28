@@ -181,7 +181,7 @@ function mapPortfolio(row: PortfolioRow): Portfolio {
 }
 
 const collaborationDefaults: Record<string, string> = {
-  CapLog: "2024년 9월부터 2025년 8월까지 2인 팀으로 졸업 프로젝트를 진행했고, 이후에는 혼자 개발을 이어가며 현재까지 고도화하고 있습니다.",
+  CapLog: "3인 팀으로 졸업 프로젝트를 진행했고, 팀 프로젝트 종료 후에는 1인 개발로 고도화를 이어가고 있습니다.",
   "Love Algorithm — 알고리즘보다 어려운 건 사랑이었다": "팀원들과 함께 스토리텔링과 분기 구조를 설계하고 백엔드를 구현했습니다.",
   "Ticker — Human Stock Market": "팀원들과 함께 개발한 협업 프로젝트에서 백엔드를 담당했습니다.",
   "EGGO — 농꾸하고 작심삼일 타파하자": "팀원과 기획·디자인을 함께 정리하고 프론트엔드를 담당했습니다.",
@@ -203,7 +203,7 @@ function mapProject(row: ProjectRow): Project {
   const contribution = isCapLog
     ? "iOS 앱 개발 · 백엔드 개발 · 제품 흐름 고도화"
     : row.contribution;
-  const teamSize = isCapLog ? "2인 팀 개발 → 1인 고도화·진행 중" : row.team_size;
+  const teamSize = row.team_size;
   const techStacks = isCapLog
     ? Array.from(new Set([...(row.tech_stacks ?? []), "AI"]))
     : row.title === "EGGO — 농꾸하고 작심삼일 타파하자"

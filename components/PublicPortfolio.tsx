@@ -20,7 +20,6 @@ export default function PublicPortfolio({
   const { portfolio, projects } = data;
   const featuredProjects = projects.filter((project) => project.isFeatured);
   const featuredIds = new Set(featuredProjects.map((project) => project.id));
-  const moreProjects = projects.filter((project) => !featuredIds.has(project.id));
   const title = portfolio.jobTitle.toLowerCase();
   const motionWords = title.includes("qa")
     ? ["정상·예외 흐름", "재현 가능한 검증", "API 테스트", "회귀 확인", "명확한 이슈 리포트"]
@@ -33,6 +32,8 @@ export default function PublicPortfolio({
     const evidence = [project.title, project.summary, project.role, project.troubleshooting, ...project.techStacks].join(" ").toLowerCase();
     return ["ai", "인공지능", "바이브 코딩", "vibe coding", "chatgpt", "claude", "codex", "cursor"].some((keyword) => evidence.includes(keyword));
   });
+  const aiProjectIds = new Set(aiProjects.map((project) => project.id));
+  const moreProjects = projects.filter((project) => !featuredIds.has(project.id) && !aiProjectIds.has(project.id));
 
   return (
     <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>

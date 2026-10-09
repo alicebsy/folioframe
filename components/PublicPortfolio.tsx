@@ -29,6 +29,10 @@ export default function PublicPortfolio({
       : title.includes("pm") || title.includes("product manager")
         ? ["문제 정의", "사용자 관점", "우선순위 설정", "빠른 가설 검증", "팀의 실행 정렬"]
         : ["API 설계", "데이터 정합성", "예외 처리", "안정적인 서비스", "테스트와 배포"];
+  const aiProjects = projects.filter((project) => {
+    const evidence = [project.title, project.summary, project.role, project.troubleshooting, ...project.techStacks].join(" ").toLowerCase();
+    return ["ai", "인공지능", "바이브 코딩", "vibe coding", "chatgpt", "claude", "codex", "cursor"].some((keyword) => evidence.includes(keyword));
+  });
 
   return (
     <main className={`public-shell theme-${portfolio.theme}`} data-portfolio-theme={portfolio.theme}>
@@ -324,6 +328,33 @@ export default function PublicPortfolio({
                   </div>
                 </article>
               );
+            })}
+          </div>
+        </>}
+        {!!aiProjects.length && <>
+          <div className="portfolio-section-title more-projects-title">
+            <span>AI-POWERED PROBLEM SOLVING</span>
+            <h2>AI로 해결한 문제들</h2>
+            <p>AI와 협업해 나와 주변인의 실제 불편을 작동하는 제품으로 해결했습니다.</p>
+          </div>
+          <div className="project-showcase-grid more-project-grid">
+            {aiProjects.map((project) => {
+              const href = `${projectBasePath}/${project.id}${projectBasePath.startsWith("/portfolio-preview") ? `?theme=${portfolio.theme}` : ""}`;
+              const media = orderedProjectMedia(project);
+              const heroMedia = media[0];
+              return <article className="project-showcase-card" key={`ai-${project.id}`}>
+                <a className="project-showcase-media" href={href} aria-label={`${project.title} AI 활용 사례 보기`}>
+                  {heroMedia?.type === "video" ? <video src={heroMedia.url} poster={media.find((item) => item.type === "image")?.url || undefined} autoPlay muted loop playsInline /> : heroMedia?.type === "image" ? <span className="project-showcase-image" style={{ backgroundImage: `url("${heroMedia.url.replaceAll('"', "%22")}")` }} /> : <span className="project-showcase-placeholder">AI</span>}
+                  <span className="project-showcase-action">AI CASE STUDY <b>↗</b></span>
+                </a>
+                <div className="project-showcase-copy">
+                  <div className="project-showcase-meta"><span>AI COLLABORATION</span>{project.contribution && <span>{project.contribution}</span>}</div>
+                  <h3><a href={href}>{project.title}</a></h3>
+                  <p className="project-summary-text"><RichText value={project.summary} /></p>
+                  <div className="project-showcase-tags"><span>문제 정의</span><span>AI 협업 개발</span><span>검증·개선</span></div>
+                  <a className="project-detail-link" href={href}>AI 활용 과정 보기 <span>→</span></a>
+                </div>
+              </article>;
             })}
           </div>
         </>}

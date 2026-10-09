@@ -26,7 +26,7 @@ export default function PublicPortfolio({
       : title.includes("pm") || title.includes("product manager")
         ? ["문제 정의", "사용자 관점", "우선순위 설정", "빠른 가설 검증", "팀의 실행 정렬"]
         : ["API 설계", "데이터 정합성", "예외 처리", "안정적인 서비스", "테스트와 배포"];
-  const aiProjects = projects.filter((project) => project.techStacks.includes("AI 협업 개발"));
+  const aiProjects = projects.filter((project) => project.techStacks.includes("AI 협업 개발") || project.techStacks.includes("바이브 코딩"));
   const aiProjectIds = new Set(aiProjects.map((project) => project.id));
   const featuredProjects = projects.filter((project) => project.isFeatured && !aiProjectIds.has(project.id));
   const featuredIds = new Set(featuredProjects.map((project) => project.id));

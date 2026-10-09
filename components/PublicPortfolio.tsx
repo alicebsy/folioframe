@@ -18,8 +18,6 @@ export default function PublicPortfolio({
   projectBasePath: string;
 }) {
   const { portfolio, projects } = data;
-  const featuredProjects = projects.filter((project) => project.isFeatured);
-  const featuredIds = new Set(featuredProjects.map((project) => project.id));
   const title = portfolio.jobTitle.toLowerCase();
   const motionWords = title.includes("qa")
     ? ["정상·예외 흐름", "재현 가능한 검증", "API 테스트", "회귀 확인", "명확한 이슈 리포트"]
@@ -28,11 +26,10 @@ export default function PublicPortfolio({
       : title.includes("pm") || title.includes("product manager")
         ? ["문제 정의", "사용자 관점", "우선순위 설정", "빠른 가설 검증", "팀의 실행 정렬"]
         : ["API 설계", "데이터 정합성", "예외 처리", "안정적인 서비스", "테스트와 배포"];
-  const aiProjects = projects.filter((project) => {
-    const evidence = [project.title, project.summary, project.role, project.troubleshooting, ...project.techStacks].join(" ").toLowerCase();
-    return ["ai", "인공지능", "바이브 코딩", "vibe coding", "chatgpt", "claude", "codex", "cursor"].some((keyword) => evidence.includes(keyword));
-  });
+  const aiProjects = projects.filter((project) => project.techStacks.includes("AI 협업 개발"));
   const aiProjectIds = new Set(aiProjects.map((project) => project.id));
+  const featuredProjects = projects.filter((project) => project.isFeatured && !aiProjectIds.has(project.id));
+  const featuredIds = new Set(featuredProjects.map((project) => project.id));
   const moreProjects = projects.filter((project) => !featuredIds.has(project.id) && !aiProjectIds.has(project.id));
 
   return (

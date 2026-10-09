@@ -7,7 +7,7 @@ const client = new pg.Client({ connectionString, ssl: { rejectUnauthorized: fals
 await client.connect();
 
 const referencePortfolioId = "50cdc307-197d-4e60-8f15-739c53f738c6";
-const title = "우리 법인 장부 — AI 협업으로 만든 다법인 회계관리";
+const title = "우리 법인 장부 — 쉽고 간편한 다법인 회계관리";
 const fields = {
   summary: "가족이 익숙하지 않은 엑셀로 회계 장부를 작성하며 겪는 어려움을 줄이기 위해 만든 실사용 웹 장부입니다. 필요한 항목을 쉽게 입력하고 월별 현황을 확인하며, 기존 엑셀 장부를 가져오거나 다시 내려받을 수 있도록 구현했습니다.",
   role: "1인 프로젝트로 사용자 요구 확인, 문제 정의, 기능 우선순위, 화면·데이터 구조 설계, 개발, 실제 장부 사례 검증과 배포를 담당했습니다.",

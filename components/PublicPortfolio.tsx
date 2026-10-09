@@ -26,7 +26,7 @@ export default function PublicPortfolio({
       : title.includes("pm") || title.includes("product manager")
         ? ["문제 정의", "사용자 관점", "우선순위 설정", "빠른 가설 검증", "팀의 실행 정렬"]
         : ["API 설계", "데이터 정합성", "예외 처리", "안정적인 서비스", "테스트와 배포"];
-  const aiProjects = projects.filter((project) => project.techStacks.includes("AI 협업 개발") || project.techStacks.includes("바이브 코딩"));
+  const aiProjects = projects.filter((project) => project.techStacks.includes("바이브 코딩"));
   const aiProjectIds = new Set(aiProjects.map((project) => project.id));
   const featuredProjects = projects.filter((project) => project.isFeatured && !aiProjectIds.has(project.id));
   const featuredIds = new Set(featuredProjects.map((project) => project.id));
@@ -333,7 +333,7 @@ export default function PublicPortfolio({
           <div className="portfolio-section-title more-projects-title">
             <span>AI-POWERED PROBLEM SOLVING</span>
             <h2>AI로 해결한 문제들</h2>
-            <p>AI와 협업해 나와 주변인의 실제 불편을 작동하는 제품으로 해결했습니다.</p>
+            <p>나와 주변인의 실제 불편을 발견하고 작동하는 제품으로 해결했습니다.</p>
           </div>
           <div className="project-showcase-grid more-project-grid">
             {aiProjects.map((project) => {
@@ -349,7 +349,7 @@ export default function PublicPortfolio({
                   <div className="project-showcase-meta"><span>AI COLLABORATION</span>{project.contribution && <span>{project.contribution}</span>}</div>
                   <h3><a href={href}>{project.title}</a></h3>
                   <p className="project-summary-text"><RichText value={project.summary} /></p>
-                  <div className="project-showcase-tags"><span>문제 정의</span><span>AI 협업 개발</span><span>검증·개선</span></div>
+                  <div className="project-showcase-tags"><span>문제 정의</span><span>빠른 구현</span><span>검증·개선</span></div>
                   <a className="project-detail-link" href={href}>AI 활용 과정 보기 <span>→</span></a>
                 </div>
               </article>;
